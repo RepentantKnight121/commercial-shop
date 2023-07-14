@@ -1,3 +1,6 @@
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 type MenuProps = {
   language: string;
   onChangeLanguage: (language: string) => void;
@@ -13,7 +16,7 @@ function Menu(props: MenuProps): JSX.Element {
   };
 
   return (
-    <nav className="flex">
+    <nav className="ml-10 mr-10 flex">
       <a href="/">
         <img src="./public/asset/logo.jpg" alt="Logo" />
       </a>
@@ -40,7 +43,7 @@ function Menu(props: MenuProps): JSX.Element {
         </li>
       </ul>
       <a href="">
-        <img src="./public/asset/icon-sreach.jpg" alt="Logo" />
+        <FontAwesomeIcon icon={faSearch} />
       </a>
       <a href="">
         <img src="./public/asset/icon-account.png" alt="Logo" />
