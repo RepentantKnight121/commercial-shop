@@ -1,9 +1,9 @@
 { pkgs, ... }:
 
 {
-  home.stateVersion = "22.11";
-  home.username = "pepsiman";
-  home.homeDirectory = "/home/pepsiman";
+  home.stateVersion = "23.05";
+  home.username = "nixuser";
+  home.homeDirectory = "/home/nixuser";
 
   imports = [
     ./neovim.nix
