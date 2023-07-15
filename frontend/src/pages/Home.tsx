@@ -13,6 +13,7 @@ function Home(): JSX.Element {
     <div>
       <Menu language={language} onChangeLanguage={handleSelectLanguage} />
       <div>Home Page</div>
+      <footer className="text-center">Commercial shop - 2023</footer>
     </div>
   );
 }
