@@ -7,7 +7,6 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={ <Home />} />
-          <Route path="/product" element={ <Product />} />
           <Route path="/*" element={<h1 className="text-center">Not Found The Page</h1>} />
       </Routes>
     </BrowserRouter>
