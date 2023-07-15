@@ -17,14 +17,13 @@
       unzipNLS
       unrar
       pciutils
-      pulsemixer
-      xorg.xbacklight
       zip
       zstd
     ];
 
     variables = {
-      BACKEND_PORT="4505"
+      FRONTEND_PORT="4506";
+      BACKEND_PORT="4505";
       NIXOS_FLAKE_DIR="$HOME/flake";
       NVIM_DIR = "$HOME/flake/nvim";
     };
