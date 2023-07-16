@@ -5,7 +5,7 @@
     # Boot loader
     loader.grub = {
       enable = true;
-      device = "/dev/sda";
+      device = "/dev/vda";
     };
 
     kernel.sysctl = {

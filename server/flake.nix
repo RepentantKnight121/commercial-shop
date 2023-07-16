@@ -7,16 +7,10 @@
 
     # Link to nix unstable packages
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    # home-manager link packages
-    home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = 
-  { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
+  { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
     let
       # Config settings
       username = "nixuser";
@@ -49,17 +43,6 @@
               ];
             })
             ./${myPlatform}/system/configuration.nix
-            
-            home-manager.nixosModules.home-manager {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              #home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.${username} = {
-                imports = [
-                  ./${myPlatform}/home-manager/home-manager.nix
-                ];
-              };
-            }
           ];
         };
       };

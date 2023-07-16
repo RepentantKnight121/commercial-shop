@@ -7,6 +7,7 @@
     extraGroups = [ "audio" "networkmanager" "video" "postgres" "wheel" ];
     packages = with pkgs; [
       firefox
+      lazygit
       lynx
       qutebrowser
       w3m
