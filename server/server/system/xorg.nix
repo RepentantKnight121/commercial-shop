@@ -16,5 +16,6 @@
 
     displayManager.lightdm.enable = true;
     desktopManager.mate.enable = true;
+    windowManager.awesome.enable = true;
   };
 }
