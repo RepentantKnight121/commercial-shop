@@ -1,19 +1,19 @@
-import { useState } from "react";
-
-import Menu from "../components/Menu";
+import Menu from "../components/Menu"
+import HeaderPhone from "../components/HeaderPhone"
+import HideOnScroll from "../utils/HideOnScroll";
+import Footer from "../components/Footer";
 
 function Home(): JSX.Element {
-  const [language, setLanguage] = useState<string>("vn");
-
-  const handleSelectLanguage = (selectedLanguage: string) => {
-    setLanguage(selectedLanguage);
-  };
-
   return (
     <div>
-      <Menu language={language} onChangeLanguage={handleSelectLanguage} />
+      <HideOnScroll>
+        <HeaderPhone />
+      </HideOnScroll>
+
+      <Menu />
+
       <div>Home Page</div>
-      <footer className="text-center">Commercial shop - 2023</footer>
+      <Footer />
     </div>
   );
 }
