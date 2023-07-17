@@ -1,5 +1,5 @@
 import Menu from "../components/Menu"
-import HeaderPhone from "../components/HeaderPhone"
+import HeaderPhone from "../components/HeaderContact"
 import HideOnScroll from "../utils/HideOnScroll";
 import Footer from "../components/Footer";
 
@@ -13,6 +13,7 @@ function Home(): JSX.Element {
       <Menu />
 
       <div>Home Page</div>
+      
       <Footer />
     </div>
   );

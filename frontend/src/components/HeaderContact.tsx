@@ -1,7 +1,7 @@
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function HeaderPhone(): JSX.Element {
+export default function HeaderContact(): JSX.Element {
   return (
     <div className="p-2 bg-slate-900">
       <div className="ml-96 mr-96 flex">
