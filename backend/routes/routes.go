@@ -18,7 +18,7 @@ func Run(port string) {
 }
 
 func getRoutes() {
-	r := router.Group("/")
+	r := router.Group("/api/")
 	addAccountRoutes(r)
 	addAccountRoleRoutes(r)
 	addBillDetailRoutes(r)
@@ -28,6 +28,5 @@ func getRoutes() {
 	addCustomerRoutes(r)
 	addDiscountRoutes(r)
 	addProductRoutes(r)
-	addProductDetailRoutes(r)
 	addProductImageRoutes(r)
 }

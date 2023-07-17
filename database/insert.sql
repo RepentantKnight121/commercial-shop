@@ -2,16 +2,12 @@ INSERT INTO Category VALUES
 ('1', 'Quần nam'),
 ('2', 'Áo nam');
 
-INSERT INTO Product VALUES
+INSERT INTO Product (product_id, category_id, product_name) VALUES
 ('1', '1', 'Quần nam');
 
-INSERT INTO ProductDetail (product_detail_id, product_id) VALUES
-('XD32', '1'),
-('D33', '1');
-
-INSERT INTO ProductImage (product_image_id, product_detail_id) VALUES
-('1', 'XD32'),
-('2', 'XD32');
+INSERT INTO ProductImage (product_image_id, product_id) VALUES
+('1', '1'),
+('2', '1');
 
 INSERT INTO Discount (discount_id, discount_percent) VALUES
 ('XV1', 0.05),

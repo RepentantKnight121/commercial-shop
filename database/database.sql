@@ -9,18 +9,9 @@ CREATE TABLE Category (
 );
 
 CREATE TABLE Product (
-    product_id      VARCHAR(20)  NOT NULL,
-    category_id     VARCHAR(20)  NOT NULL,
-    product_name    VARCHAR(100) DEFAULT 'Chưa có thông tin',
-    PRIMARY KEY (product_id),
-    CONSTRAINT fk_category_id_for_product
-        FOREIGN KEY (category_id)
-        REFERENCES Category(category_id)
-);
-
-CREATE TABLE ProductDetail (
-    product_detail_id    VARCHAR(20)  NOT NUll,
     product_id           VARCHAR(20)  NOT NULL,
+    category_id          VARCHAR(20)  NOT NULL,
+    product_name         VARCHAR(100) DEFAULT 'Chưa có thông tin',
     product_color        VARCHAR(20)  DEFAULT 'Chưa có thông tin',
     product_fabric       VARCHAR(20)  DEFAULT 'Chưa có thông tin',
     product_size         VARCHAR(4)   DEFAULT '',
@@ -28,20 +19,20 @@ CREATE TABLE ProductDetail (
     product_price        INT          DEFAULT 0,
     product_amount       INT          CHECK (product_amount >= 0) DEFAULT 0,
     product_description  VARCHAR(200) DEFAULT 'Chưa có thông tin',
-    PRIMARY KEY (product_detail_id),
-    CONSTRAINT fk_product_id_for_product_detail
-        FOREIGN KEY (product_id)
-        REFERENCES Product(product_id)
+    PRIMARY KEY (product_id),
+    CONSTRAINT fk_category_id_for_product
+        FOREIGN KEY (category_id)
+        REFERENCES Category(category_id)
 );
 
 CREATE TABLE ProductImage (
     product_image_id   VARCHAR(20) NOT NULL,
-    product_detail_id  VARCHAR(20) NOT NULL,
+    product_id  VARCHAR(20) NOT NULL,
     product_image      BYTEA,
     PRIMARY KEY (product_image_id),
-    CONSTRAINT fk_product_detail_id_for_product_image
-        FOREIGN KEY (product_detail_id)
-        REFERENCES ProductDetail(product_detail_id)
+    CONSTRAINT fk_product_id_for_product_image
+        FOREIGN KEY (product_id)
+        REFERENCES Product(product_id)
 );
 
 CREATE TABLE AccountRole (
@@ -108,16 +99,16 @@ CREATE TABLE BillInfo (
 CREATE TABLE BillDetail (
     bill_detail_id     VARCHAR(20) NOT NULL,
     bill_id            VARCHAR(20) NOT NULL,
-    product_detail_id  VARCHAR(20) NOT NULL,
+    product_id         VARCHAR(20) NOT NULL,
     discount_id        VARCHAR(20) NOT NULL,
     bill_amount        INT         CHECK (bill_amount > 0),
     PRIMARY KEY (bill_detail_id),
     CONSTRAINT fk_bill_id_for_bill_detail
         FOREIGN KEY (bill_id)
         REFERENCES BillInfo(bill_id),
-    CONSTRAINT fk_product_detail_id_for_bill_detail
-        FOREIGN KEY (product_detail_id)
-        REFERENCES ProductDetail(product_detail_id),
+    CONSTRAINT fk_product_id_for_bill_detail
+        FOREIGN KEY (product_id)
+        REFERENCES Product(product_id),
 	  CONSTRAINT fk_discount_id_for_bill_detail
 	      FOREIGN KEY (discount_id)
 	      REFERENCES Discount(discount_id)

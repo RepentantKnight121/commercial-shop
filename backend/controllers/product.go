@@ -91,7 +91,8 @@ func UpdateProduct(c *gin.Context) {
 	data.Items[0].Id = c.Param("id")
 
 	// Check input options
-	category, name := true, true
+	category, name, color, fabric, size, form, amount, price, description :=
+		true, true, true, true, true, true, true, true, true
 
 	if data.Items[0].IdCategory == "" {
 		category = false
@@ -99,9 +100,30 @@ func UpdateProduct(c *gin.Context) {
 	if data.Items[0].Name == "" {
 		name = false
 	}
+	if data.Items[0].Color == "" {
+		color = false
+	}
+	if data.Items[0].Fabric == "" {
+		fabric = false
+	}
+	if data.Items[0].Size == "" {
+		size = false
+	}
+	if data.Items[0].Form == "" {
+		form = false
+	}
+	if data.Items[0].Amount == -1 {
+		amount = false
+	}
+	if data.Items[0].Price == -1 {
+		price = false
+	}
+	if data.Items[0].Description == "" {
+		description = false
+	}
 
 	// Execute method and send status request to user
-	err := data.Update(&category, &name)
+	err := data.Update(&category, &name, &color, &fabric, &size, &form, &amount, &price, &description)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update product!"})
 		return

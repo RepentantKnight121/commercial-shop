@@ -24,9 +24,16 @@ func (sv *ProductService) Create() error {
 	// SQL commamd
 	sql := "INSERT INTO Product VALUES (@id, @idCategory, @name);"
 	args := pgx.NamedArgs{
-		"id":         sv.Items[0].Id,
-		"idCategory": sv.Items[0].IdCategory,
-		"name":       sv.Items[0].Name,
+		"id":          sv.Items[0].Id,
+		"idCategory":  sv.Items[0].IdCategory,
+		"name":        sv.Items[0].Name,
+		"color":       sv.Items[0].Color,
+		"fabric":      sv.Items[0].Fabric,
+		"size":        sv.Items[0].Size,
+		"form":        sv.Items[0].Form,
+		"amount":      sv.Items[0].Amount,
+		"price":       sv.Items[0].Price,
+		"description": sv.Items[0].Description,
 	}
 
 	// Execute sql command
@@ -74,6 +81,13 @@ func (sv *ProductService) Get() error {
 		&sv.Items[0].Id,
 		&sv.Items[0].IdCategory,
 		&sv.Items[0].Name,
+		&sv.Items[0].Color,
+		&sv.Items[0].Fabric,
+		&sv.Items[0].Size,
+		&sv.Items[0].Form,
+		&sv.Items[0].Amount,
+		&sv.Items[0].Price,
+		&sv.Items[0].Description,
 	)
 	if err != nil {
 		return err
@@ -109,9 +123,16 @@ func (sv *ProductService) GetAll(limit, page *int) error {
 		sv.Items = append(sv.Items, models.Product{})
 
 		err := rows.Scan(
-			&sv.Items[i].Id,
-			&sv.Items[i].IdCategory,
-			&sv.Items[i].Name,
+			&sv.Items[0].Id,
+			&sv.Items[0].IdCategory,
+			&sv.Items[0].Name,
+			&sv.Items[0].Color,
+			&sv.Items[0].Fabric,
+			&sv.Items[0].Size,
+			&sv.Items[0].Form,
+			&sv.Items[0].Amount,
+			&sv.Items[0].Price,
+			&sv.Items[0].Description,
 		)
 		if err != nil {
 			return err
@@ -126,7 +147,7 @@ func (sv *ProductService) GetAll(limit, page *int) error {
 	return nil
 }
 
-func (sv *ProductService) Update(category, name *bool) error {
+func (sv *ProductService) Update(category, name, color, fabric, size, form, amount, price, description *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -135,22 +156,69 @@ func (sv *ProductService) Update(category, name *bool) error {
 	defer conn.Close()
 
 	// SQL commamd check options if have
-	sql := "UPDATE Product SET category_id=@idCategory, product_name=@name WHERE product_id=@id;"
-	args := pgx.NamedArgs{
-		"id":         sv.Items[0].Id,
-		"idCategory": sv.Items[0].IdCategory,
-		"name":       sv.Items[0].Name,
-	}
+	sql := "UPDATE Product SET "
+	args := pgx.NamedArgs{"id": sv.Items[0].Id}
+	nextoption := true
 
-	if *category {
-		sql = "UPDATE Product SET category_id=@idCategory WHERE product_id=@id;"
-		delete(args, "name")
-	}
+	for i := 0; i < 9; i++ {
+		switch {
+		case *category == true:
+			sql += "category_id=@category"
+			args["category"] = sv.Items[0].IdCategory
+			*category = false
 
-	if *name {
-		sql = "UPDATE Product SET product_name=@name WHERE product_id=@id;"
-		delete(args, "idCategory")
+		case *name == true:
+			sql += "product_id=@name"
+			args["name"] = sv.Items[0].Name
+			*name = false
+
+		case *color == true:
+			sql += "product_color=@color"
+			args["percent"] = sv.Items[0].Color
+			*color = false
+
+		case *fabric == true:
+			sql += "product_fabric=@fabric"
+			args["fabric"] = sv.Items[0].Fabric
+			*fabric = false
+
+		case *size == true:
+			sql += "product_size=@size"
+			args["size"] = sv.Items[0].Size
+			*size = false
+
+		case *form == true:
+			sql += "product_size=@form"
+			args["form"] = sv.Items[0].Form
+			*form = false
+
+		case *price == true:
+			sql += "product_price=@price"
+			args["price"] = sv.Items[0].Price
+			*price = false
+
+		case *amount == true:
+			sql += "product_amount=@amount"
+			args["amount"] = sv.Items[0].Amount
+			*amount = false
+
+		case *description == true:
+			sql += "product_description=@description"
+			args["description"] = sv.Items[0].Description
+			*description = false
+
+		default:
+			nextoption = false
+		}
+
+		// comma false
+		if !nextoption {
+			sql = sql[:len(sql)-1]
+			break
+		}
+		sql += ","
 	}
+	sql += " WHERE product_id=@id;"
 
 	// Execute sql command
 	_, err = conn.Exec(database.CTX, sql, args)

@@ -10,9 +10,16 @@ func Test_CreateProduct(t *testing.T) {
 	// Create service and assign to data
 	data := ProductService{
 		Items: []models.Product{{
-			Id:         "3",
-			IdCategory: "1",
-			Name:       "Quần nam 3",
+			Id:          "3",
+			IdCategory:  "1",
+			Name:        "Quần nam 3",
+			Color:       "Đen",
+			Fabric:      "Vải",
+			Form:        "Ôm",
+			Size:        "39",
+			Price:       165000,
+			Amount:      100,
+			Description: "Thông tin chưa cập nhập",
 		}},
 	}
 
@@ -66,15 +73,17 @@ func Test_UpdateProduct(t *testing.T) {
 	// Create service and assign to data
 	data := ProductService{
 		Items: []models.Product{{
-			Id:         "3",
-			IdCategory: "1",
-			Name:       "Quần dài",
+			Id:          "3",
+			Price:       200000,
+			Amount:      90,
+			Description: "Thông tin chưa cập nhập. Chưa rõ ràng",
 		}},
 	}
 
 	// Execute method and if error happen send error
-	category_option, name_option := false, false
-	err := data.Update(&category_option, &name_option)
+	category, name, color, fabric, size, form, amount, price, description :=
+		false, false, false, false, false, false, true, true, true
+	err := data.Update(&category, &name, &color, &fabric, &size, &form, &amount, &price, &description)
 	if err != nil {
 		t.Fatalf("Error: %v", err)
 	}
