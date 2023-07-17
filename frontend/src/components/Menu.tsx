@@ -40,18 +40,24 @@ function Menu(props: MenuProps): JSX.Element {
         </ul>
       </div>
       <div className="flex justify-end">
-        <FontAwesomeIcon icon={faSearch}
-                         className="mt-5 mb-10 p-5 text-6xl 
-                                    hover:cursor-pointer hover:bg-sky-500 hover:text-white" />
+        <form className="border-2 border-sky-500">
+          <input type="search" name="searchField" />
+          <input type="submit" value="Search">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="mt-5 mb-10 p-5 text-6xl
+                         hover:cursor-pointer hover:bg-sky-500 hover:text-white" />
+          </input>
+        </form>
         <FontAwesomeIcon icon={faCartShopping}
                          className="mt-5 mb-10 p-5 text-6xl
                                     hover:cursor-pointer hover:bg-sky-500 hover:text-white" />
-        <div> {props.language === "vn" ? "Ngon:" : "Language:"}
-        <select name="languages" value={props.language} onChange={handleChangeLanguage}
-                className="bg-white text-6xl">
-          <option value="vn">VN 🇻🇳</option>
-          <option value="en">EN 🇺🇸</option>
-        </select>
+        <div>{props.language === "vn" ? "Ngôn ngữ:" : "Language:"}
+          <select name="languages" value={props.language} onChange={handleChangeLanguage}
+                  className="bg-white text-6xl">
+            <option value="vn">VN 🇻🇳</option>
+            <option value="en">EN 🇺🇸</option>
+          </select>
         </div>
       </div>
     </nav>
