@@ -2,9 +2,14 @@
 export default {
   content: ["./src/*.{html,tsx}", "./src/**/*.{html,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        'blue-light' : '#99DBF5'
+      }
+    },
     fontFamily: {
       'barlow': ['Barlow']
+      
     }
   },
   plugins: [],
