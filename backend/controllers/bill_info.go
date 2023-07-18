@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -79,7 +78,6 @@ func GetAllBillInfo(c *gin.Context) {
 	data := services.BillInfoService{}
 	err = data.GetAll(&limit, &page)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all bill info value"})
 		return
 	}

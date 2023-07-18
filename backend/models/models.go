@@ -66,8 +66,8 @@ type Product struct {
 	Fabric      string `json:"fabric"      binding:"required"`
 	Size        string `json:"size"        binding:"required"`
 	Form        string `json:"form"        binding:"required"`
-	Amount      int    `json:"amount"      binding:"required"`
 	Price       int    `json:"price"       binding:"required"`
+	Amount      int    `json:"amount"      binding:"required"`
 	Description string `json:"description" binding:"required"`
 }
 

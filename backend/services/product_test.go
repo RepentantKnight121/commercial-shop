@@ -60,10 +60,11 @@ func Test_GetAllProduct(t *testing.T) {
 	// Create limit, page, service and assign to data
 	limit := 10
 	page := 1
+	search := ""
 	data := ProductService{}
 
 	// Execute method and if error happen send error
-	err := data.GetAll(&limit, &page)
+	err := data.GetAll(&limit, &page, &search)
 	if err != nil {
 		t.Fatalf("Error: %v", err)
 	}

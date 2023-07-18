@@ -73,10 +73,13 @@ func GetAllProduct(c *gin.Context) {
 		page = 1
 	}
 
+	// Get search
+	search := c.Query("search")
+
 	// Create service and assign to data
 	// Then execute method and send status request to user
 	data := services.ProductService{}
-	err = data.GetAll(&limit, &page)
+	err = data.GetAll(&limit, &page, &search)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product value"})
 		return

@@ -22,7 +22,7 @@ func (sv *ProductService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO Product VALUES (@id, @idCategory, @name);"
+	sql := "INSERT INTO Product VALUES (@id, @idCategory, @name, @color, @fabric, @size, @form, @price, @amount, @description);"
 	args := pgx.NamedArgs{
 		"id":          sv.Items[0].Id,
 		"idCategory":  sv.Items[0].IdCategory,
@@ -31,8 +31,8 @@ func (sv *ProductService) Create() error {
 		"fabric":      sv.Items[0].Fabric,
 		"size":        sv.Items[0].Size,
 		"form":        sv.Items[0].Form,
-		"amount":      sv.Items[0].Amount,
 		"price":       sv.Items[0].Price,
+		"amount":      sv.Items[0].Amount,
 		"description": sv.Items[0].Description,
 	}
 
@@ -85,8 +85,8 @@ func (sv *ProductService) Get() error {
 		&sv.Items[0].Fabric,
 		&sv.Items[0].Size,
 		&sv.Items[0].Form,
-		&sv.Items[0].Amount,
 		&sv.Items[0].Price,
+		&sv.Items[0].Amount,
 		&sv.Items[0].Description,
 	)
 	if err != nil {
@@ -96,7 +96,7 @@ func (sv *ProductService) Get() error {
 	return nil
 }
 
-func (sv *ProductService) GetAll(limit, page *int) error {
+func (sv *ProductService) GetAll(limit, page *int, search *string) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -111,6 +111,11 @@ func (sv *ProductService) GetAll(limit, page *int) error {
 		"offset": strconv.Itoa(*limit * (*page - 1)),
 	}
 
+	if *search != "" {
+		args["search"] = search
+		sql = "SELECT * FROM Product WHERE product_name::text LIKE CONCAT('%', @search::text, '%') ORDER BY product_id LIMIT @limit OFFSET @offset;"
+	}
+
 	// Get rows from conn with SQL command
 	rows, err := conn.Query(database.CTX, sql, args)
 	if err != nil {
@@ -123,16 +128,16 @@ func (sv *ProductService) GetAll(limit, page *int) error {
 		sv.Items = append(sv.Items, models.Product{})
 
 		err := rows.Scan(
-			&sv.Items[0].Id,
-			&sv.Items[0].IdCategory,
-			&sv.Items[0].Name,
-			&sv.Items[0].Color,
-			&sv.Items[0].Fabric,
-			&sv.Items[0].Size,
-			&sv.Items[0].Form,
-			&sv.Items[0].Amount,
-			&sv.Items[0].Price,
-			&sv.Items[0].Description,
+			&sv.Items[i].Id,
+			&sv.Items[i].IdCategory,
+			&sv.Items[i].Name,
+			&sv.Items[i].Color,
+			&sv.Items[i].Fabric,
+			&sv.Items[i].Size,
+			&sv.Items[i].Form,
+			&sv.Items[i].Price,
+			&sv.Items[i].Amount,
+			&sv.Items[i].Description,
 		)
 		if err != nil {
 			return err
