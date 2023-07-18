@@ -11,10 +11,10 @@ export default function Menu(): JSX.Element {
                   <img src="/asset/logo.jpg" alt="Logo" className="w-28" />
             </a>
             <ul className='list-none flex ml-20 items-center uppercase'>
-                  <li className="px-5 hover:text-cyan-400">Home</li>
-                  <li className="px-5 hover:text-cyan-400">Products</li>
-                  <li className="px-5 hover:text-cyan-400">About</li>
-                  <li className="px-5 hover:text-cyan-400">New</li>
+                  <li className="px-5 hover:text-cyan-400">Trang chủ</li>
+                  <li className="px-5 hover:text-cyan-400">Sản phẩm</li>
+                           <li className="px-5 hover:text-cyan-400">Thông tin của chúng tôi</li>
+                  <li className="px-5 hover:text-cyan-400">Tin tức</li>
             </ul>
       </div>
       <div className="flex mr-5 items-center">
