@@ -26,9 +26,9 @@ CREATE TABLE Product (
 );
 
 CREATE TABLE ProductImage (
-    product_image_id   VARCHAR(20) NOT NULL,
-    product_id  VARCHAR(20) NOT NULL,
-    product_image      BYTEA,
+    product_image_id  VARCHAR(20) NOT NULL,
+    product_id        VARCHAR(20) NOT NULL,
+    product_image     BYTEA,
     PRIMARY KEY (product_image_id),
     CONSTRAINT fk_product_id_for_product_image
         FOREIGN KEY (product_id)
@@ -47,7 +47,7 @@ CREATE TABLE Account (
     account_password    VARCHAR(200) NOT NULL,
     account_displayname VARCHAR(100) DEFAULT '',
     account_email       VARCHAR(200) DEFAULT '',
-    account_active      INT          NOT NULL DEFAULT 0 CHECK (account_active=0 OR account_active=1),
+    account_active      INT          DEFAULT 0 CHECK (account_active=0 OR account_active=1),
     PRIMARY KEY (account_username),
     CONSTRAINT fk_role_id_for_account
         FOREIGN KEY (role_id)
