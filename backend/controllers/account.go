@@ -132,7 +132,7 @@ func GetLoginAccount(c *gin.Context) {
 	}
 
 	// Check password input and encrypted password
-	if utils.CheckPasswordHash(input.Password, data.Items[0].Password) == false {
+	if !utils.CheckPasswordHash(input.Password, data.Items[0].Password) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Please enter username or password again!"})
 		return
 	}

@@ -149,22 +149,22 @@ func (sv *BillDetailService) Update(billid, productdetailid, discountid, amount 
 
 	for i := 0; i < 4; i++ {
 		switch {
-		case *billid == true:
+		case *billid:
 			sql += "bill_id=@bill_id"
 			args["bill_id"] = sv.Items[0].BillId
 			*billid = false
 
-		case *productdetailid == true:
+		case *productdetailid:
 			sql += "product_detail_id=@product_detail_id"
 			args["@product_detail_id"] = sv.Items[0].ProductDetailId
 			*productdetailid = false
 
-		case *discountid == true:
+		case *discountid:
 			sql += "discount_id=@discount"
 			args["discount"] = sv.Items[0].DiscountId
 			*discountid = false
 
-		case *amount == true:
+		case *amount:
 			sql += "bill_ammount=@amount"
 			args["amount"] = sv.Items[0].Amount
 			*amount = false

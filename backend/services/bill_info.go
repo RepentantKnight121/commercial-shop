@@ -149,22 +149,22 @@ func (sv *BillInfoService) Update(customerid, status, date, payment *bool) error
 
 	for i := 0; i < 4; i++ {
 		switch {
-		case *customerid == true:
+		case *customerid:
 			sql += "customer_id=@customer_id"
 			args["customer_id"] = sv.Items[0].CustomerId
 			*customerid = false
 
-		case *status == true:
+		case *status:
 			sql += "bill_status=@status"
 			args["status"] = sv.Items[0].Status
 			*status = false
 
-		case *date == true:
+		case *date:
 			sql += "bill_date=@date"
 			args["date"] = sv.Items[0].Date
 			*date = false
 
-		case *payment == true:
+		case *payment:
 			sql += "bill_payment=@payment"
 			args["payment"] = sv.Items[0].Payment
 			*payment = false

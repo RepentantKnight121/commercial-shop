@@ -149,22 +149,22 @@ func (sv *DiscountService) Update(description, percent, start, end *bool) error 
 
 	for i := 0; i < 4; i++ {
 		switch {
-		case *description == true:
+		case *description:
 			sql += "discount_description=@description"
 			args["description"] = sv.Items[0].Description
 			*description = false
 
-		case *percent == true:
+		case *percent:
 			sql += "discount_percent=@percent"
 			args["percent"] = sv.Items[0].Percent
 			*percent = false
 
-		case *start == true:
+		case *start:
 			sql += "discount_date_start=@start"
 			args["start"] = sv.Items[0].DateStart
 			*start = false
 
-		case *end == true:
+		case *end:
 			sql += "discount_date_end=@end"
 			args["end"] = sv.Items[0].DateEnd
 			*end = false

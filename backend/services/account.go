@@ -23,13 +23,14 @@ func (sv *AccountService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd check options input
-	sql := "INSERT INTO Account VALUES (@username, @role_id, @password, @display_name, @email, 0);"
+	sql := "INSERT INTO Account VALUES (@username, @role_id, @password, @displayname, @email, @active);"
 	args := pgx.NamedArgs{
 		"username":    sv.Items[0].Username,
 		"role_id":     sv.Items[0].RoleId,
 		"password":    sv.Items[0].Password,
 		"displayname": sv.Items[0].DisplayName,
 		"email":       sv.Items[0].Email,
+		"active":      sv.Items[0].Active,
 	}
 
 	// Execute sql command
@@ -115,7 +116,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "SELECT * FROM Account LIMIT @limit OFFSET @offset;"
+	sql := "SELECT * FROM Account ORDER BY account_username LIMIT @limit OFFSET @offset;"
 	args := pgx.NamedArgs{
 		"limit":  strconv.Itoa(*limit),
 		"offset": strconv.Itoa(*limit * (*page - 1)),
@@ -141,7 +142,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 			&sv.Items[i].Active,
 		)
 		if err != nil {
-			return err
+			return nil
 		}
 
 		i++
@@ -170,22 +171,22 @@ func (sv *AccountService) Update(password, displayname, roleid, email *bool) err
 
 	for i := 0; i < 4; i++ {
 		switch {
-		case *password == true:
+		case *password:
 			sql += "account_password=@password"
 			args["password"] = sv.Items[0].Password
 			*password = false
 
-		case *displayname == true:
+		case *displayname:
 			sql += "account_displayname=@display_name"
 			args["display_name"] = sv.Items[0].DisplayName
 			*displayname = false
 
-		case *roleid == true:
+		case *roleid:
 			sql += "role_id=@role_id"
 			args["role_id"] = sv.Items[0].RoleId
 			*roleid = false
 
-		case *email == true:
+		case *email:
 			sql += "account_email=@email"
 			args["email"] = sv.Items[0].Email
 			*email = false

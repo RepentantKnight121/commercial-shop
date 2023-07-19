@@ -103,7 +103,10 @@ func (sv *CategoryService) GetAll(limit, page *int) error {
 	for rows.Next() {
 		sv.Items = append(sv.Items, models.Category{})
 
-		err := rows.Scan(&sv.Items[i].Id, &sv.Items[i].Name)
+		err := rows.Scan(
+			&sv.Items[i].Id,
+			&sv.Items[i].Name,
+		)
 		if err != nil {
 			return err
 		}

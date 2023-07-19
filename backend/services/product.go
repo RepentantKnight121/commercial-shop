@@ -167,47 +167,47 @@ func (sv *ProductService) Update(category, name, color, fabric, size, form, amou
 
 	for i := 0; i < 9; i++ {
 		switch {
-		case *category == true:
+		case *category:
 			sql += "category_id=@category"
 			args["category"] = sv.Items[0].IdCategory
 			*category = false
 
-		case *name == true:
+		case *name:
 			sql += "product_id=@name"
 			args["name"] = sv.Items[0].Name
 			*name = false
 
-		case *color == true:
+		case *color:
 			sql += "product_color=@color"
 			args["percent"] = sv.Items[0].Color
 			*color = false
 
-		case *fabric == true:
+		case *fabric:
 			sql += "product_fabric=@fabric"
 			args["fabric"] = sv.Items[0].Fabric
 			*fabric = false
 
-		case *size == true:
+		case *size:
 			sql += "product_size=@size"
 			args["size"] = sv.Items[0].Size
 			*size = false
 
-		case *form == true:
+		case *form:
 			sql += "product_size=@form"
 			args["form"] = sv.Items[0].Form
 			*form = false
 
-		case *price == true:
+		case *price:
 			sql += "product_price=@price"
 			args["price"] = sv.Items[0].Price
 			*price = false
 
-		case *amount == true:
+		case *amount:
 			sql += "product_amount=@amount"
 			args["amount"] = sv.Items[0].Amount
 			*amount = false
 
-		case *description == true:
+		case *description:
 			sql += "product_description=@description"
 			args["description"] = sv.Items[0].Description
 			*description = false

@@ -148,17 +148,17 @@ func (sv *CustomerService) Update(name, phone, address *bool) error {
 
 	for i := 0; i < 4; i++ {
 		switch {
-		case *name == true:
+		case *name:
 			sql += "customer_name=@name"
 			args["name"] = sv.Items[0].Name
 			*name = false
 
-		case *phone == true:
+		case *phone:
 			sql += "customer_phone=@phone"
 			args["phone"] = sv.Items[0].Phone
 			*phone = false
 
-		case *address == true:
+		case *address:
 			sql += "customer_address=@address"
 			args["address"] = sv.Items[0].Address
 			*address = false

@@ -106,13 +106,10 @@ func (sv *AccountRoleService) GetAll(limit, page *int) error {
 	for rows.Next() {
 		sv.Items = append(sv.Items, models.AccountRole{})
 
-		err := rows.Scan(
+		rows.Scan(
 			&sv.Items[i].Id,
 			&sv.Items[i].Description,
 		)
-		if err != nil {
-			return err
-		}
 
 		i++
 	}
