@@ -43,7 +43,7 @@ type Category struct {
 }
 
 type Customer struct {
-	Id              string `json:"id"   binding:"required"`
+	Id              string `json:"id"              binding:"required"`
 	AccountUsername string `json:"accountUsername" binding:"required"`
 	Name            string `json:"name"            binding:"required"`
 	Phone           string `json:"phone"           binding:"required"`
@@ -72,7 +72,7 @@ type Product struct {
 }
 
 type ProductImage struct {
-	Id              string `json:"id"              binding:"required"`
-	ProductDetailId string `json:"productDetailId" binding:"required"`
-	Image           []byte `json:"image"           binding:"required"`
+	Id        string `json:"id"        binding:"required"`
+	ProductId string `json:"productId" binding:"required"`
+	Image     []byte `json:"image"     binding:"required"`
 }

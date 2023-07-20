@@ -9,9 +9,9 @@ import (
 func Test_CreateProductImage(t *testing.T) {
 	// Create service and assign to data
 	data := ProductImageService{Items: []models.ProductImage{{
-		Id:              "3",
-		ProductDetailId: "XD32",
-		Image:           nil,
+		Id:        "3",
+		ProductId: "XD32",
+		Image:     nil,
 	}}}
 
 	// Execute method and if error happen send error
@@ -63,9 +63,9 @@ func Test_GetAllProductImage(t *testing.T) {
 func Test_UpdateProductImage(t *testing.T) {
 	// Create service and assign to data
 	data := ProductImageService{Items: []models.ProductImage{{
-		Id:              "3",
-		ProductDetailId: "D33",
-		Image:           nil,
+		Id:        "3",
+		ProductId: "D33",
+		Image:     nil,
 	}}}
 
 	// Execute method and if error happen send error

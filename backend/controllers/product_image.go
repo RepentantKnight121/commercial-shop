@@ -93,7 +93,7 @@ func UpdateProductImage(c *gin.Context) {
 	// Check input options
 	productdetailid, image := true, true
 
-	if data.Items[0].ProductDetailId == "" {
+	if data.Items[0].ProductId == "" {
 		productdetailid = false
 	}
 	if data.Items[0].Image == nil {

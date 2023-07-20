@@ -22,11 +22,11 @@ func (sv *ProductImageService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO ProductImage VALUES (@id, @idProductDetail, @image);"
+	sql := "INSERT INTO ProductImage VALUES (@id, @productId, @image);"
 	args := pgx.NamedArgs{
-		"id":              sv.Items[0].Id,
-		"idProductDetail": sv.Items[0].ProductDetailId,
-		"image":           sv.Items[0].Image,
+		"id":        sv.Items[0].Id,
+		"productId": sv.Items[0].ProductId,
+		"image":     sv.Items[0].Image,
 	}
 
 	// Execute sql command
@@ -72,7 +72,7 @@ func (sv *ProductImageService) Get() error {
 	// Get rows from conn with SQL command
 	err = conn.QueryRow(database.CTX, sql).Scan(
 		&sv.Items[0].Id,
-		&sv.Items[0].ProductDetailId,
+		&sv.Items[0].ProductId,
 		&sv.Items[0].Image,
 	)
 	if err != nil {
@@ -110,7 +110,7 @@ func (sv *ProductImageService) GetAll(limit, page *int) error {
 
 		err := rows.Scan(
 			&sv.Items[i].Id,
-			&sv.Items[i].ProductDetailId,
+			&sv.Items[i].ProductId,
 			&sv.Items[i].Image,
 		)
 		if err != nil {
@@ -135,18 +135,18 @@ func (sv *ProductImageService) Update(productdetailid, image *bool) error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "UPDATE ProductImage SET product_detail_id=@productdetailid, product_image=@image WHERE product_image_id=@id;"
+	sql := "UPDATE ProductImage SET product_id=@productId, product_image=@image WHERE product_image_id=@id;"
 	args := pgx.NamedArgs{
-		"id":              sv.Items[0].Image,
-		"productdetailid": sv.Items[0].ProductDetailId,
-		"image":           sv.Items[0].Image,
+		"id":        sv.Items[0].Image,
+		"productId": sv.Items[0].ProductId,
+		"image":     sv.Items[0].Image,
 	}
 
 	if *productdetailid {
 		sql = "UPDATE ProductImage SET product_image=@image WHERE product_image_id=@id;"
 		delete(args, "productdetailid")
 	} else if *image {
-		sql = "UPDATE ProductImage SET product_detail_id=@productdetailid WHERE product_image_id=@id;"
+		sql = "UPDATE ProductImage SET product_id=@productId WHERE product_image_id=@id;"
 		delete(args, "image")
 	}
 
