@@ -1,32 +1,25 @@
-import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import ButtonHidden from "./ButtonHidden";
+import UserInfo from "./UserInfo";
 
 export default function Menu(): JSX.Element {
   return (
-
- <div className='flex justify-between'> 
-      <div className="flex">
-            <a href="">
-                  <img src="/asset/logo.jpg" alt="Logo" className="w-28" />
-            </a>
-            <ul className='list-none flex ml-20 items-center uppercase'>
-                  <li className="px-5 hover:text-cyan-400">Trang chủ</li>
-                  <li className="px-5 hover:text-cyan-400">Sản phẩm</li>
-                           <li className="px-5 hover:text-cyan-400">Thông tin của chúng tôi</li>
-                  <li className="px-5 hover:text-cyan-400">Tin tức</li>
-            </ul>
+    <div className='flex justify-between'>
+      <div className="mx-5 flex">
+        <a href="/"><img src="/asset/logo.jpg" alt="Logo" className="w-28" /></a>
+        <div className="px-4 list-none flex items-center uppercase">
+          <a href="/" className="p6 font-barlow text-xl hover:text-cyan-400">Trang chủ</a>
+          <a href="/product" className="px-6 font-barlow text-xl font-balow hover:text-cyan-400">Sản phẩm</a>
+          <a href="/about" className="px-6 font-barlow text-xl font-balow hover:text-cyan-400">Về chúng tôi</a>
+          <a href="/news" className="px-6 font-barlow text-xl font-balow hover:text-cyan-400">Tin tức</a>
+        </div>
       </div>
-      <div className="flex mr-5 items-center">
-            <SearchBar />  
-            <a href="">
-                  <img src="/asset/icon-cart.png" alt="Logo"  className="w-14" />
-            </a>  
-            <a href={"login"}  className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">Đăng nhập</a>
-            <a href={"register"}  className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">Đăng ký</a>
-            <ButtonHidden />
-      </div>           
-</div>
-
+      <div className="flex mx-5 items-center">
+        <SearchBar />
+        <img src="/asset/icon-cart.png" alt="Logo"  className="w-14" />
+        <a href="login" className="px-3 py-2 bg-sky-500 rounded-3xl ml-4 hover:text-neutral-50">Đăng nhập</a>
+        <a href="register"  className="px-3 py-2 bg-sky-500 rounded-3xl ml-4 hover:text-neutral-50">Đăng ký</a>
+        <UserInfo />
+      </div>
+    </div>
   )
 }
