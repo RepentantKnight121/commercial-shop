@@ -23,13 +23,13 @@ func (sv *BillDetailService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO BillDetail VALUES (@id, @bill_id, @product_detail_id, @discount_id, @amount);"
+	sql := "INSERT INTO BillDetail VALUES (@id, @bill_id, @productId, @discount_id, @amount);"
 	args := pgx.NamedArgs{
-		"id":                sv.Items[0].Id,
-		"bill_id":           sv.Items[0].BillId,
-		"product_detail_id": sv.Items[0].ProductDetailId,
-		"discount_id":       sv.Items[0].DiscountId,
-		"amount":            sv.Items[0].Amount,
+		"id":          sv.Items[0].Id,
+		"bill_id":     sv.Items[0].BillId,
+		"productId":   sv.Items[0].ProductId,
+		"discount_id": sv.Items[0].DiscountId,
+		"amount":      sv.Items[0].Amount,
 	}
 
 	// Execute sql command
@@ -77,7 +77,7 @@ func (sv *BillDetailService) Get() error {
 	err = conn.QueryRow(database.CTX, sql).Scan(
 		&sv.Items[0].Id,
 		&sv.Items[0].BillId,
-		&sv.Items[0].ProductDetailId,
+		&sv.Items[0].ProductId,
 		&sv.Items[0].DiscountId,
 		&sv.Items[0].Amount,
 	)
@@ -117,7 +117,7 @@ func (sv *BillDetailService) GetAll(limit, page *int) error {
 		err := rows.Scan(
 			&sv.Items[i].Id,
 			&sv.Items[i].BillId,
-			&sv.Items[i].ProductDetailId,
+			&sv.Items[i].ProductId,
 			&sv.Items[i].DiscountId,
 			&sv.Items[i].Amount,
 		)
@@ -156,7 +156,7 @@ func (sv *BillDetailService) Update(billid, productdetailid, discountid, amount 
 
 		case *productdetailid:
 			sql += "product_detail_id=@product_detail_id"
-			args["@product_detail_id"] = sv.Items[0].ProductDetailId
+			args["@product_detail_id"] = sv.Items[0].ProductId
 			*productdetailid = false
 
 		case *discountid:

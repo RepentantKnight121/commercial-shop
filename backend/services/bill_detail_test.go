@@ -9,11 +9,11 @@ import (
 func Test_CreateBillDetail(t *testing.T) {
 	// Create service and assign to data
 	data := BillDetailService{Items: []models.BillDetail{{
-		Id:              "003",
-		BillId:          "001",
-		ProductDetailId: "XD32",
-		DiscountId:      "XV1",
-		Amount:          2,
+		Id:         "003",
+		BillId:     "001",
+		ProductId:  "XD32",
+		DiscountId: "XV1",
+		Amount:     2,
 	}}}
 
 	// Execute method and if error happen send error
@@ -65,11 +65,11 @@ func Test_GetAllBillDetail(t *testing.T) {
 func Test_UpdateBillDetail(t *testing.T) {
 	// Create service and assign to data
 	data := BillDetailService{Items: []models.BillDetail{{
-		Id:              "003",
-		BillId:          "001",
-		ProductDetailId: "XD32",
-		DiscountId:      "XV1",
-		Amount:          3,
+		Id:         "003",
+		BillId:     "001",
+		ProductId:  "XD32",
+		DiscountId: "XV1",
+		Amount:     3,
 	}}}
 
 	// Execute method and if error happen send error
