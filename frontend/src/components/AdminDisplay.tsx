@@ -1,6 +1,12 @@
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
+
+import AddingForm from "./AddForm"
+import RemoveForm from "./RemoveForm"
+import EditForm from "./EditForm"
 
 type Display = {
   display: string
@@ -9,7 +15,20 @@ type Display = {
 }
 
 function AdminDisplay(props: Display): JSX.Element {
+  const [addForm, setAddForm] = useState<boolean>(false)
+  const [editForm, setEditForm] = useState<boolean>(false)
+  const [removeForm, setRemoveForm] = useState<boolean>(false)
   const [data, setData] = useState<Object[]>([])
+
+  const handleAddForm = (value: boolean) => {
+    setAddForm(value)
+  }
+  const handleEditForm = (value: boolean) => {
+    setEditForm(value)
+  }
+  const handleRemoveForm = (value: boolean) => {
+    setRemoveForm(value)
+  }
 
   // Get API function
   async function getApi(name: string): Promise<Object[]> {
@@ -31,6 +50,10 @@ function AdminDisplay(props: Display): JSX.Element {
         setData(responseData)
       })
     } else if (props.display === "bill-info") {
+      getApi(props.display).then((responseData) => {
+        setData(responseData)
+      })
+    } else if (props.display === "bill-detail") {
       getApi(props.display).then((responseData) => {
         setData(responseData)
       })
@@ -65,8 +88,8 @@ function AdminDisplay(props: Display): JSX.Element {
 
   if (props.display === "account") {
     page = (
-      <div>
-        <h1>Quản lý tài khoản</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý tài khoản</h1>
         <table className="">
           <thead>
             <tr>
@@ -108,30 +131,48 @@ function AdminDisplay(props: Display): JSX.Element {
     )
   } else if (props.display === "account-role") {
     page = (
-      <div>
-        <h1>Quản lý loại tài khoản</h1>
-        <table className="">
-          <thead>
-            <tr>
-              <th>Index</th>
-              <th>Id</th>
-              <th>Description</th>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý loại tài khoản</h1>
+        <div>
+          <button type="button" onClick={() => {setAddForm(true)}} className="py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
+          { addForm && <AddingForm display={props.display} handleAddForm={handleAddForm} /> }
+        </div>
+        <div className="w-1/12 mx-auto my-5 flex">
+          <button type="button" className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"><FontAwesomeIcon icon={faChevronLeft} /></button>
+          <p className="mx-2 py-2 text-2xl text-center">{props.page}</p>
+          <button type="button" className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"><FontAwesomeIcon icon={faChevronRight} /></button>
+        </div>
+        <table className="mx-auto w-11/12">
+          <thead className="bg-sky-300">
+            <tr className="text-center">
+              <th className="border-2 border-black">Id</th>
+              <th className="border-2 border-black">Description</th>
+              <th className="border-2 border-black">Edit</th>
+              <th className="border-2 border-black">Delete</th>
             </tr>
           </thead>
           <tbody>
-          {data.map((value: any, index: number) => (
-            <tr key={uuidv4()}>
-              <td>{index+1}</td>
-              <td>{value.id}</td>
-              <td>{value.description}</td>
+          {data.map((value: any) => (
+            <tr className="text-center" key={uuidv4()}>
+              <td className="border-2 border-black">{value.id}</td>
+              <td className="border-2 border-black">{value.description}</td>
+              <td className="w-1/12 border-2 border-black">
+                <button type="button" onClick={() => {setEditForm(true)}} className="py-2 px-4 my-2 justify-end bg-blue-500 text-xl text-white">#</button>
+                {editForm && <EditForm display={props.display} value={value.id} handleEditForm={handleEditForm} />}
+              </td>
+              <td className="w-1/12 border-2 border-black">
+                <button type="button" onClick={() => {setRemoveForm(true)}} className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
+                {removeForm && <RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />}
+              </td>
             </tr>
           ))}
           </tbody>
-          <tfoot>
-            <tr>
-              <th>Index</th>
-              <th>Id</th>
-              <th>Description</th>
+          <tfoot className="bg-sky-300">
+            <tr className="text-center">
+              <th className="border-2 border-black">Id</th>
+              <th className="border-2 border-black">Description</th>
+              <th className="border-2 border-black">Edit</th>
+              <th className="border-2 border-black">Delete</th>
             </tr>
           </tfoot>
         </table>
@@ -139,8 +180,8 @@ function AdminDisplay(props: Display): JSX.Element {
     )
   } else if (props.display === "bill-info") {
     page = (
-      <div>
-        <h1>Quản lý hóa đơn</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý hóa đơn</h1>
         <table className="">
           <thead>
             <tr>
@@ -179,12 +220,48 @@ function AdminDisplay(props: Display): JSX.Element {
     )
   } else if (props.display === "bill-detail") {
     page = (
-      <div>Bill Detail</div>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý hóa đơn chi tiết</h1>
+        <table className="">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Id</th>
+              <th>Bill Id</th>
+              <th>Product Id</th>
+              <th>Discount Id</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+          {data.map((value: any, index: number) => (
+            <tr key={uuidv4()}>
+              <td>{index+1}</td>
+              <td>{value.id}</td>
+              <td>{value.billId}</td>
+              <td>{value.productId}</td>
+              <td>{value.discountId}</td>
+              <td>{value.amount}</td>
+            </tr>
+          ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Index</th>
+              <th>Id</th>
+              <th>Bill Id</th>
+              <th>Product Id</th>
+              <th>Discount Id</th>
+              <th>Amount</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     )
   } else if (props.display === "bill-status") {
     page = (
-      <div>
-        <h1>Quản lý trạng thái hóa đơn</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý trạng thái hóa đơn</h1>
         <table className="">
           <thead>
             <tr>
@@ -214,8 +291,8 @@ function AdminDisplay(props: Display): JSX.Element {
     )
   } else if (props.display === "category") {
     page = (
-      <div>
-        <h1>Quản lý loại sản phẩm</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý loại sản phẩm</h1>
         <table className="">
           <thead>
             <tr>
@@ -245,8 +322,8 @@ function AdminDisplay(props: Display): JSX.Element {
     );
   } else if (props.display === "customer") {
     page = (
-      <div>
-        <h1>Quản lý khách hàng</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý khách hàng</h1>
         <table className="">
           <thead>
             <tr>
@@ -282,8 +359,8 @@ function AdminDisplay(props: Display): JSX.Element {
     );
   } else if (props.display === "discount") {
     page = (
-      <div>
-        <h1>Quản lý giảm giá</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý giảm giá</h1>
         <table className="">
           <thead>
             <tr>
@@ -322,8 +399,8 @@ function AdminDisplay(props: Display): JSX.Element {
     );
   } else if (props.display === "product") {
     page = (
-      <div>
-        <h1>Quản lý sản phẩm</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý sản phẩm</h1>
         <table className="">
           <thead>
             <tr>
@@ -377,8 +454,8 @@ function AdminDisplay(props: Display): JSX.Element {
     )
   } else if (props.display === "product-image") {
     page = (
-      <div>
-        <h1>Quản lý hình ảnh sản phẩm</h1>
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý hình ảnh sản phẩm</h1>
         <table className="">
           <thead>
             <tr>

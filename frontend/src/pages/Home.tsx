@@ -13,7 +13,7 @@ function Home(): JSX.Element {
       <Menu />
 
       <div>Home Page</div>
-      
+
       <Footer />
     </div>
   );

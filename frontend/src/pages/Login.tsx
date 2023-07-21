@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useState } from "react";
 import { useNavigate } from 'react-router';
 import "@fontsource/barlow";

@@ -16,6 +16,14 @@ export default function Admin() {
     setDisplay(display)
   }
 
+  const handleLimit = (limit: number) => {
+    setLimit(limit)
+  }
+
+  const handlePage = (page: number) => {
+    setPage(page)
+  }
+
   return (
     <div>
       <HideOnScroll>
@@ -24,11 +32,11 @@ export default function Admin() {
 
       <Menu />
 
-      <div className="mx-auto py-20 w-full flex">
+      <div className="mx-auto py-20 w-10/12 flex font-barlow">
         <AdminMenu setDisplay={handleDisplayChange}/>
         <AdminDisplay display={display} limit={limit} page={page} />
       </div>
-      
+
       <Footer />
     </div>
   )
