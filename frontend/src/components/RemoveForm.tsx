@@ -2,12 +2,12 @@ import axios from "axios"
 
 type Display = {
   display: string
-  value: string
-  handleRemoveForm: (value: boolean) => void
+  value: any
+  handleRemoveForm: (value: string) => void
 }
 
 function RemoveForm(props: Display): JSX.Element {
-  const handleRemoveForm = (value: boolean) => {
+  const handleRemoveForm = (value: string) => {
     props.handleRemoveForm(value)
   }
 
@@ -20,7 +20,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove account successfully")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "account-role") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -28,7 +28,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove account-role successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "bill-info") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -36,7 +36,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove bill-info successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "bill-detail") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -44,7 +44,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove bill-detail successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "bill-status") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -52,7 +52,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove bill-status successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "category") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -60,7 +60,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove category successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "customer") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -68,7 +68,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove customer successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "discount") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -76,7 +76,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove discount successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "product") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -84,7 +84,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove product successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     } else if (props.display === "product-image") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
@@ -92,7 +92,7 @@ function RemoveForm(props: Display): JSX.Element {
         alert("Remove product-image successfully!")
       })
       .catch((error) => {
-        alert(error);
+        alert(error)
       })
     }
   };
@@ -106,12 +106,12 @@ function RemoveForm(props: Display): JSX.Element {
               <h3 className="text-3xl font-semibold">Xoá {props.display}</h3>
                 <button
                   className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                  onClick={() => {handleRemoveForm(false)}}>
+                  onClick={() => {handleRemoveForm("")}}>
                   <span className="bg-transparent text-slate-500 h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
                 </button>
               </div>
               <div className="relative p-6 flex-auto">
-                Bạn có thực sự muốn xóa giá trị này?
+                Bạn có thực sự muốn xóa giá trị này? {props.value}
               </div>
               <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                 <button
@@ -119,14 +119,14 @@ function RemoveForm(props: Display): JSX.Element {
                   type="button"
                   onClick={(event) => {
                     handleRemovingValue(event)
-                    handleRemoveForm(false)
+                    handleRemoveForm("")
                   }}>
                   Đồng ý
                 </button>
                 <button
                   className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  onClick={() => {handleRemoveForm(false)}}>
+                  onClick={() => {handleRemoveForm("")}}>
                   Hủy bỏ
                 </button>
               </div>

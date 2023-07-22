@@ -19,7 +19,7 @@ function AdminDisplay(props: Display): JSX.Element {
   let pageData: JSX.Element = <div></div>
   const [addForm, setAddForm] = useState<boolean>(false)
   const [editForm, setEditForm] = useState<any>(null)
-  const [removeForm, setRemoveForm] = useState<boolean>(false)
+  const [removeForm, setRemoveForm] = useState<string>("")
   const [data, setData] = useState<Object[]>([])
 
   const handleAddForm = (value: boolean) => {
@@ -28,7 +28,7 @@ function AdminDisplay(props: Display): JSX.Element {
   const handleEditForm = (value: string) => {
     setEditForm(value)
   }
-  const handleRemoveForm = (value: boolean) => {
+  const handleRemoveForm = (value: string) => {
     setRemoveForm(value)
   }
   const handlePage = (page: number) => {
@@ -154,9 +154,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.username)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -226,9 +226,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -299,9 +299,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -375,9 +375,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -445,9 +445,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -512,9 +512,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -583,9 +583,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -658,9 +658,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -744,9 +744,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}
@@ -810,7 +810,9 @@ function AdminDisplay(props: Display): JSX.Element {
             <tr className="text-center" key={uuidv4()}>
               <td className="border-2 border-black">{value.id}</td>
               <td className="border-2 border-black">{value.productId}</td>
-              <td className="border-2 border-black">{value.image}</td>
+              <td className="border-2 border-black">
+                {value.image && <img src={`data:image/png;base64,${value.image}`} className="mx-auto w-[150px]"/>}
+              </td>
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
@@ -821,9 +823,9 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
-                  onClick={() => setRemoveForm(true)}
+                  onClick={() => setRemoveForm(value.id)}
                   className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
-                {removeForm && (<RemoveForm display={props.display} value={value.id} handleRemoveForm={handleRemoveForm} />)}
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
               </td>
             </tr>
           )))}

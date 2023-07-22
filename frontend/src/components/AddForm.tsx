@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 
 type Display = {
   display: string
@@ -19,6 +19,21 @@ function AddForm(props: Display): JSX.Element {
   const [input8, setInput8] = useState<string>("")
   const [input9, setInput9] = useState<string>("")
   const [input10, setInput10] = useState<string>("")
+  const [inputImage, setInputImage] = useState<File | null>(null);
+  const [convertImage, setConvertImage] = useState<string>("")
+
+  // Handle image upload
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const base64String = btoa(String.fromCharCode(...new Uint8Array(event.target?.result as ArrayBuffer)));
+        setConvertImage(base64String);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  };
 
   const handleAddForm = (value: boolean) => {
     props.handleAddForm(value)
@@ -53,6 +68,50 @@ function AddForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error);
       })
+    } else if (props.display === "bill-status") {
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: parseInt(input1),
+        description: input2
+      })
+      .then(() => {
+        alert("Adding bill-status successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "product") {
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: input1,
+        categoryId: input2,
+        name: input3,
+		    color: input4,
+		    fabric: input5,
+		    size: input6,
+		    form: input7,
+		    price: input8,
+		    amount: input9,
+		    description: input10
+      })
+      .then(() => {
+        alert("Adding bill-status successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "product-image") {
+      const json = {
+        id: input1,
+        productId: input2,
+        image: convertImage
+      }
+      console.log(json)
+      await axios.post(`http://localhost:4505/api/${props.display}`, json)
+      .then(() => {
+        alert("Adding product-image successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
     }
   };
 
@@ -72,6 +131,44 @@ function AddForm(props: Display): JSX.Element {
       <div>
         <p>Id: <input type="text" onChange={(event) => {setInput1(event.target.value)}}></input></p>
         <p>Description: <input type="text" onChange={(event) => {setInput2(event.target.value)}}></input></p>
+      </div>
+    )
+  } else if (props.display === "bill-status") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Description: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "product") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Category Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Name: <input type="text" onChange={(event) => setInput3(event.target.value)} /></p>
+        <p>Color: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Fabric: <input type="text" onChange={(event) => setInput5(event.target.value)} /></p>
+        <p>Size: <input type="text" onChange={(event) => setInput6(event.target.value)} /></p>
+        <p>Form: <input type="text" onChange={(event) => setInput7(event.target.value)} /></p>
+        <p>Price: <input type="number" onChange={(event) => setInput8(event.target.value)} /></p>
+        <p>Amount: <input type="number" onChange={(event) => setInput8(event.target.value)} /></p>
+        <p>Description: <input type="text" onChange={(event) => setInput9(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "product-image") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Product Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Image: <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+          />
+          {inputImage && (
+            <img src={URL.createObjectURL(inputImage)} alt="Input image" className="mt-4" />
+          )}
+        </p>
       </div>
     )
   }
