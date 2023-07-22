@@ -25,7 +25,7 @@ func (sv *ProductService) Create() error {
 	sql := "INSERT INTO Product VALUES (@id, @idCategory, @name, @color, @fabric, @size, @form, @price, @amount, @description);"
 	args := pgx.NamedArgs{
 		"id":          sv.Items[0].Id,
-		"idCategory":  sv.Items[0].IdCategory,
+		"idCategory":  sv.Items[0].CategoryId,
 		"name":        sv.Items[0].Name,
 		"color":       sv.Items[0].Color,
 		"fabric":      sv.Items[0].Fabric,
@@ -79,7 +79,7 @@ func (sv *ProductService) Get() error {
 	// Get rows from conn with SQL command
 	err = conn.QueryRow(database.CTX, sql).Scan(
 		&sv.Items[0].Id,
-		&sv.Items[0].IdCategory,
+		&sv.Items[0].CategoryId,
 		&sv.Items[0].Name,
 		&sv.Items[0].Color,
 		&sv.Items[0].Fabric,
@@ -129,7 +129,7 @@ func (sv *ProductService) GetAll(limit, page *int, search *string) error {
 
 		err := rows.Scan(
 			&sv.Items[i].Id,
-			&sv.Items[i].IdCategory,
+			&sv.Items[i].CategoryId,
 			&sv.Items[i].Name,
 			&sv.Items[i].Color,
 			&sv.Items[i].Fabric,
@@ -169,7 +169,7 @@ func (sv *ProductService) Update(category, name, color, fabric, size, form, amou
 		switch {
 		case *category:
 			sql += "category_id=@category"
-			args["category"] = sv.Items[0].IdCategory
+			args["category"] = sv.Items[0].CategoryId
 			*category = false
 
 		case *name:

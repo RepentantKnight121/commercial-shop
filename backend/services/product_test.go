@@ -11,7 +11,7 @@ func Test_CreateProduct(t *testing.T) {
 	data := ProductService{
 		Items: []models.Product{{
 			Id:          "3",
-			IdCategory:  "1",
+			CategoryId:  "1",
 			Name:        "Quần nam 3",
 			Color:       "Đen",
 			Fabric:      "Vải",

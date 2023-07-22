@@ -60,7 +60,7 @@ type Discount struct {
 
 type Product struct {
 	Id          string `json:"id"         binding:"required"`
-	IdCategory  string `json:"idCategory" binding:"required"`
+	CategoryId  string `json:"categoryId" binding:"required"`
 	Name        string `json:"name"       binding:"required"`
 	Color       string `json:"color"       binding:"required"`
 	Fabric      string `json:"fabric"      binding:"required"`

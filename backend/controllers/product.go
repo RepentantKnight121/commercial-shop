@@ -97,7 +97,7 @@ func UpdateProduct(c *gin.Context) {
 	category, name, color, fabric, size, form, amount, price, description :=
 		true, true, true, true, true, true, true, true, true
 
-	if data.Items[0].IdCategory == "" {
+	if data.Items[0].CategoryId == "" {
 		category = false
 	}
 	if data.Items[0].Name == "" {
