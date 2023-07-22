@@ -3,15 +3,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 type Handle = {
+  limit: number
   setDisplay: (display: string) => void
+  setLimit: (limit: number) => void
 }
 
 export default function AdminMenu(props: Handle): JSX.Element {
   const [choose, setChoose] = useState<string>("")
+  const [limit, setLimit] = useState<number>(props.limit)
 
   const handleButtonClick = (display: string) => {
     props.setDisplay(display);
     setChoose(display)
+  }
+
+  const handleLimit = (limit: number) => {
+    setLimit(limit)
+    props.setLimit(limit)
   }
 
   return (
@@ -46,6 +54,20 @@ export default function AdminMenu(props: Handle): JSX.Element {
 
       <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="product-image" ? "bg-white text-sky-400" : "text-white")}
         onClick={() => handleButtonClick("product-image")}><FontAwesomeIcon icon={faImage} /> Ảnh sản phẩm {choose==="product-image" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
+    
+      <p className="pl-6 pr-6 pt-4 pb-4 text-center text-white flex flex-col">Giới hạn giá trị xem:
+        <input className="mx-auto my-2 w-28 text-center text-black" type="number" value={limit} 
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            if (parseInt(event.target.value) <= 5) {
+              handleLimit(5)
+              event.target.value = "5"
+            } else if (parseInt(event.target.value) >= 50) {
+              handleLimit(50)
+              event.target.value = "50"
+            } else {
+              handleLimit(parseInt(event.target.value))
+            }
+          }}></input></p>
     </div>
   )
 }

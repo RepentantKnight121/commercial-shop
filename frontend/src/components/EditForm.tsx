@@ -3,42 +3,38 @@ import { useEffect, useState } from "react"
 
 type Display = {
   display: string
-  value: string
-  handleEditForm: (value: boolean) => void
+  value: any
+  handleEditForm: (value: string) => void
 }
 
 function EditForm(props: Display): JSX.Element {
-  const [data, setData] = useState<Object[]>()
-  let input: JSX.Element = <div></div>
+  let inputForm: JSX.Element | null = null;
+  const [input1, setInput1] = useState<string>("")
+  const [input2, setInput2] = useState<string>("")
 
-  const handleEditForm = (value: boolean) => {
+  const handleEditForm = (value: string) => {
     props.handleEditForm(value)
-  }
-
-  async function getApi(name: string): Promise<Object[]> {
-    try {
-      const response = await axios.get(`http://localhost:4505/api/${name}/${props.value}`)
-      return response.data
-    } catch (error) {
-      return [{ message: "Can't get data" }]
-    }
   }
 
   const handleEditingValue = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
 
     if (props.display === "account") {
-      await axios.put(`http://localhost:4505/api/${props.display}/${props.value}`)
+      await axios.put(`http://localhost:4505/api/${props.display}/${props.value}`, {
+
+      })
       .then(() => {
-        alert("Remove account successfully")
+        alert("Edit account successfully")
       })
       .catch((error) => {
         alert(error)
       })
     } else if (props.display === "account-role") {
-      await axios.put(`http://localhost:4505/api/${props.display}/${props.value}`)
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        description: input2
+      })
       .then(() => {
-        alert("Remove account-role successfully!")
+        alert("Edit account-role successfully!")
       })
       .catch((error) => {
         alert(error)
@@ -48,13 +44,21 @@ function EditForm(props: Display): JSX.Element {
 
   useEffect(() => {
     if (props.display === "account-role") {
-      getApi(props.display).then((responseData) => {
-        console.log(responseData)
-        setData(responseData)
-        console.log(data)
-      })
+      setInput1(props.value.id)
+      setInput2(props.value.description)
     }
-  }, [])
+  }, [props.display, props.value])
+
+  if (props.display === "account") {
+
+  } else if (props.display === "account-role") {
+    inputForm = (
+      <div>
+        <p>Id: <input type="text" value={input1} readOnly></input></p>
+        <p>Description: <input type="text" value={input2} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setInput2(event.target.value)}}></input></p>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -65,12 +69,12 @@ function EditForm(props: Display): JSX.Element {
               <h3 className="text-3xl font-semibold">Thay đổi {props.display}</h3>
                 <button
                   className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                  onClick={() => {handleEditForm(false)}}>
+                  onClick={() => {handleEditForm("")}}>
                   <span className="bg-transparent text-slate-500 h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
                 </button>
               </div>
               <div className="relative p-6 flex-auto">
-                {}
+                {inputForm}
               </div>
               <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                 <button
@@ -78,14 +82,14 @@ function EditForm(props: Display): JSX.Element {
                   type="button"
                   onClick={(event) => {
                     handleEditingValue(event)
-                    handleEditForm(false)
+                    handleEditForm("")
                   }}>
                   Đồng ý
                 </button>
                 <button
                   className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  onClick={() => {handleEditForm(false)}}>
+                  onClick={() => {handleEditForm("")}}>
                   Hủy bỏ
                 </button>
               </div>

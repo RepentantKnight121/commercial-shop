@@ -33,8 +33,8 @@ export default function Admin() {
       <Menu />
 
       <div className="mx-auto py-20 w-10/12 flex font-barlow">
-        <AdminMenu setDisplay={handleDisplayChange}/>
-        <AdminDisplay display={display} limit={limit} page={page} />
+        <AdminMenu limit={limit} setDisplay={handleDisplayChange} setLimit={handleLimit} />
+        <AdminDisplay display={display} limit={limit} page={page} setPage={handlePage} />
       </div>
 
       <Footer />
