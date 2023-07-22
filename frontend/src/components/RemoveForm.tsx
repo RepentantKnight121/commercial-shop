@@ -30,6 +30,70 @@ function RemoveForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error);
       })
+    } else if (props.display === "bill-info") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove bill-info successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "bill-detail") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove bill-detail successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "bill-status") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove bill-status successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "category") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove category successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "customer") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove customer successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "discount") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove discount successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "product") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove product successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "product-image") {
+      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
+      .then(() => {
+        alert("Remove product-image successfully!")
+      })
+      .catch((error) => {
+        alert(error);
+      })
     }
   };
 
