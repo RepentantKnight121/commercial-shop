@@ -558,6 +558,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Account Username</th>
               <th className="border-2 border-black">Name</th>
               <th className="border-2 border-black">Phone</th>
+              <th className="border-2 border-black">Address</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>
@@ -573,6 +574,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="border-2 border-black">{value.accountUsername}</td>
               <td className="border-2 border-black">{value.name}</td>
               <td className="border-2 border-black">{value.phone}</td>
+              <td className="border-2 border-black">{value.address}</td>
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
@@ -596,6 +598,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Account Username</th>
               <th className="border-2 border-black">Name</th>
               <th className="border-2 border-black">Phone</th>
+              <th className="border-2 border-black">Address</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>
@@ -725,7 +728,7 @@ function AdminDisplay(props: Display): JSX.Element {
           ) : (data.map((value: any) => (
             <tr className="text-center" key={uuidv4()}>
               <td className="border-2 border-black">{value.id}</td>
-              <th className="border-2 border-black">{value.idCategory}</th>
+              <th className="border-2 border-black">{value.categoryId}</th>
               <td className="border-2 border-black">{value.name}</td>
               <td className="border-2 border-black">{value.color}</td>
               <td className="border-2 border-black">{value.fabric}</td>

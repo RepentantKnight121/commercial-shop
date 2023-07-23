@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, useState } from "react"
 
 type Display = {
   display: string
@@ -68,6 +68,22 @@ function AddForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error);
       })
+    } else if (props.display === "bill-info") {
+      console.log(input4)
+      console.log(input5)
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: input1,
+        customerId: input2,
+        date: input3,
+        status: parseInt(input4),
+        payment: parseInt(input5)
+      })
+      .then(() => {
+        alert("Adding bill-info successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
     } else if (props.display === "bill-status") {
       await axios.post(`http://localhost:4505/api/${props.display}`, {
         id: parseInt(input1),
@@ -75,6 +91,47 @@ function AddForm(props: Display): JSX.Element {
       })
       .then(() => {
         alert("Adding bill-status successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "category") {
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: input1,
+        name: input2
+      })
+      .then(() => {
+        alert("Adding category successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "customer") {
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: input1,
+        accountUsername: input2,
+        name: input3,
+        phone: input4,
+        address: input5
+      })
+      .then(() => {
+        alert("Adding customer successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "discount") {
+      console.log(input4)
+      console.log(input5)
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: input1,
+        description: input2,
+        percent: parseFloat(input3),
+        dateStart: `${input4}T00:00:00Z`,
+        dateEnd: `${input5}T00:00:00Z`
+      })
+      .then(() => {
+        alert("Adding discount successfully")
       })
       .catch((error) => {
         alert(error);
@@ -93,7 +150,7 @@ function AddForm(props: Display): JSX.Element {
 		    description: input10
       })
       .then(() => {
-        alert("Adding bill-status successfully")
+        alert("Adding product successfully")
       })
       .catch((error) => {
         alert(error);
@@ -133,11 +190,48 @@ function AddForm(props: Display): JSX.Element {
         <p>Description: <input type="text" onChange={(event) => {setInput2(event.target.value)}}></input></p>
       </div>
     )
+  } else if (props.display === "bill-info") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Customer Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Date: <input type="datetime-local" onChange={(event) => setInput3(event.target.value)} /></p>
+        <p>Status: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Payment: <input type="text" onChange={(event) => setInput5(event.target.value)} /></p>
+      </div>
+    )
   } else if (props.display === "bill-status") {
     input = (
       <div>
         <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
         <p>Description: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "category") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Name: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "customer") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Account Username: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Name: <input type="text" onChange={(event) => setInput3(event.target.value)} /></p>
+        <p>Phone: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Address: <input type="text" onChange={(event) => setInput5(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "discount") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Description: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Percent: <input type="text" onChange={(event) => setInput3(event.target.value)} /></p>
+        <p>Date Start: <input type="date" onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Date End: <input type="date" onChange={(event) => setInput5(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "product") {
@@ -151,8 +245,8 @@ function AddForm(props: Display): JSX.Element {
         <p>Size: <input type="text" onChange={(event) => setInput6(event.target.value)} /></p>
         <p>Form: <input type="text" onChange={(event) => setInput7(event.target.value)} /></p>
         <p>Price: <input type="number" onChange={(event) => setInput8(event.target.value)} /></p>
-        <p>Amount: <input type="number" onChange={(event) => setInput8(event.target.value)} /></p>
-        <p>Description: <input type="text" onChange={(event) => setInput9(event.target.value)} /></p>
+        <p>Amount: <input type="number" onChange={(event) => setInput9(event.target.value)} /></p>
+        <p>Description: <input type="text" onChange={(event) => setInput10(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "product-image") {
