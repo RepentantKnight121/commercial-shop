@@ -99,7 +99,7 @@ CREATE TABLE BillInfo (
 CREATE TABLE BillDetail (
     bill_detail_id     VARCHAR(20) NOT NULL,
     bill_id            VARCHAR(20) NOT NULL,
-    product_id         VARCHAR(20) NOT NULL,
+    product_id         VARCHAR(20) NOT NULL UNIQUE,
     discount_id        VARCHAR(20) NOT NULL,
     bill_amount        INT         CHECK (bill_amount > 0),
     PRIMARY KEY (bill_detail_id),
