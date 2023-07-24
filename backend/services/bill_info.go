@@ -14,7 +14,7 @@ type BillInfoService struct {
 	Items []models.BillInfo
 }
 
-func (sv *BillInfoService) Create() error {
+func (sv *BillInfoService) Create(date_option *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -23,18 +23,22 @@ func (sv *BillInfoService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO BillInfo VALUES (@id, @customer_id, @date, @status, @payment);"
+	sql := "INSERT INTO BillInfo VALUES (@id, @customerId, @date, @status, @payment);"
 	args := pgx.NamedArgs{
-		"id":          sv.Items[0].Id,
-		"customer_id": sv.Items[0].CustomerId,
-		"date":        sv.Items[0].Date,
-		"status":      sv.Items[0].Status,
-		"payment":     sv.Items[0].Payment,
+		"id":         sv.Items[0].Id,
+		"customerId": sv.Items[0].CustomerId,
+		"date":       sv.Items[0].Date,
+		"status":     sv.Items[0].Status,
+		"payment":    sv.Items[0].Payment,
 	}
+	if *date_option == false {
+		sql = "INSERT INTO BillInfo (bill_id, customer_id, bill_status_id, bill_payment) VALUES (@id, @customerId, @status, @payment);"
+		delete(args, "date")
+	}
+	fmt.Println(sql)
 
 	// Execute sql command
 	_, err = conn.Exec(database.CTX, sql, args)
-	fmt.Println(err)
 	if err != nil {
 		return err
 	}

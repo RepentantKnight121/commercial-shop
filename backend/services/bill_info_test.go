@@ -17,8 +17,10 @@ func Test_CreateBillInfo(t *testing.T) {
 		Payment:    1,
 	}}}
 
+	date_option := true
+
 	// Execute method and if error happen send error
-	err := data.Create()
+	err := data.Create(&date_option)
 	if err != nil {
 		t.Fatalf("Error: %v", err)
 	}
