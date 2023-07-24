@@ -45,7 +45,7 @@ function AddForm(props: Display): JSX.Element {
     if (props.display === "account") {
       await axios.post(`http://localhost:4505/api/${props.display}`, {
         username: input1,
-        roleId: input2,
+        roleId: parseInt(input2),
         password: input3,
         displayName: input4,
         email: input5,
@@ -63,7 +63,7 @@ function AddForm(props: Display): JSX.Element {
         description: input2
       })
       .then(() => {
-        alert("Adding account successfully")
+        alert("Adding account-role successfully")
       })
       .catch((error) => {
         alert(error);
@@ -72,7 +72,7 @@ function AddForm(props: Display): JSX.Element {
       await axios.post(`http://localhost:4505/api/${props.display}`, {
         id: input1,
         customerId: input2,
-        date: input3,
+        date: `${input3}T00:00:00+07:00`,
         status: parseInt(input4),
         payment: parseInt(input5)
       })
@@ -91,7 +91,7 @@ function AddForm(props: Display): JSX.Element {
         amount: parseInt(input5)
       })
       .then(() => {
-        alert("Adding bill-info successfully")
+        alert("Adding bill-detail successfully")
       })
       .catch((error) => {
         alert(error);
@@ -187,29 +187,29 @@ function AddForm(props: Display): JSX.Element {
   if (props.display === "account") {
     input = (
       <div>
-        <p>Username: <input type="text" onChange={(event) => {setInput1(event.target.value)}}></input></p>
-        <p>Role Id: <input type="text" onChange={(event) => {setInput2(event.target.value)}}></input></p>
-        <p>Password: <input type="text" onChange={(event) => {setInput3(event.target.value)}}></input></p>
-        <p>Display Name: <input type="text" onChange={(event) => {setInput4(event.target.value)}}></input></p>
-        <p>Email: <input type="text" onChange={(event) => {setInput5(event.target.value)}}></input></p>
-        <p>Active: <input type="text" onChange={(event) => {setInput6(event.target.value)}}></input></p>
+        <p>Username: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput1(event.target.value)} /></p>
+        <p>Role Id: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput2(event.target.value)} /></p>
+        <p>Password: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput3(event.target.value)} /></p>
+        <p>Display Name: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput4(event.target.value)} /></p>
+        <p>Email: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput5(event.target.value)} /></p>
+        <p>Active: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput6(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "account-role") {
     input = (
       <div>
-        <p>Id: <input type="text" onChange={(event) => {setInput1(event.target.value)}}></input></p>
-        <p>Description: <input type="text" onChange={(event) => {setInput2(event.target.value)}}></input></p>
+        <p>Id: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => {setInput1(event.target.value)}}></input></p>
+        <p>Description: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => {setInput2(event.target.value)}}></input></p>
       </div>
     )
   } else if (props.display === "bill-info") {
     input = (
       <div>
-        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
-        <p>Customer Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
-        <p>Date: <input type="datetime-local" onChange={(event) => setInput3(event.target.value)} /></p>
-        <p>Status: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
-        <p>Payment: <input type="text" onChange={(event) => setInput5(event.target.value)} /></p>
+        <p>Id: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput1(event.target.value)} /></p>
+        <p>Customer Id: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput2(event.target.value)} /></p>
+        <p>Date: <input type="date" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput3(event.target.value)} /></p>
+        <p>Status: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput4(event.target.value)} /></p>
+        <p>Payment: <input type="text" onChange={(event: ChangeEvent<HTMLInputElement>) => setInput5(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "bill-detail") {
