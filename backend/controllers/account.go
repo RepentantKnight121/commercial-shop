@@ -3,13 +3,17 @@ package controllers
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 
 	"commercial-shop.com/models"
 	"commercial-shop.com/services"
 	"commercial-shop.com/utils"
 )
+
+const SecretKey = "secret"
 
 func CreateAccount(c *gin.Context) {
 	// Create service and assign to data
@@ -115,7 +119,7 @@ func GetInfoAccount(c *gin.Context) {
 func GetLoginAccount(c *gin.Context) {
 	// Get input data from user
 	input := models.Account{}
-	c.ShouldBind(&input)
+	c.ShouldBindJSON(&input)
 
 	// Create service and assign to data
 	data := services.AccountService{Items: []models.Account{{
@@ -131,13 +135,43 @@ func GetLoginAccount(c *gin.Context) {
 		return
 	}
 
+	if data.Items[0].Active == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Please verify your account before login!"})
+		return
+	}
+
 	// Check password input and encrypted password
 	if !utils.CheckPasswordHash(input.Password, data.Items[0].Password) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Please enter username or password again!"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Login successfully!"})
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
+		// A usual scenario is to set the expiration time relative to the current time
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * 7 * time.Hour)),
+		IssuedAt:  jwt.NewNumericDate(time.Now()),
+		NotBefore: jwt.NewNumericDate(time.Now()),
+		Issuer:    data.Items[0].Username,
+	})
+
+	token, err := claims.SignedString([]byte(SecretKey))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not login!"})
+	}
+
+	cookie := &http.Cookie{
+		Name:     "login_commercial_shop_cookie",
+		Value:    token,
+		MaxAge:   3600,
+		Path:     "/",
+		Domain:   "localhost",
+		Secure:   false,
+		HttpOnly: true,
+	}
+
+	http.SetCookie(c.Writer, cookie)
+
+	c.JSON(http.StatusOK, gin.H{"message": "Login successfully! Setting cookie!!!"})
 }
 
 func UpdateAccount(c *gin.Context) {
@@ -147,7 +181,7 @@ func UpdateAccount(c *gin.Context) {
 	data.Items[0].Username = c.Param("username")
 
 	// Check input options
-	password_option, displayname_option, roleid_option, email_option := true, true, true, true
+	password_option, displayname_option, roleid_option, email_option, active_option := true, true, true, true, true
 
 	// If password have then encrypt it and send to database
 	if data.Items[0].Password == "" {
@@ -163,15 +197,18 @@ func UpdateAccount(c *gin.Context) {
 	if data.Items[0].DisplayName == "" {
 		displayname_option = false
 	}
-	if data.Items[0].RoleId == 0 {
+	if data.Items[0].RoleId == -1 {
 		roleid_option = false
 	}
 	if data.Items[0].Email == "" {
 		email_option = false
 	}
+	if data.Items[0].Active == -1 {
+		active_option = false
+	}
 
 	// Execute method and send status request to user
-	err := data.Update(&password_option, &displayname_option, &roleid_option, &email_option)
+	err := data.Update(&password_option, &displayname_option, &roleid_option, &email_option, &active_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return

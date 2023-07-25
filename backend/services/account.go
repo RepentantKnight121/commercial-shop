@@ -154,7 +154,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 	return nil
 }
 
-func (sv *AccountService) Update(password, displayname, roleid, email *bool) error {
+func (sv *AccountService) Update(password, displayname, roleid, email, active *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -169,7 +169,7 @@ func (sv *AccountService) Update(password, displayname, roleid, email *bool) err
 	}
 	nextoption := true
 
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 5; i++ {
 		switch {
 		case *password:
 			sql += "account_password=@password"
@@ -190,6 +190,11 @@ func (sv *AccountService) Update(password, displayname, roleid, email *bool) err
 			sql += "account_email=@email"
 			args["email"] = sv.Items[0].Email
 			*email = false
+
+		case *active:
+			sql += "account_active=@active"
+			args["active"] = sv.Items[0].Active
+			*active = false
 
 		default:
 			nextoption = false
