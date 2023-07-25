@@ -42,13 +42,12 @@ function EditForm(props: Display): JSX.Element {
     event.preventDefault()
 
     if (props.display === "account") {
-      await axios.put(`http://localhost:4505/api/${props.display}/${props.value}`, {
-        username: input1,
-        roleId: input2,
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.username}`, {
+        roleId: parseInt(input2),
         password: input3,
         displayName: input4,
         email: input5,
-        active: input6
+        active: parseInt(input6)
       })
       .then(() => {
         alert("Edit account successfully")
