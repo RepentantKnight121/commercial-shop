@@ -1,4 +1,4 @@
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
+import { faArrowsRotate, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -17,6 +17,7 @@ type Display = {
 
 function AdminDisplay(props: Display): JSX.Element {
   let pageData: JSX.Element = <div></div>
+  const [refreshPage, setRefreshPage] = useState<boolean>(false)
   const [addForm, setAddForm] = useState<boolean>(false)
   const [editForm, setEditForm] = useState<any>(null)
   const [removeForm, setRemoveForm] = useState<string>("")
@@ -778,8 +779,9 @@ function AdminDisplay(props: Display): JSX.Element {
       <div className="w-10/12">
         <h1 className="py-5 text-center text-4xl">Quản lý hình ảnh sản phẩm</h1>
         <div className="mx-auto w-1/12 flex justify-center">
-          <button type="button" onClick={() => {setAddForm(true)}} className="py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
+          <button type="button" onClick={() => {setAddForm(true)}} className="mx-2 py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
           { addForm && <AddForm display={props.display} handleAddForm={handleAddForm} /> }
+          <button type="button" onClick={() => {setRefreshPage(true)}} className="mx-2 py-2 px-4 justify-end border-2 border-sky-400 bg-white text-2xl text-sky-400"><FontAwesomeIcon icon={faArrowsRotate} /></button>
         </div>
         <div className="w-1/12 mx-auto my-5 flex">
           <button type="button" className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"

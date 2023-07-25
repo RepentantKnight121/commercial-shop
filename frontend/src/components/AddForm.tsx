@@ -24,16 +24,17 @@ function AddForm(props: Display): JSX.Element {
 
   // Handle image upload
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]
     if (file) {
-      const reader = new FileReader();
+      setInputImage(file)
+      const reader = new FileReader()
       reader.onload = (event: ProgressEvent<FileReader>) => {
-        const base64String = btoa(String.fromCharCode(...new Uint8Array(event.target?.result as ArrayBuffer)));
-        setConvertImage(base64String);
-      };
-      reader.readAsArrayBuffer(file);
+        const base64String = btoa(String.fromCharCode(...new Uint8Array(event.target?.result as ArrayBuffer)))
+        setConvertImage(base64String)
+      }
+      reader.readAsArrayBuffer(file)
     }
-  };
+  }
 
   const handleAddForm = (value: boolean) => {
     props.handleAddForm(value)
@@ -168,13 +169,11 @@ function AddForm(props: Display): JSX.Element {
         alert(error);
       })
     } else if (props.display === "product-image") {
-      const json = {
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
         id: input1,
         productId: input2,
         image: convertImage
-      }
-      console.log(json)
-      await axios.post(`http://localhost:4505/api/${props.display}`, json)
+      })
       .then(() => {
         alert("Adding product-image successfully")
       })

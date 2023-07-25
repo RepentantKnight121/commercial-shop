@@ -20,27 +20,26 @@ function EditForm(props: Display): JSX.Element {
   const [input8, setInput8] = useState<string>("")
   const [input9, setInput9] = useState<string>("")
   const [input10, setInput10] = useState<string>("")
-  const [inputImage, setInputImage] = useState<File | null>(null);
   const [convertImage, setConvertImage] = useState<string>("")
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (event: ProgressEvent<FileReader>) => {
-        const base64String = btoa(String.fromCharCode(...new Uint8Array(event.target?.result as ArrayBuffer)));
-        setConvertImage(base64String);
+        const base64String = btoa(String.fromCharCode(...new Uint8Array(event.target?.result as ArrayBuffer)))
+        setConvertImage(base64String)
       };
-      reader.readAsArrayBuffer(file);
+      reader.readAsArrayBuffer(file)
     }
-  };
+  }
 
   const handleEditForm = (value: string) => {
     props.handleEditForm(value)
   }
 
   const handleEditingValue = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+    event.preventDefault()
 
     if (props.display === "account") {
       await axios.put(`http://localhost:4505/api/${props.display}/${props.value}`, {
@@ -67,6 +66,66 @@ function EditForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error)
       })
+    } else if (props.display === "bill-info") {
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        customerId: input2,
+        date: `${input3}T00:00:00+07:00`,
+        status: parseInt(input4),
+        payment: parseInt(input5)
+      })
+      .then(() => {
+        alert("Edit bill-info successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "bill-status") {
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        description: input2
+      })
+      .then(() => {
+        alert("Edit bill-status successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "category") {
+      console.log(input2)
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        name: input2
+      })
+      .then(() => {
+        alert("Edit category successfully!")
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    } else if (props.display === "customer") {
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        accountUsername: input2,
+        name: input3,
+        phone: input4,
+        address: input5
+      })
+      .then(() => {
+        alert("Edit customer successfully")
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    } else if (props.display === "discount") {
+
+    } else if (props.display === "product-image") {
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        productId: input2,
+        image: convertImage
+      })
+      .then(() => {
+        alert("Edit product-image successfully")
+      })
+      .catch((error) => {
+        alert(error)
+      })
     }
   }
 
@@ -79,6 +138,15 @@ function EditForm(props: Display): JSX.Element {
       setInput5(props.value.email)
       setInput6(props.value.active)
     } else if (props.display === "account-role") {
+      setInput1(props.value.id)
+      setInput2(props.value.description)
+    } else if (props.display === "bill-info") {
+      setInput1(props.value.id)
+      setInput2(props.value.customerId)
+      setInput3(props.value.date)
+      setInput4(props.value.status)
+      setInput5(props.value.payment)
+    } else if (props.display === "bill-status") {
       setInput1(props.value.id)
       setInput2(props.value.description)
     } else if (props.display === "category") {
@@ -110,7 +178,6 @@ function EditForm(props: Display): JSX.Element {
     } else if (props.display === "product-image") {
       setInput1(props.value.id)
       setInput2(props.value.productId)
-      setInputImage(props.value.image)
     }
   }, [props.display, props.value])
 
@@ -130,6 +197,23 @@ function EditForm(props: Display): JSX.Element {
       <div>
         <p>Id: <input type="text" value={input1} readOnly /></p>
         <p>Description: <input type="text" value={input2} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput2(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "bill-info") {
+    inputForm = (
+      <div>
+        <p>Id: <input type="text" value={input1} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput1(event.target.value)} /></p>
+        <p>Customer Id: <input type="text" value={input2} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput2(event.target.value)} /></p>
+        <p>Date: <input type="date" defaultValue={input3} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput3(event.target.value)} /></p>
+        <p>Status: <input type="text" value={input4} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput4(event.target.value)} /></p>
+        <p>Payment: <input type="text" value={input5} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput5(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "bill-status") {
+    inputForm = (
+      <div>
+        <p>Id: <input type="text" value={input1} readOnly /></p>
+        <p>Description: <input type="text" value={input2} onChange={(event) => setInput2(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "category") {
@@ -177,17 +261,19 @@ function EditForm(props: Display): JSX.Element {
   } else if (props.display === "product-image") {
     inputForm = (
       <div>
-        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
-        <p>Product Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Id: <input type="text" value={input1} readOnly /></p>
+        <p>Product Id: <input type="text" value={input2} onChange={(event) => setInput2(event.target.value)} /></p>
         <p>Image: <input type="file" accept="image/*"
           onChange={handleImageUpload} />
-          {inputImage && (
-            <img src={`data:image/png;base64,${props.value.image}`} alt="Input image" className="mt-4" />
+          {convertImage ? (
+            <img  src={`data:image/png;base64,${convertImage}`} alt="Input image" className="mt-4" />
+          ) : (
+            <img src={`data:image/png;base64,${props.value.image}`} alt="Default image" className="mt-4" />
           )}
         </p>
       </div>
-      )
-    }
+    )
+  }
 
 
   return (
