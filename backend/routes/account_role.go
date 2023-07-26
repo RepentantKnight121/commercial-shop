@@ -7,7 +7,7 @@ import (
 )
 
 func addAccountRoleRoutes(rg *gin.RouterGroup) {
-	route := rg.Group("account-role")
+	route := rg.Group("/account-role")
 
 	route.GET("/:id", controllers.GetAccountRole)
 	route.GET("", controllers.GetAllAccountRole)

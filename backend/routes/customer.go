@@ -7,7 +7,7 @@ import (
 )
 
 func addCustomerRoutes(rg *gin.RouterGroup) {
-	route := rg.Group("customer")
+	route := rg.Group("/customer")
 
 	route.GET("/:id", controllers.GetCustomer)
 	route.GET("", controllers.GetAllCustomer)

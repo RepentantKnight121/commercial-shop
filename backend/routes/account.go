@@ -7,12 +7,11 @@ import (
 )
 
 func addAccountRoutes(rg *gin.RouterGroup) {
-	route := rg.Group("account")
+	route := rg.Group("/account")
 
 	route.GET("/:username", controllers.GetAccount)
 	route.GET("", controllers.GetAllAccount)
 	route.POST("", controllers.CreateAccount)
-	route.POST("/login", controllers.GetLoginAccount)
 	route.PATCH("/:username", controllers.UpdateAccount)
 	route.DELETE("/:username", controllers.DeleteAccount)
 }

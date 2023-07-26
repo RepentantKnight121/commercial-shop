@@ -7,7 +7,7 @@ import (
 )
 
 func addProductImageRoutes(rg *gin.RouterGroup) {
-	route := rg.Group("product-image")
+	route := rg.Group("/product-image")
 
 	route.GET("/:id", controllers.GetProductImage)
 	route.GET("", controllers.GetAllProductImage)

@@ -7,7 +7,7 @@ import (
 )
 
 func addCategoryRoutes(rg *gin.RouterGroup) {
-	route := rg.Group("category")
+	route := rg.Group("/category")
 
 	route.GET("/:id", controllers.GetCategory)
 	route.GET("", controllers.GetAllCategory)
