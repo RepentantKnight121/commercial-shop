@@ -77,7 +77,7 @@ func Test_UpdateAccount(t *testing.T) {
 	}
 
 	// Get passing values options
-	password_option, displayname_option, roleid_option, email_option, active := true, true, true, true, true
+	password_option, displayname_option, roleid_option, email_option, active_option, session_option := true, true, true, true, true, true
 	if data.Items[0].Password == "" {
 		password_option = false
 	}
@@ -91,11 +91,11 @@ func Test_UpdateAccount(t *testing.T) {
 		email_option = false
 	}
 	if data.Items[0].Active == -1 {
-		active = false
+		active_option = false
 	}
 
 	// Execute method and if error happen send error
-	err := data.Update(&password_option, &displayname_option, &roleid_option, &email_option, &active)
+	err := data.Update(&password_option, &displayname_option, &roleid_option, &email_option, &active_option, &session_option)
 	if err != nil {
 		t.Fatalf("Error: %v", err)
 	}

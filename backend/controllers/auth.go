@@ -11,7 +11,9 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GetLogin(c *gin.Context) {
+const SECRET_KEY = "secret"
+
+func Login(c *gin.Context) {
 	// Get input data from user
 	input := models.Account{}
 	c.ShouldBindJSON(&input)
@@ -49,12 +51,25 @@ func GetLogin(c *gin.Context) {
 		Issuer:    data.Items[0].Username,
 	})
 
-	token, err := claims.SignedString([]byte(SecretKey))
+	token, err := claims.SignedString([]byte(SECRET_KEY))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not login!"})
+	}
+
+	// Store JWT token in database
+	data.Items[0].Session = []byte(token)
+	password_option, displayname_option, roleid_option, email_option, active_option, session_option := false, false, false, false, false, true
+
+	err = data.Update(&password_option, &displayname_option, &roleid_option, &email_option, &active_option, &session_option)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not store token!"})
 	}
 
 	c.SetCookie("login_commercial_shop_cookie", token, 3600, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully! Setting cookie!!!"})
+}
+
+func GetRegister(c *gin.Context) {
+
 }

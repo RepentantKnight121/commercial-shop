@@ -11,8 +11,6 @@ import (
 	"commercial-shop.com/utils"
 )
 
-const SecretKey = "secret"
-
 func CreateAccount(c *gin.Context) {
 	// Create service and assign to data
 	data := services.AccountService{Items: []models.Account{{}}}
@@ -121,7 +119,7 @@ func UpdateAccount(c *gin.Context) {
 	data.Items[0].Username = c.Param("username")
 
 	// Check input options
-	password_option, displayname_option, roleid_option, email_option, active_option := true, true, true, true, true
+	password_option, displayname_option, roleid_option, email_option, active_option, session_option := true, true, true, true, true, true
 
 	// If password have then encrypt it and send to database
 	if data.Items[0].Password == "" {
@@ -148,7 +146,7 @@ func UpdateAccount(c *gin.Context) {
 	}
 
 	// Execute method and send status request to user
-	err := data.Update(&password_option, &displayname_option, &roleid_option, &email_option, &active_option)
+	err := data.Update(&password_option, &displayname_option, &roleid_option, &email_option, &active_option, &session_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return

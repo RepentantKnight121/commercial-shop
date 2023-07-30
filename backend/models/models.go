@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Account struct {
 	Username    string `json:"username"    binding:"required"`
@@ -9,6 +11,7 @@ type Account struct {
 	DisplayName string `json:"displayName" binding:"required"`
 	Email       string `json:"email"       binding:"required"`
 	Active      int    `json:"active"      binding:"required"`
+	Session     []byte `json:"session"     binding:"required"`
 }
 
 type AccountRole struct {

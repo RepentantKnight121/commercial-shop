@@ -7,5 +7,5 @@ import (
 
 func addAuthRoutes(rg *gin.RouterGroup) {
 	route := rg.Group("/auth")
-	route.POST("/login", controllers.GetLogin)
+	route.POST("/login", controllers.Login)
 }

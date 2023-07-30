@@ -23,7 +23,7 @@ func (sv *AccountService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd check options input
-	sql := "INSERT INTO Account VALUES (@username, @role_id, @password, @displayname, @email, @active);"
+	sql := "INSERT INTO Account (account_username, role_id, account_password, account_displayname, account_email, account_active) VALUES (@username, @role_id, @password, @displayname, @email, @active);"
 	args := pgx.NamedArgs{
 		"username":    sv.Items[0].Username,
 		"role_id":     sv.Items[0].RoleId,
@@ -154,7 +154,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 	return nil
 }
 
-func (sv *AccountService) Update(password, displayname, roleid, email, active *bool) error {
+func (sv *AccountService) Update(password, displayname, roleid, email, active, session *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -169,7 +169,7 @@ func (sv *AccountService) Update(password, displayname, roleid, email, active *b
 	}
 	nextoption := true
 
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 6; i++ {
 		switch {
 		case *password:
 			sql += "account_password=@password"
@@ -195,6 +195,11 @@ func (sv *AccountService) Update(password, displayname, roleid, email, active *b
 			sql += "account_active=@active"
 			args["active"] = sv.Items[0].Active
 			*active = false
+
+		case *session:
+			sql += "account_session=@session"
+			args["session"] = sv.Items[0].Session
+			*session = false
 
 		default:
 			nextoption = false
