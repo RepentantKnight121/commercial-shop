@@ -96,7 +96,7 @@ func (sv *ProductService) Get() error {
 	return nil
 }
 
-func (sv *ProductService) GetAll(limit, page *int, search *string) error {
+func (sv *ProductService) GetAll(limit, page *int, price, search *string) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -114,6 +114,12 @@ func (sv *ProductService) GetAll(limit, page *int, search *string) error {
 	if *search != "" {
 		args["search"] = search
 		sql = "SELECT * FROM Product WHERE product_name::text LIKE CONCAT('%', @search::text, '%') ORDER BY product_id LIMIT @limit OFFSET @offset;"
+	}
+
+	if *price == "asc" {
+		sql = "SELECT * FROM Product ORDER BY product_price ASC LIMIT @limit OFFSET @offset;"
+	} else if *price == "desc" {
+		sql = "SELECT * FROM Product ORDER BY product_price DESC LIMIT @limit OFFSET @offset;"
 	}
 
 	// Get rows from conn with SQL command

@@ -197,7 +197,7 @@ func (sv *AccountService) Update(password, displayname, roleid, email, active, s
 			*active = false
 
 		case *session:
-			sql += "account_session=@session"
+			sql += "account_token_session=@session"
 			args["session"] = sv.Items[0].Session
 			*session = false
 
