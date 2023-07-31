@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-import AdminDisplay from "../components/AdminDisplay"
-import AdminMenu from "../components/AdminMenu"
+import AdminDisplay from "../components/admin/AdminDisplay"
+import AdminMenu from "../components/admin/AdminMenu"
 import Footer from "../components/Footer"
 import HeaderContact from "../components/HeaderContact"
 import Menu from "../components/Menu"
