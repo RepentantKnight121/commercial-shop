@@ -73,10 +73,12 @@ func GetAllProductImage(c *gin.Context) {
 		page = 1
 	}
 
+	producid := c.Query("productid")
+
 	// Create service and assign to data
 	// Then execute method and send status request to user
 	data := services.ProductImageService{}
-	err = data.GetAll(&limit, &page)
+	err = data.GetAll(&limit, &page, &producid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product image value"})
 		return

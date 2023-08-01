@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/jackc/pgx/v5"
@@ -78,6 +79,7 @@ func (sv *AccountService) Get(login, userinfo *bool) error {
 		sql = "SELECT account_username, account_password, account_displayname, account_email FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
 	}
 
+	fmt.Println(sql)
 	rows := conn.QueryRow(database.CTX, sql)
 
 	// Pass value from rows to value
@@ -101,6 +103,7 @@ func (sv *AccountService) Get(login, userinfo *bool) error {
 			&sv.Items[0].DisplayName,
 			&sv.Items[0].Email,
 			&sv.Items[0].Active,
+			&sv.Items[0].Session,
 		)
 	}
 
@@ -140,6 +143,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 			&sv.Items[i].DisplayName,
 			&sv.Items[i].Email,
 			&sv.Items[i].Active,
+			&sv.Items[i].Session,
 		)
 		if err != nil {
 			return nil
