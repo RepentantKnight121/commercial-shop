@@ -3,9 +3,7 @@ import { useState } from "react"
 import AdminDisplay from "../components/admin/AdminDisplay"
 import AdminMenu from "../components/admin/AdminMenu"
 import Footer from "../components/Footer"
-import HeaderContact from "../components/HeaderContact"
 import Menu from "../components/Menu"
-import HideOnScroll from "../utils/HideOnScroll"
 
 export default function Admin() {
   const [display, setDisplay] = useState<string>("")
@@ -26,10 +24,6 @@ export default function Admin() {
 
   return (
     <div>
-      <HideOnScroll>
-        <HeaderContact />
-      </HideOnScroll>
-
       <Menu />
 
       <div className="mx-auto py-20 w-10/12 flex font-barlow">

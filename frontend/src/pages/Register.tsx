@@ -4,9 +4,7 @@ import { useNavigate } from "react-router";
 import "@fontsource/barlow";
 
 import Footer from "../components/Footer";
-import HeaderPhone from "../components/HeaderContact";
 import Menu from "../components/Menu";
-import HideOnScroll from "../utils/HideOnScroll";
 
 export default function Register(): JSX.Element {
   const navigate = useNavigate();
