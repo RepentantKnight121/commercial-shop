@@ -1,33 +1,37 @@
 import Menu from "../components/Menu"
-import HideOnScroll from "../utils/HideOnScroll"
 import Footer from "../components/Footer"
-import HeaderContact from "../components/HeaderContact"
 import ProductShowcase from "../components/ProductShowcase"
 import { useState } from "react"
+import ProductDetail from "../components/ProductDetail"
 
 export default function Product(): JSX.Element {
-  const [productdetail, setProductdetail] = useState<any>(null)
+  let page: JSX.Element = (<div></div>)
+
+  const [productid, setProductId] = useState<string>("")
   const [search, setSearch] = useState<string>("")
 
+  const handleProductdetail = (value: string) => {
+    setProductId(value)
+  }
   const handleSearch = (searchValue: string) => {
     setSearch(searchValue)
   }
 
-  return (
+  page = (
     <div>
-      <HideOnScroll>
-        <HeaderContact />
-      </HideOnScroll>
-
       <Menu />
 
-      {productdetail === null ?
-        <ProductShowcase />
+      <img src="./src/assets/banner.png" />
+
+      {productid === "" ?
+        <ProductShowcase handleProductdetail={handleProductdetail}/>
         :
-        <div></div>
+        <ProductDetail productid={productid} />
       }
 
       <Footer />
     </div>
   );
+
+  return page
 }

@@ -4,7 +4,11 @@ import axios, { AxiosResponse } from "axios"
 import { useState, useEffect } from "react"
 import { v4 as uuidv4 } from "uuid"
 
-function ProductShowcase(): JSX.Element {
+type ProductDetail = {
+  handleProductdetail: (value: string) => void
+}
+
+function ProductShowcase(props: ProductDetail): JSX.Element {
   let productshowcase: JSX.Element
 
   // State to store the API data
@@ -21,6 +25,9 @@ function ProductShowcase(): JSX.Element {
     setCategory(newCategory)
     const data = await getApiProduct(limit, page, newCategory, price, search)
     setProductWithImages(data)
+  }
+  const handleProductdetail = (value: string) => {
+    props.handleProductdetail(value)
   }
 
   // UseEffect hook to fetch the API data
@@ -89,7 +96,7 @@ function ProductShowcase(): JSX.Element {
                   <p>{value.categoryId}</p>
                   <p>{value.price}</p>
                   <button className="py-2 px-4 bg-sky-400 text-white">Thêm vào giỏ hàng</button>
-                  <a className="text-center">Xem chi tiết</a>
+                  <p className="text-center" onClick={() => handleProductdetail(value.id)}>Xem chi tiết</p>
                 </div>
               )
             }))

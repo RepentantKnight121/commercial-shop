@@ -3,9 +3,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router';
 
 import Footer from "../components/Footer";
-import HeaderPhone from "../components/HeaderContact";
 import Menu from "../components/Menu";
-import HideOnScroll from "../utils/HideOnScroll";
 
 export default function Login(): JSX.Element {
   const navigate = useNavigate()
@@ -31,10 +29,6 @@ export default function Login(): JSX.Element {
 
   return (
     <div>
-      <HideOnScroll>
-        <HeaderPhone />
-      </HideOnScroll>
-
       <Menu />
 
       <div className="my-24 py-10 mx-auto border-2 w-1/4">
