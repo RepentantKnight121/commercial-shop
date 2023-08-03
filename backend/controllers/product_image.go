@@ -74,12 +74,16 @@ func GetAllProductImage(c *gin.Context) {
 		page = 1
 	}
 
-	producid := c.Query("productid")
+	productid := c.Query("productid")
+	nopagelimit := false
+	if c.Query("nopagelimit") == "true" {
+		nopagelimit = true
+	}
 
 	// Create service and assign to data
 	// Then execute method and send status request to user
 	data := services.ProductImageService{}
-	err = data.GetAll(&limit, &page, &producid)
+	err = data.GetAll(&limit, &page, &productid, &nopagelimit)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product image value"})
 		return
@@ -94,17 +98,17 @@ func UpdateProductImage(c *gin.Context) {
 	data.Items[0].Id = c.Param("id")
 
 	// Check input options
-	productdetailid, image := true, true
+	productid, image := true, true
 
 	if data.Items[0].ProductId == "" {
-		productdetailid = false
+		productid = false
 	}
 	if data.Items[0].Image == nil {
 		image = false
 	}
 
 	// Execute method and send status request to user
-	err := data.Update(&productdetailid, &image)
+	err := data.Update(&productid, &image)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update product image!"})
