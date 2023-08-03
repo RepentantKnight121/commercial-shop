@@ -24,17 +24,22 @@ function AddForm(props: Display): JSX.Element {
 
   // Handle image upload
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      setInputImage(file)
-      const reader = new FileReader()
+      setInputImage(file);
+      const reader = new FileReader();
       reader.onload = (event: ProgressEvent<FileReader>) => {
-        const base64String = btoa(String.fromCharCode(...new Uint8Array(event.target?.result as ArrayBuffer)))
-        setConvertImage(base64String)
-      }
-      reader.readAsArrayBuffer(file)
+        const base64String = btoa(
+          new Uint8Array(event.target?.result as ArrayBuffer).reduce((acc, byte) => {
+            return acc + String.fromCharCode(byte);
+          }, '')
+        );
+        setConvertImage(base64String);
+      };
+      reader.readAsArrayBuffer(file);
     }
-  }
+  };
+  
 
   const handleAddForm = (value: boolean) => {
     props.handleAddForm(value)

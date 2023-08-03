@@ -96,7 +96,7 @@ function AdminDisplay(props: Display): JSX.Element {
         setData(responseData)
       })
     }
-  }, [props.display, props.limit, props.page])
+  }, [props.display, props.limit, props.page, refreshPage])
 
   if (props.display === "account") {
     pageData = (
