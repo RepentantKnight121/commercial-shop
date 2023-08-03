@@ -10,9 +10,7 @@ require (
 	golang.org/x/crypto v0.6.0
 )
 
-require (
-	github.com/hbollon/go-edlib v1.6.0 // indirect
-)
+require github.com/hbollon/go-edlib v1.6.0 // indirect
 
 require (
 	github.com/AfterShip/email-verifier v1.3.3
