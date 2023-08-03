@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Account struct {
 	Username    string `json:"username"    binding:"required"`
@@ -9,6 +11,7 @@ type Account struct {
 	DisplayName string `json:"displayName" binding:"required"`
 	Email       string `json:"email"       binding:"required"`
 	Active      int    `json:"active"      binding:"required"`
+	Session     []byte `json:"session"     binding:"required"`
 }
 
 type AccountRole struct {
@@ -17,11 +20,11 @@ type AccountRole struct {
 }
 
 type BillDetail struct {
-	Id         string `json:"id"              binding:"required"`
-	BillId     string `json:"billId"          binding:"required"`
-	ProductId  string `json:"productId" binding:"required"`
-	DiscountId string `json:"discountId"      binding:"required"`
-	Amount     int    `json:"amount"          binding:"required"`
+	Id         string `json:"id"         binding:"required"`
+	BillId     string `json:"billId"     binding:"required"`
+	ProductId  string `json:"productId"  binding:"required"`
+	DiscountId string `json:"discountId" binding:"required"`
+	Amount     int    `json:"amount"     binding:"required"`
 }
 
 type BillInfo struct {
@@ -59,9 +62,9 @@ type Discount struct {
 }
 
 type Product struct {
-	Id          string `json:"id"         binding:"required"`
-	CategoryId  string `json:"categoryId" binding:"required"`
-	Name        string `json:"name"       binding:"required"`
+	Id          string `json:"id"          binding:"required"`
+	CategoryId  string `json:"categoryId"  binding:"required"`
+	Name        string `json:"name"        binding:"required"`
 	Color       string `json:"color"       binding:"required"`
 	Fabric      string `json:"fabric"      binding:"required"`
 	Size        string `json:"size"        binding:"required"`
@@ -69,6 +72,15 @@ type Product struct {
 	Price       int    `json:"price"       binding:"required"`
 	Amount      int    `json:"amount"      binding:"required"`
 	Description string `json:"description" binding:"required"`
+}
+
+type ProductWithImage struct {
+	Id         string `json:"id"          binding:"required"`
+	CategoryId string `json:"categoryId"  binding:"required"`
+	Name       string `json:"name"        binding:"requizred"`
+	Price      int    `json:"price"       binding:"required"`
+	Amount     int    `json:"amount"      binding:"required"`
+	Image      []byte `json:"image"       binding:"required"`
 }
 
 type ProductImage struct {

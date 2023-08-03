@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -73,10 +74,12 @@ func GetAllProductImage(c *gin.Context) {
 		page = 1
 	}
 
+	producid := c.Query("productid")
+
 	// Create service and assign to data
 	// Then execute method and send status request to user
 	data := services.ProductImageService{}
-	err = data.GetAll(&limit, &page)
+	err = data.GetAll(&limit, &page, &producid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product image value"})
 		return
@@ -103,6 +106,7 @@ func UpdateProductImage(c *gin.Context) {
 	// Execute method and send status request to user
 	err := data.Update(&productdetailid, &image)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update product image!"})
 		return
 	}

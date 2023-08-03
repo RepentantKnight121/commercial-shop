@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -11,17 +12,26 @@ import (
 )
 
 func CreateBillInfo(c *gin.Context) {
-	// Create service and assign to data
+	// Create service and assign the BillInfo to data
 	data := services.BillInfoService{Items: []models.BillInfo{{}}}
 	c.ShouldBindJSON(&data.Items[0])
 
-	// Execute method and send status request to user
-	err := data.Create()
+	// Set options
+	dateOption := true
+	if data.Items[0].Date.IsZero() {
+		dateOption = false
+	}
+
+	// Execute the Create method and send the status response to the user
+	err := data.Create(&dateOption)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "can't create bill info!"})
+		// Handle the error
+		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "failed to create bill info"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": "create bill info successfully!"})
+
+	c.JSON(http.StatusOK, gin.H{"data": "successfully created bill info"})
 }
 
 func DeleteBillInfo(c *gin.Context) {

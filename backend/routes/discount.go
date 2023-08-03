@@ -7,7 +7,7 @@ import (
 )
 
 func addDiscountRoutes(rg *gin.RouterGroup) {
-	route := rg.Group("discount")
+	route := rg.Group("/discount")
 
 	route.GET("/:id", controllers.GetDiscount)
 	route.GET("", controllers.GetAllDiscount)

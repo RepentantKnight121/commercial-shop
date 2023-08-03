@@ -1,4 +1,4 @@
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
+import { faArrowsRotate, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -17,6 +17,7 @@ type Display = {
 
 function AdminDisplay(props: Display): JSX.Element {
   let pageData: JSX.Element = <div></div>
+  const [refreshPage, setRefreshPage] = useState<boolean>(false)
   const [addForm, setAddForm] = useState<boolean>(false)
   const [editForm, setEditForm] = useState<any>(null)
   const [removeForm, setRemoveForm] = useState<string>("")
@@ -95,7 +96,7 @@ function AdminDisplay(props: Display): JSX.Element {
         setData(responseData)
       })
     }
-  }, [props.display, props.limit, props.page])
+  }, [props.display, props.limit, props.page, refreshPage])
 
   if (props.display === "account") {
     pageData = (
@@ -558,6 +559,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Account Username</th>
               <th className="border-2 border-black">Name</th>
               <th className="border-2 border-black">Phone</th>
+              <th className="border-2 border-black">Address</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>
@@ -573,6 +575,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="border-2 border-black">{value.accountUsername}</td>
               <td className="border-2 border-black">{value.name}</td>
               <td className="border-2 border-black">{value.phone}</td>
+              <td className="border-2 border-black">{value.address}</td>
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
@@ -596,6 +599,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Account Username</th>
               <th className="border-2 border-black">Name</th>
               <th className="border-2 border-black">Phone</th>
+              <th className="border-2 border-black">Address</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>
@@ -725,7 +729,7 @@ function AdminDisplay(props: Display): JSX.Element {
           ) : (data.map((value: any) => (
             <tr className="text-center" key={uuidv4()}>
               <td className="border-2 border-black">{value.id}</td>
-              <th className="border-2 border-black">{value.idCategory}</th>
+              <th className="border-2 border-black">{value.categoryId}</th>
               <td className="border-2 border-black">{value.name}</td>
               <td className="border-2 border-black">{value.color}</td>
               <td className="border-2 border-black">{value.fabric}</td>
@@ -775,8 +779,9 @@ function AdminDisplay(props: Display): JSX.Element {
       <div className="w-10/12">
         <h1 className="py-5 text-center text-4xl">Quản lý hình ảnh sản phẩm</h1>
         <div className="mx-auto w-1/12 flex justify-center">
-          <button type="button" onClick={() => {setAddForm(true)}} className="py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
+          <button type="button" onClick={() => {setAddForm(true)}} className="mx-2 py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
           { addForm && <AddForm display={props.display} handleAddForm={handleAddForm} /> }
+          <button type="button" onClick={() => {setRefreshPage(true)}} className="mx-2 py-2 px-4 justify-end border-2 border-sky-400 bg-white text-2xl text-sky-400"><FontAwesomeIcon icon={faArrowsRotate} /></button>
         </div>
         <div className="w-1/12 mx-auto my-5 flex">
           <button type="button" className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"

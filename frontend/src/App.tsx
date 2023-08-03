@@ -4,6 +4,7 @@ import Admin from "./pages/Admin"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import Product from "./pages/Product"
 
 function App(): JSX.Element {
   return (
@@ -13,6 +14,7 @@ function App(): JSX.Element {
           <Route path="/admin" element={ <Admin /> } />
           <Route path="/login" element={ <Login />} />
           <Route path="/register" element={ <Register />} />
+          <Route path="/product" element={ <Product /> } />
           <Route path="/*" element={<h1 className="text-center">Not Found The Page</h1>} />
       </Routes>
     </BrowserRouter>

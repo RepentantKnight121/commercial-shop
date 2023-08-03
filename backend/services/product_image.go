@@ -82,7 +82,7 @@ func (sv *ProductImageService) Get() error {
 	return nil
 }
 
-func (sv *ProductImageService) GetAll(limit, page *int) error {
+func (sv *ProductImageService) GetAll(limit, page *int, productid *string) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -95,6 +95,11 @@ func (sv *ProductImageService) GetAll(limit, page *int) error {
 	args := pgx.NamedArgs{
 		"limit":  strconv.Itoa(*limit),
 		"offset": strconv.Itoa(*limit * (*page - 1)),
+	}
+
+	if *productid != "" {
+		sql = "SELECT * FROM ProductImage WHERE product_id=@productid ORDER BY product_image_id ASC LIMIT @limit OFFSET @offset;"
+		args["productid"] = *productid
 	}
 
 	// Get rows from conn with SQL command
@@ -144,7 +149,7 @@ func (sv *ProductImageService) Update(productdetailid, image *bool) error {
 
 	if *productdetailid {
 		sql = "UPDATE ProductImage SET product_image=@image WHERE product_image_id=@id;"
-		delete(args, "productdetailid")
+		delete(args, "productId")
 	} else if *image {
 		sql = "UPDATE ProductImage SET product_id=@productId WHERE product_image_id=@id;"
 		delete(args, "image")

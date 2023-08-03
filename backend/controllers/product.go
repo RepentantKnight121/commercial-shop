@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,6 +20,7 @@ func CreateProduct(c *gin.Context) {
 	err := data.Create()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't create product!"})
+		fmt.Println(err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": "create product successfully!"})
@@ -75,11 +77,13 @@ func GetAllProduct(c *gin.Context) {
 
 	// Get search
 	search := c.Query("search")
+	price := c.Query("price")
+	category := c.Query("category")
 
 	// Create service and assign to data
 	// Then execute method and send status request to user
 	data := services.ProductService{}
-	err = data.GetAll(&limit, &page, &search)
+	err = data.GetAll(&limit, &page, &category, &price, &search)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product value"})
 		return

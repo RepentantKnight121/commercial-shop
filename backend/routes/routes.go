@@ -7,11 +7,17 @@ import (
 
 var router = gin.Default()
 
+const SECRET_KEY = "secret"
+
 func Run(port string) {
+	// Cors middleware config
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowMethods = []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"}
-	config.AllowHeaders = []string{"Origin", "Content-type"}
+	config.AllowHeaders = []string{"Origin", "Content-Type"}
+	config.AllowCredentials = true
+
+	// Use middlewares
 	router.Use(cors.New(config))
 
 	getRoutes()
@@ -20,7 +26,8 @@ func Run(port string) {
 }
 
 func getRoutes() {
-	r := router.Group("/api/")
+	r := router.Group("/api")
+	addAuthRoutes(r)
 	addAccountRoutes(r)
 	addAccountRoleRoutes(r)
 	addBillDetailRoutes(r)
@@ -31,4 +38,5 @@ func getRoutes() {
 	addDiscountRoutes(r)
 	addProductRoutes(r)
 	addProductImageRoutes(r)
+	addProductWithImageRoutes(r)
 }

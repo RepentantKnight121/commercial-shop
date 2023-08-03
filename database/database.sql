@@ -42,12 +42,13 @@ CREATE TABLE AccountRole (
 );
 
 CREATE TABLE Account (
-    account_username    VARCHAR(20)  NOT NULL,
-    role_id             INT          NOT NULL,
-    account_password    VARCHAR(200) NOT NULL,
-    account_displayname VARCHAR(100) DEFAULT '',
-    account_email       VARCHAR(200) DEFAULT '',
-    account_active      INT          DEFAULT 0 CHECK (account_active=0 OR account_active=1),
+    account_username      VARCHAR(20)  NOT NULL,
+    role_id               INT          NOT NULL,
+    account_password      VARCHAR(200) NOT NULL,
+    account_displayname   VARCHAR(100) DEFAULT '',
+    account_email         VARCHAR(200) DEFAULT '',
+    account_active        INT          DEFAULT 0 CHECK (account_active=0 OR account_active=1),
+    account_token_session BYTEA        DEFAULT NULL,
     PRIMARY KEY (account_username),
     CONSTRAINT fk_role_id_for_account
         FOREIGN KEY (role_id)
@@ -99,7 +100,7 @@ CREATE TABLE BillInfo (
 CREATE TABLE BillDetail (
     bill_detail_id     VARCHAR(20) NOT NULL,
     bill_id            VARCHAR(20) NOT NULL,
-    product_id         VARCHAR(20) NOT NULL,
+    product_id         VARCHAR(20) NOT NULL UNIQUE,
     discount_id        VARCHAR(20) NOT NULL,
     bill_amount        INT         CHECK (bill_amount > 0),
     PRIMARY KEY (bill_detail_id),

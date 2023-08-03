@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/jackc/pgx/v5"
@@ -23,7 +24,7 @@ func (sv *AccountService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd check options input
-	sql := "INSERT INTO Account VALUES (@username, @role_id, @password, @displayname, @email, @active);"
+	sql := "INSERT INTO Account (account_username, role_id, account_password, account_displayname, account_email, account_active) VALUES (@username, @role_id, @password, @displayname, @email, @active);"
 	args := pgx.NamedArgs{
 		"username":    sv.Items[0].Username,
 		"role_id":     sv.Items[0].RoleId,
@@ -78,6 +79,7 @@ func (sv *AccountService) Get(login, userinfo *bool) error {
 		sql = "SELECT account_username, account_password, account_displayname, account_email FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
 	}
 
+	fmt.Println(sql)
 	rows := conn.QueryRow(database.CTX, sql)
 
 	// Pass value from rows to value
@@ -101,6 +103,7 @@ func (sv *AccountService) Get(login, userinfo *bool) error {
 			&sv.Items[0].DisplayName,
 			&sv.Items[0].Email,
 			&sv.Items[0].Active,
+			&sv.Items[0].Session,
 		)
 	}
 
@@ -140,6 +143,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 			&sv.Items[i].DisplayName,
 			&sv.Items[i].Email,
 			&sv.Items[i].Active,
+			&sv.Items[i].Session,
 		)
 		if err != nil {
 			return nil
@@ -154,7 +158,7 @@ func (sv *AccountService) GetAll(limit, page *int) error {
 	return nil
 }
 
-func (sv *AccountService) Update(password, displayname, roleid, email *bool) error {
+func (sv *AccountService) Update(password, displayname, roleid, email, active, session *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -169,7 +173,7 @@ func (sv *AccountService) Update(password, displayname, roleid, email *bool) err
 	}
 	nextoption := true
 
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 6; i++ {
 		switch {
 		case *password:
 			sql += "account_password=@password"
@@ -190,6 +194,16 @@ func (sv *AccountService) Update(password, displayname, roleid, email *bool) err
 			sql += "account_email=@email"
 			args["email"] = sv.Items[0].Email
 			*email = false
+
+		case *active:
+			sql += "account_active=@active"
+			args["active"] = sv.Items[0].Active
+			*active = false
+
+		case *session:
+			sql += "account_token_session=@session"
+			args["session"] = sv.Items[0].Session
+			*session = false
 
 		default:
 			nextoption = false
