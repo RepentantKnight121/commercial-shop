@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -105,6 +106,7 @@ func UpdateProductImage(c *gin.Context) {
 	// Execute method and send status request to user
 	err := data.Update(&productdetailid, &image)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update product image!"})
 		return
 	}

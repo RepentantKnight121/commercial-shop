@@ -20,11 +20,11 @@ type AccountRole struct {
 }
 
 type BillDetail struct {
-	Id         string `json:"id"              binding:"required"`
-	BillId     string `json:"billId"          binding:"required"`
-	ProductId  string `json:"productId" binding:"required"`
-	DiscountId string `json:"discountId"      binding:"required"`
-	Amount     int    `json:"amount"          binding:"required"`
+	Id         string `json:"id"         binding:"required"`
+	BillId     string `json:"billId"     binding:"required"`
+	ProductId  string `json:"productId"  binding:"required"`
+	DiscountId string `json:"discountId" binding:"required"`
+	Amount     int    `json:"amount"     binding:"required"`
 }
 
 type BillInfo struct {
@@ -62,9 +62,9 @@ type Discount struct {
 }
 
 type Product struct {
-	Id          string `json:"id"         binding:"required"`
-	CategoryId  string `json:"categoryId" binding:"required"`
-	Name        string `json:"name"       binding:"required"`
+	Id          string `json:"id"          binding:"required"`
+	CategoryId  string `json:"categoryId"  binding:"required"`
+	Name        string `json:"name"        binding:"required"`
 	Color       string `json:"color"       binding:"required"`
 	Fabric      string `json:"fabric"      binding:"required"`
 	Size        string `json:"size"        binding:"required"`
@@ -75,11 +75,12 @@ type Product struct {
 }
 
 type ProductWithImage struct {
-	Id         string `json:"id"         binding:"required"`
-	CategoryId string `json:"categoryId" binding:"required"`
-	Name       string `json:"name"       binding:"required"`
-	Price      int    `json:"price"      binding:"required"`
-	Image      []byte `json:"image"      binding:"required"`
+	Id         string `json:"id"          binding:"required"`
+	CategoryId string `json:"categoryId"  binding:"required"`
+	Name       string `json:"name"        binding:"requizred"`
+	Price      int    `json:"price"       binding:"required"`
+	Amount     int    `json:"amount"      binding:"required"`
+	Image      []byte `json:"image"       binding:"required"`
 }
 
 type ProductImage struct {

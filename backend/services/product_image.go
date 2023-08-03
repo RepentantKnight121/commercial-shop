@@ -149,7 +149,7 @@ func (sv *ProductImageService) Update(productdetailid, image *bool) error {
 
 	if *productdetailid {
 		sql = "UPDATE ProductImage SET product_image=@image WHERE product_image_id=@id;"
-		delete(args, "productdetailid")
+		delete(args, "productId")
 	} else if *image {
 		sql = "UPDATE ProductImage SET product_id=@productId WHERE product_image_id=@id;"
 		delete(args, "image")

@@ -38,4 +38,5 @@ func getRoutes() {
 	addDiscountRoutes(r)
 	addProductRoutes(r)
 	addProductImageRoutes(r)
+	addProductWithImageRoutes(r)
 }
