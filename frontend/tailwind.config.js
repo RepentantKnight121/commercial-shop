@@ -4,12 +4,14 @@ export default {
   theme: {
     extend: {
       colors:{
-        'blue-light' : '#99DBF5'
+        'blue-light' : '#AEE2FF',
+        'grey-light' : '#EEEEEE',
+        'coffee' : '#CBB279'
       }
     },
     fontFamily: {
       'barlow': ['Barlow']
-      
+    
     }
   },
   plugins: [],
