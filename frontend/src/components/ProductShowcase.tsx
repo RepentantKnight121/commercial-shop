@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 type ProductDetail = {
-  handleProductdetail: (value: string) => void
+  handleProductId: (value: string) => void
 }
 
 function ProductShowcase(props: ProductDetail): JSX.Element {
@@ -26,8 +26,8 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
     const data = await getApiProduct(limit, page, newCategory, price, search)
     setProductWithImages(data)
   }
-  const handleProductdetail = (value: string) => {
-    props.handleProductdetail(value)
+  const handleProductId = (value: string) => {
+    props.handleProductId(value)
   }
 
   // UseEffect hook to fetch the API data
@@ -96,7 +96,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                   <p>{value.categoryId}</p>
                   <p>{value.price}</p>
                   <button className="py-2 px-4 bg-sky-400 text-white">Thêm vào giỏ hàng</button>
-                  <p className="text-center" onClick={() => handleProductdetail(value.id)}>Xem chi tiết</p>
+                  <p className="text-center" onClick={() => handleProductId(value.id)}>Xem chi tiết</p>
                 </div>
               )
             }))

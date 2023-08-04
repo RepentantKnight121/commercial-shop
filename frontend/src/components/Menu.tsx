@@ -1,7 +1,7 @@
 import SearchBar from "./SearchBar";
 import UserInfo from "./UserInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 export default function Menu(): JSX.Element {
   return (
@@ -41,13 +41,11 @@ export default function Menu(): JSX.Element {
           />
         </a>
 
-        <a
-          href="login"
+        <a href="login-register"
           className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">
           Đăng nhập
         </a>
-        <a
-          href="register"
+        <a href="login-register"
           className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">
           Đăng ký
         </a>

@@ -10,7 +10,7 @@ export default function Product(): JSX.Element {
   const [productid, setProductId] = useState<string>("");
   const [search, setSearch] = useState<string>("");
 
-  const handleProductdetail = (value: string) => {
+  const handleProductId = (value: string) => {
     setProductId(value);
   };
   const handleSearch = (searchValue: string) => {
@@ -28,7 +28,7 @@ export default function Product(): JSX.Element {
       />
 
       {productid === "" ? (
-        <ProductShowcase handleProductdetail={handleProductdetail} />
+        <ProductShowcase handleProductId={handleProductId} />
       ) : (
         <ProductDetail productid={productid} />
       )}

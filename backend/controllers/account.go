@@ -24,8 +24,11 @@ func CreateAccount(c *gin.Context) {
 	}
 	data.Items[0].Password = encryptedPass
 
+	// Create register option
+	register_option := false
+
 	// Execute method and send status request to user
-	err = data.Create()
+	err = data.Create(&register_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't create account"})
 		return

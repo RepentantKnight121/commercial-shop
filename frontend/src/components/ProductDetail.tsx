@@ -36,7 +36,7 @@ export default function ProductDetail(props: ProductDetail) {
       setProductImage(productImageData)
     })();
 
-  }, [props.productid])
+  }, [])
 
   if (!product) {
     return <div>Loading...</div>
@@ -48,7 +48,6 @@ export default function ProductDetail(props: ProductDetail) {
       </div>
       <div>
         <h1>Chi tiết sản phẩm</h1>
-        <p></p>
       </div>
     </div>
   )

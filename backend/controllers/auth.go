@@ -79,24 +79,15 @@ func Register(c *gin.Context) {
 	data := services.AccountService{Items: []models.Account{{}}}
 	c.ShouldBindJSON(&data)
 
-	if data.Items[0].RoleId == 1 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Something wrong with your input!"})
-		return
-	}
-	if data.Items[0].Active == 1 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Something wrong with your input!"})
-		return
-	}
-
-	ret, err := verifier.Verify(data.Items[0].Email)
+	// Check email
+	_, err := verifier.Verify(data.Items[0].Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Verify email address failed!"})
 		return
 	}
-	if !ret.Syntax.Valid {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Email address syntax is invalidd!"})
-		return
-	}
 
-	data.Create()
+	// Create register option
+	register_option := true
+
+	data.Create(&register_option)
 }

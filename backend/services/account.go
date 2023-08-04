@@ -15,7 +15,7 @@ type AccountService struct {
 	Items []models.Account
 }
 
-func (sv *AccountService) Create() error {
+func (sv *AccountService) Create(register *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -32,6 +32,13 @@ func (sv *AccountService) Create() error {
 		"displayname": sv.Items[0].DisplayName,
 		"email":       sv.Items[0].Email,
 		"active":      sv.Items[0].Active,
+	}
+
+	if *register {
+		sql = "INSERT INTO Account (account_username, role_id, account_password, account_displayname, account_email, account_active) VALUES (@username, 2, @password, '', @email, 0);"
+		delete(args, "role_id")
+		delete(args, "displayname")
+		delete(args, "active")
 	}
 
 	// Execute sql command
