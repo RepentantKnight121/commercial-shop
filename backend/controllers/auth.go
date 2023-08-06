@@ -30,7 +30,8 @@ func Login(c *gin.Context) {
 	// Execute method and send status request to user
 	login_flag := false
 	userinfo_flag := false
-	err := data.Get(&login_flag, &userinfo_flag)
+	token_flag := false
+	err := data.Get(&login_flag, &userinfo_flag, &token_flag)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Please enter username or password again!"})
 		return
@@ -70,7 +71,8 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not store token!"})
 	}
 
-	c.SetCookie("login_commercial_shop_cookie", token, 3600, "/", "localhost", false, true)
+	//c.SetSameSite(http.SameSiteLaxMode)
+	//c.SetCookie("loginCookie", token, 3600, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully! Setting cookie!!!"})
 }
@@ -90,4 +92,24 @@ func Register(c *gin.Context) {
 	register_option := true
 
 	data.Create(&register_option)
+}
+
+func SessionAccount(c *gin.Context) {
+	// Create service and assign to data
+	data := services.AccountService{Items: []models.Account{{
+		Username: c.Param("username"),
+	}}}
+
+	data.Items[0].Session = []byte(c.Query("token"))
+
+	// Execute method and send status request to user
+	login_flag := false
+	userinfo_flag := false
+	token_flag := true
+	err := data.Get(&login_flag, &userinfo_flag, &token_flag)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Login through session failed"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Login successfully!"})
 }

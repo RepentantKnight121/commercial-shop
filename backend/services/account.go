@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/jackc/pgx/v5"
@@ -70,7 +69,7 @@ func (sv *AccountService) Delete() error {
 	return nil
 }
 
-func (sv *AccountService) Get(login, userinfo *bool) error {
+func (sv *AccountService) Get(login, userinfo, token *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -80,14 +79,17 @@ func (sv *AccountService) Get(login, userinfo *bool) error {
 
 	// Check flag options for SQL command
 	sql := "SELECT * FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
+	args := pgx.NamedArgs{}
 	if *login {
 		sql = "SELECT account_username, account_password FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
-	} else if *userinfo {
-		sql = "SELECT account_username, account_password, account_displayname, account_email FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
+	}
+	if *token {
+		sql = "SELECT account_token_session WHERE account_username=@username AND account_token_session=@token;"
+		args["username"] = sv.Items[0].Username
+		args["token"] = sv.Items[0].Session
 	}
 
-	fmt.Println(sql)
-	rows := conn.QueryRow(database.CTX, sql)
+	rows := conn.QueryRow(database.CTX, sql, args)
 
 	// Pass value from rows to value
 	if *login {
@@ -102,6 +104,8 @@ func (sv *AccountService) Get(login, userinfo *bool) error {
 			&sv.Items[0].DisplayName,
 			&sv.Items[0].Email,
 		)
+	} else if *token {
+		rows.Scan(&sv.Items[0].Session)
 	} else {
 		rows.Scan(
 			&sv.Items[0].Username,

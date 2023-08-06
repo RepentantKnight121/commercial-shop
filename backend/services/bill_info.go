@@ -31,7 +31,7 @@ func (sv *BillInfoService) Create(date_option *bool) error {
 		"status":     sv.Items[0].Status,
 		"payment":    sv.Items[0].Payment,
 	}
-	if *date_option == false {
+	if !*date_option {
 		sql = "INSERT INTO BillInfo (bill_id, customer_id, bill_status_id, bill_payment) VALUES (@id, @customerId, @status, @payment);"
 		delete(args, "date")
 	}

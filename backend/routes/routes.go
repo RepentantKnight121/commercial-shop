@@ -22,6 +22,7 @@ func Run(port string) {
 
 	getRoutes()
 
+	//router.RunTLS(":"+port, "./testdata/server.pem", "./testdata/server.key")
 	router.Run(":" + port)
 }
 

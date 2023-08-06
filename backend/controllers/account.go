@@ -60,7 +60,8 @@ func GetAccount(c *gin.Context) {
 	// Execute method and send status request to user
 	login_flag := false
 	userinfo_flag := false
-	err := data.Get(&login_flag, &userinfo_flag)
+	token_flag := false
+	err := data.Get(&login_flag, &userinfo_flag, &token_flag)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get account value"})
 		return
@@ -107,7 +108,8 @@ func GetInfoAccount(c *gin.Context) {
 	// Execute method and send status request to user
 	login_flag := false
 	userinfo_flag := true
-	err := data.Get(&login_flag, &userinfo_flag)
+	token_flag := false
+	err := data.Get(&login_flag, &userinfo_flag, &token_flag)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Please enter username or password again!"})
 		return
