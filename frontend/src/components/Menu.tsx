@@ -1,11 +1,13 @@
-import SearchBar from "./SearchBar";
-import UserInfo from "./UserInfo";
+import "@fontsource/barlow"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
+import SearchBar from "./SearchBar";
+import UserInfo from "./UserInfo";
+
 export default function Menu(): JSX.Element {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between font-barlow">
       <div className="mx-5 flex">
         <a href="/">
           <img src="/asset/logo.jpg" alt="Logo" className="w-28" />
@@ -43,11 +45,7 @@ export default function Menu(): JSX.Element {
 
         <a href="login-register"
           className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">
-          Đăng nhập
-        </a>
-        <a href="login-register"
-          className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">
-          Đăng ký
+          Đăng nhập / Đăng ký
         </a>
         <UserInfo />
       </div>

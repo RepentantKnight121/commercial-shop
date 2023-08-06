@@ -23,7 +23,7 @@ export default function AdminMenu(props: Handle): JSX.Element {
   }
 
   return (
-    <div className="p-10 w-2/12 bg-sky-600 flex flex-col">
+    <div className="p-10 w-[20%] bg-sky-600 flex flex-col">
       <h1 className="p-4 text-center text-3xl text-white">Quản lý thông tin</h1>
       <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="account" ? "bg-white text-sky-400" : "text-white")}
         onClick={() => handleButtonClick("account")}><FontAwesomeIcon icon={faUser} className="px-1" /> Tài khoản {choose==="account" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>

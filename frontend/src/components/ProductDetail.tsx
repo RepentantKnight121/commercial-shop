@@ -35,7 +35,6 @@ export default function ProductDetail(props: ProductDetail) {
       const productImageData = await getApiProductImage(props.productid)
       setProductImage(productImageData)
     })();
-
   }, [])
 
   if (!product) {

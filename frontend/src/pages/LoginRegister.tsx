@@ -1,9 +1,10 @@
-import axios from "axios";
-import { useNavigate } from "react-router";
-import { useState } from "react";
+import axios from "axios"
+import { useNavigate } from "react-router"
+import { useState } from "react"
+import Cookies from "js-cookie"
 
-import Menu from "../components/Menu";
-import Footer from "../components/Footer";
+import Menu from "../components/Menu"
+import Footer from "../components/Footer"
 
 async function getApiUser(username: string) {
   try {
@@ -37,11 +38,18 @@ function LoginRegister(): JSX.Element {
         const userdata: any = await getApiUser(username)
         if (userdata.roleId === 1) {
           navigate("/admin")
+          // Set the 'loggedIn' cookie
+          Cookies.set("loginUsernameCookie", userdata.username, {sameSite: "Lax"})
+          Cookies.set('loginTokenCookie', userdata.session, {sameSite: "Lax"})
         } else {
           navigate("/")
+          // Set the 'loggedIn' cookie
+          Cookies.set("loginUsernameCookie", userdata.username, {sameSite: "Lax"})
+          Cookies.set('loginTokenCookie', userdata.session, {sameSite: "Lax"})
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error)
         alert("Thông tin đăng nhập chưa đúng! Vui lòng thử lại!")
       })
     }

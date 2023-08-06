@@ -26,7 +26,7 @@ export default function Admin() {
     <div>
       <Menu />
 
-      <div className="mx-auto py-20 w-10/12 flex font-barlow">
+      <div className="mx-auto py-20 w-11/12 flex font-barlow">
         <AdminMenu limit={limit} setDisplay={handleDisplayChange} setLimit={handleLimit} />
         <AdminDisplay display={display} limit={limit} page={page} setPage={handlePage} />
       </div>

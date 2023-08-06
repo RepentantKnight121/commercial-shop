@@ -100,7 +100,7 @@ function AdminDisplay(props: Display): JSX.Element {
 
   if (props.display === "account") {
     pageData = (
-      <div className="w-10/12">
+      <div className="w-[80%]">
         <h1 className="py-5 text-center text-4xl">Quản lý tài khoản</h1>
         <div className="mx-auto w-1/12 flex justify-center">
           <button type="button" onClick={() => {setAddForm(true)}} className="py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
