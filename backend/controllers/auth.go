@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -24,9 +23,8 @@ func Login(c *gin.Context) {
 	c.ShouldBindJSON(&input)
 
 	// Create service and assign to data
-	data := services.AccountService{Items: []models.Account{{
-		Username: input.Username,
-	}}}
+	data := services.AccountService{Items: []models.Account{}}
+	data.Items = append(data.Items, input)
 
 	// Execute method and send status request to user
 	login_flag := false
@@ -78,7 +76,6 @@ func Login(c *gin.Context) {
 func Register(c *gin.Context) {
 	data := services.AccountService{Items: []models.Account{{}}}
 	c.ShouldBindJSON(&data.Items[0])
-	fmt.Println(data)
 
 	// Check email
 	_, err := verifier.Verify(data.Items[0].Email)
@@ -86,6 +83,14 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Verify email address failed!"})
 		return
 	}
+
+	// Encrypt password
+	encryptedPass, err := utils.HashPassword(data.Items[0].Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "can't create account"})
+		return
+	}
+	data.Items[0].Password = encryptedPass
 
 	// Create register option
 	register_option := true

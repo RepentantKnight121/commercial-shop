@@ -49,16 +49,18 @@ function LoginRegister(): JSX.Element {
       })
       .then(async () => {
         const userdata: any = await getApiUser(usernameLogin)
-        if (userdata.roleId === 1) {
-          navigate("/admin")
-          // Set the 'loggedIn' cookie
-          Cookies.set("loginUsernameCookie", userdata.username, {sameSite: "Lax"})
-          Cookies.set('loginTokenCookie', userdata.session, {sameSite: "Lax"})
-        } else {
-          navigate("/")
-          // Set the 'loggedIn' cookie
-          Cookies.set("loginUsernameCookie", userdata.username, {sameSite: "Lax"})
-          Cookies.set('loginTokenCookie', userdata.session, {sameSite: "Lax"})
+        if (userdata.active == 1) {
+          if (userdata.roleId === 1) {
+            navigate("/admin")
+            // Set the 'loggedIn' cookie
+            Cookies.set("loginUsernameCookie", userdata.username, {sameSite: "Lax"})
+            Cookies.set('loginTokenCookie', userdata.session, {sameSite: "Lax"})
+          } else {
+            navigate("/")
+            // Set the 'loggedIn' cookie
+            Cookies.set("loginUsernameCookie", userdata.username, {sameSite: "Lax"})
+            Cookies.set('loginTokenCookie', userdata.session, {sameSite: "Lax"})
+          }
         }
       })
       .catch((error) => {

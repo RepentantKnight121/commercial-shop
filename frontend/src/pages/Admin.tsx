@@ -1,4 +1,5 @@
 import axios from "axios"
+import { useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 
@@ -25,6 +26,9 @@ async function getApiSession(username: string, token: string): Promise<ApiRespon
 }
 
 export default function Admin() {
+  let pageComponent: JSX.Element = <div></div>
+
+  const navigate = useNavigate()
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [display, setDisplay] = useState<string>("")
@@ -43,6 +47,7 @@ export default function Admin() {
     })
     Cookies.remove("loginTokenCookie")
     Cookies.remove("loginUsernameCookie")
+    navigate("/")
   }
 
   const handleLimit = (limit: number) => {
@@ -64,8 +69,10 @@ export default function Admin() {
             if (user_data.roleId === 1) {
               setLoggedIn(true)
               setIsAdmin(true)
+            } else {
+              alert("You are not admin this page is not for you")
+              navigate("/")
             }
-            alert("You are not admin this page is not for you")
           }
         })
         .catch((error: any) => {
@@ -75,20 +82,22 @@ export default function Admin() {
     }
   }, [loggedIn]);
 
+  if (isAdmin) {
+    pageComponent = (
+      <div className="mx-auto py-20 w-11/12 flex font-barlow">
+          <AdminMenu limit={limit} setDisplay={handleDisplayChange} setLimit={handleLimit} />
+          <AdminDisplay display={display} limit={limit} page={page} setPage={handlePage} />
+      </div>
+    )
+  } else {
+    pageComponent = <div></div>
+  }
+
   return (
     <div>
       <Menu loggedIn={loggedIn} handleLoggedIn={handleLoggedIn} />
 
-      {isAdmin ? 
-        (
-        <div className="mx-auto py-20 w-11/12 flex font-barlow">
-          <AdminMenu limit={limit} setDisplay={handleDisplayChange} setLimit={handleLimit} />
-          <AdminDisplay display={display} limit={limit} page={page} setPage={handlePage} />
-        </div>
-        )
-        :
-        <div></div>
-      }
+      {pageComponent}
 
       <Footer />
     </div>
