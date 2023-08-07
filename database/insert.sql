@@ -18,7 +18,7 @@ INSERT INTO AccountRole VALUES
 (2, 'Khách hàng');
 
 INSERT INTO Account (account_username, account_password, role_id, account_email, account_active) VALUES
-('noob', '123', 1, 'noob@gmail.com', 1);
+('noob', '$2a$14$Hkw1eqwkYF6LdlRDW7YQG.pLyWCwpzdQ43CiJvW54zp.8TTZbFgrG', 1, 'noob@gmail.com', 1);
 
 INSERT INTO Customer VALUES
 ('1', 'noob', 'Noob', '123456', 'TP HCM');

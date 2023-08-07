@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 
 var verifier = emailverifier.NewVerifier().EnableSMTPCheck()
 
-const SECRET_KEY = "secret"
+const SECRET_KEY = "secret_key"
 
 func Login(c *gin.Context) {
 	// Get input data from user
@@ -50,7 +51,7 @@ func Login(c *gin.Context) {
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
 		// A usual scenario is to set the expiration time relative to the current time
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * 7 * time.Hour)),
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)),
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
 		NotBefore: jwt.NewNumericDate(time.Now()),
 		Issuer:    data.Items[0].Username,
@@ -71,15 +72,13 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not store token!"})
 	}
 
-	//c.SetSameSite(http.SameSiteLaxMode)
-	//c.SetCookie("loginCookie", token, 3600, "/", "localhost", false, true)
-
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully! Setting cookie!!!"})
 }
 
 func Register(c *gin.Context) {
 	data := services.AccountService{Items: []models.Account{{}}}
-	c.ShouldBindJSON(&data)
+	c.ShouldBindJSON(&data.Items[0])
+	fmt.Println(data)
 
 	// Check email
 	_, err := verifier.Verify(data.Items[0].Email)

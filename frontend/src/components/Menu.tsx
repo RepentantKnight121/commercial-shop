@@ -5,7 +5,16 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./SearchBar";
 import UserInfo from "./UserInfo";
 
-export default function Menu(): JSX.Element {
+type MenuProps = {
+  loggedIn: boolean
+  handleLoggedIn: (value: boolean) => void
+}
+
+export default function Menu(props: MenuProps): JSX.Element {
+  const handleLoggedIn = (value: boolean) => {
+    props.handleLoggedIn(value)
+  }
+
   return (
     <div className="flex justify-between font-barlow">
       <div className="mx-5 flex">
@@ -16,18 +25,15 @@ export default function Menu(): JSX.Element {
           <a href="/" className="p6 font-barlow text-xl hover:text-cyan-400">
             Trang chủ
           </a>
-          <a
-            href="/product"
+          <a href="/product"
             className="px-6 font-barlow text-xl font-balow hover:text-cyan-400">
             Sản phẩm
           </a>
-          <a
-            href="/about"
+          <a href="/about"
             className="px-6 font-barlow text-xl font-balow hover:text-cyan-400">
             Về chúng tôi
           </a>
-          <a
-            href="/news"
+          <a href="/news"
             className="px-6 font-barlow text-xl font-balow hover:text-cyan-400">
             Tin tức
           </a>
@@ -35,19 +41,13 @@ export default function Menu(): JSX.Element {
       </div>
       <div className="flex mx-5 items-center">
         <SearchBar />
-
         <a href="/cart">
           <FontAwesomeIcon
             icon={faCartShopping}
             className="p-2 text-xl text-blue-light hover:cursor-pointer"
           />
         </a>
-
-        <a href="login-register"
-          className="px-3 py-2 bg-blue-light rounded-3xl ml-4 hover:text-neutral-50">
-          Đăng nhập / Đăng ký
-        </a>
-        <UserInfo />
+        <UserInfo loggedIn={props.loggedIn} handleLoggedIn={handleLoggedIn} />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 
 interface ApiResponse {
-  message: string;
+  message: string
 }
 
 function isNullOrUndefined(value: any): boolean {
@@ -18,16 +18,26 @@ async function getApiSession(username: string, token: string): Promise<ApiRespon
     const response = await axios.get(`http://localhost:4505/api/account/${username}?token=${token}`)
     return response.data
   } catch (error) {
-    throw new Error("Can't get data");
+    throw new Error("Can't get data")
   }
 }
 
 function Home(): JSX.Element {
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
+  const handleLoggedIn = async (value: boolean) => {
+    setLoggedIn(value)
+    const username = Cookies.get("loginUsernameCookie")
+    await axios.patch(`http://localhost:4505/api/account/${username}`, {
+      token: ""
+    })
+    Cookies.remove("loginTokenCookie")
+    Cookies.remove("loginUsernameCookie")
+  }
+
   useEffect(() => {
-    const token = Cookies.get("loginTokenCookie");
-    const username = Cookies.get("loginUsernameCookie");
+    const token = Cookies.get("loginTokenCookie")
+    const username = Cookies.get("loginUsernameCookie")
     
     if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
       getApiSession(username!, token!)
@@ -43,11 +53,9 @@ function Home(): JSX.Element {
     }
   }, []);
 
-  console.log(loggedIn)
-
   return (
     <div>
-      <Menu />
+      <Menu loggedIn={loggedIn} handleLoggedIn={handleLoggedIn} />
 
       <Footer />
     </div>

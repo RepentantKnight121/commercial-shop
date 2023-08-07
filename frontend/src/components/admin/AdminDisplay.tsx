@@ -128,6 +128,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Display name</th>
               <th className="border-2 border-black">Email</th>
               <th className="border-2 border-black">Active</th>
+              <th className="border-2 border-black">Session</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>
@@ -145,6 +146,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="border-2 border-black">{value.displayName}</td>
               <td className="border-2 border-black">{value.email}</td>
               <td className="border-2 border-black">{value.active}</td>
+              <td className="border-2 border-black">{value.session}</td>
               <td className="w-1/12 border-2 border-black">
                 <button
                   type="button"
@@ -170,6 +172,7 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Display name</th>
               <th className="border-2 border-black">Email</th>
               <th className="border-2 border-black">Active</th>
+              <th className="border-2 border-black">Session</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>
