@@ -55,18 +55,6 @@ CREATE TABLE Account (
         REFERENCES AccountRole(role_id)
 );
 
-CREATE TABLE Customer (
-    customer_id      VARCHAR(20)  NOT NULL,
-    account_username VARCHAR(20)  NOT NULL UNIQUE,
-    customer_name    VARCHAR(50)  DEFAULT 'Chưa có thông tin',
-    customer_phone   VARCHAR(20)  DEFAULT 'Chưa có thông tin',
-    customer_address VARCHAR(200) DEFAULT 'Chưa có thông tin',
-    PRIMARY KEY (customer_id),
-    CONSTRAINT fk_account_username_for_customer
-        FOREIGN KEY (account_username)
-        REFERENCES Account(account_username)
-);
-
 CREATE TABLE Discount (
     discount_id          VARCHAR(20)  NOT NULL,
     discount_description VARCHAR(200) DEFAULT 'Chưa có thông tin',
@@ -84,7 +72,9 @@ CREATE TABLE BillStatus (
 
 CREATE TABLE BillInfo (
     bill_id          VARCHAR(20) NOT NULL,
-    customer_id      VARCHAR(20) NOT NULL,
+    account_username VARCHAR(20) NOT NULL,
+    bill_name        VARCHAR(20),
+    bill_email       VARCHAR(20),
     bill_phone       VARCHAR(20),
     bill_address     VARCHAR(200),
     bill_date        DATE        DEFAULT NOW(),
@@ -92,8 +82,8 @@ CREATE TABLE BillInfo (
     bill_payment     INT         CHECK (bill_payment=0 OR bill_payment=1) DEFAULT 0,
     PRIMARY KEY (bill_id),
     CONSTRAINT fk_customer_id_for_bill_info
-        FOREIGN KEY (customer_id)
-        REFERENCES Customer(customer_id),
+        FOREIGN KEY (account_username)
+        REFERENCES Account(account_username),
     CONSTRAINT fk_bill_status_id_for_bill_info
         FOREIGN KEY (bill_status_id)
         REFERENCES BillStatus(bill_status_id)

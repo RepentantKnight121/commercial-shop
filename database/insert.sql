@@ -20,9 +20,6 @@ INSERT INTO AccountRole VALUES
 INSERT INTO Account (account_username, account_password, role_id, account_email, account_active) VALUES
 ('noob', '$2a$14$Hkw1eqwkYF6LdlRDW7YQG.pLyWCwpzdQ43CiJvW54zp.8TTZbFgrG', 1, 'noob@gmail.com', 1);
 
-INSERT INTO Customer VALUES
-('1', 'noob', 'Noob', '123456', 'TP HCM');
-
 INSERT INTO BillStatus VALUES
 (0, 'Đơn hàng bị hủy'),
 (1, 'Đang xác nhận đơn hàng'),

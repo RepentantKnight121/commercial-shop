@@ -99,19 +99,6 @@ function EditForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error)
       })
-    } else if (props.display === "customer") {
-      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
-        accountUsername: input2,
-        name: input3,
-        phone: input4,
-        address: input5
-      })
-      .then(() => {
-        alert("Edit customer successfully")
-      })
-      .catch((error) => {
-        alert(error)
-      })
     } else if (props.display === "discount") {
 
     } else if (props.display === "product-image") {
@@ -151,12 +138,6 @@ function EditForm(props: Display): JSX.Element {
     } else if (props.display === "category") {
       setInput1(props.value.id)
       setInput2(props.value.name)
-    } else if (props.display === "customer") {
-      setInput1(props.value.id)
-      setInput2(props.value.accountUsername)
-      setInput3(props.value.name)
-      setInput4(props.value.phone)
-      setInput5(props.value.address)
     } else if (props.display === "discount") {
       setInput1(props.value.id)
       setInput2(props.value.description)
@@ -220,16 +201,6 @@ function EditForm(props: Display): JSX.Element {
       <div>
         <p>Id: <input type="text" value={input1} readOnly /></p>
         <p>Name: <input type="text" value={input2} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput2(event.target.value)} /></p>
-      </div>
-    )
-  } else if (props.display === "customer") {
-    inputForm = (
-      <div>
-        <p>Id: <input type="text" value={input1} onChange={(event:React.ChangeEvent<HTMLInputElement> ) => setInput1(event.target.value)} /></p>
-        <p>Account Username: <input type="text" value={input2} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput2(event.target.value)} /></p>
-        <p>Name: <input type="text" value={input3} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput3(event.target.value)} /></p>
-        <p>Phone: <input type="text" value={input4} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput4(event.target.value)} /></p>
-        <p>Address: <input type="text" value={input5} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput5(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "discount") {

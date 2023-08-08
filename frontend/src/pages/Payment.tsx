@@ -67,7 +67,7 @@ export default function Payment(): JSX.Element {
           <p className="text-center font-semibold">THÔNG TIN NHẬN HÀNG</p>
           <p className="mt-6 mb-2">Họ và tên</p>
           <input className="border-2 border-coffee px-1 w-full h-9 bg-grey-light" />
-          <p className="mt-6 mb-2">Gmail</p>
+          <p className="mt-6 mb-2">Email</p>
           <input className="border-2 border-coffee px-1 w-full h-9 bg-grey-light" />
           <p className="mt-6 mb-2">Số điện thoại</p>
           <input className="border-2 border-coffee px-1 w-full h-9 bg-grey-light" />

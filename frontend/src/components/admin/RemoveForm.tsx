@@ -62,14 +62,6 @@ function RemoveForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error)
       })
-    } else if (props.display === "customer") {
-      await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
-      .then(() => {
-        alert("Remove customer successfully!")
-      })
-      .catch((error) => {
-        alert(error)
-      })
     } else if (props.display === "discount") {
       await axios.delete(`http://localhost:4505/api/${props.display}/${props.value}`)
       .then(() => {
