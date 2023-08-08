@@ -8,8 +8,38 @@ type ProductDetail = {
   handleProductId: (value: string) => void
 }
 
+async function getApiCategory(limit: number, page: number): Promise<Object[]> {
+  try {
+    const response: AxiosResponse<any, any> = await axios.get(`http://localhost:4505/api/category?limit=${limit}&page=${page}`)
+    return response.data
+  } catch (error) {
+    return [{ message: "Can't get data" }]
+  }
+}
+
+async function getApiProduct(limit: number, page: number, category: string, price: string, search: string): Promise<Object[]> {
+  try {
+   let apistring: string
+    if (category === "") {
+      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}`
+      if (search !== "") {
+        apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&search=${search}`
+      }
+    } else {
+      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&category=${category}`
+      if (search !== "") {
+        apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&category=${category}&search=${search}`
+      }
+    }    
+    const response: AxiosResponse<any, any> = await axios.get(apistring)
+    return response.data
+  } catch (error) {
+    return [{ message: "Can't get data" }]
+  }
+}
+
 function ProductShowcase(props: ProductDetail): JSX.Element {
-  let productshowcase: JSX.Element
+  let productshowcase: JSX.Element = <></>
 
   // State to store the API data
   const [categories, setCategories] = useState<Object[]>([])
@@ -29,6 +59,9 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
   const handleProductId = (value: string) => {
     props.handleProductId(value)
   }
+  const handleAddCart = async (value: any) => {
+    localStorage.setItem(`${value.id}`, JSON.stringify(value))
+  }
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
@@ -38,7 +71,6 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
       data = await getApiProduct(limit, page, category, price, search)
       setProductWithImages(data)
     })();
-
   }, [category, page, price])
 
   productshowcase = (
@@ -54,10 +86,11 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
             <p className="text-center">Không có thông tin</p>
           :
             (categories.map((value: any) => {
-              return <p key={uuidv4()} className={"py-1 text-center hover:cursor-pointer " + (category === `${value.id.toString()}` ? "text-sky-400" : "" )} onClick={
-                () => {
-                  handleCategoryChange(value.id.toString())
-                }}>{value.name}</p>
+              return <p key={uuidv4()} className={"py-1 text-center hover:cursor-pointer " + (category === `${value.id.toString()}` ? "text-sky-400" : "" )}
+                        onClick={
+                          () => {
+                            handleCategoryChange(value.id.toString())
+                          }}>{value.name}</p>
             }))
           }
         </div>
@@ -95,7 +128,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                   <h2>{value.name}</h2>
                   <p>{value.categoryId}</p>
                   <p>{value.price}</p>
-                  <button className="py-2 px-4 bg-sky-400 text-white">Thêm vào giỏ hàng</button>
+                  <button className="py-2 px-4 bg-sky-400 text-white" onClick={() => handleAddCart(value)}>Thêm vào giỏ hàng</button>
                   <p className="text-center" onClick={() => handleProductId(value.id)}>Xem chi tiết</p>
                 </div>
               )
@@ -108,37 +141,6 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
   )
 
   return productshowcase
-}
-
-async function getApiCategory(limit: number, page: number): Promise<Object[]> {
-  try {
-    const response: AxiosResponse<any, any> = await axios.get(`http://localhost:4505/api/category?limit=${limit}&page=${page}`)
-    return response.data
-  } catch (error) {
-    return [{ message: "Can't get data" }]
-  }
-}
-
-async function getApiProduct(limit: number, page: number, category: string, price: string, search: string): Promise<Object[]> {
-  try {
-   let apistring: string
-    if (category === "") {
-      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}`
-      if (search !== "") {
-        apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&search=${search}`
-      }
-    } else {
-      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&category=${category}`
-      if (search !== "") {
-        apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&category=${category}&search=${search}`
-      }
-    }    
-    console.log(apistring)
-    const response: AxiosResponse<any, any> = await axios.get(apistring)
-    return response.data
-  } catch (error) {
-    return [{ message: "Can't get data" }]
-  }
 }
 
 export default ProductShowcase

@@ -1,16 +1,16 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
-import { useEffect, useState } from "react";
 
-import Menu from "../components/Menu";
-import Footer from "../components/Footer";
-import axios from "axios";
+import Menu from "../components/Menu"
+import Footer from "../components/Footer"
 
 interface ApiResponse {
   message: string
 }
 
 function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
+  return value === null || value === undefined
 }
 
 async function getApiSession(username: string, token: string): Promise<ApiResponse> {
@@ -51,7 +51,7 @@ function Home(): JSX.Element {
           console.log(error)
         });
     }
-  }, []);
+  }, [])
 
   return (
     <div>
@@ -62,4 +62,4 @@ function Home(): JSX.Element {
   )
 }
 
-export default Home;
+export default Home
