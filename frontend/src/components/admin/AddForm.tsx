@@ -124,20 +124,6 @@ function AddForm(props: Display): JSX.Element {
       .catch((error) => {
         alert(error);
       })
-    } else if (props.display === "customer") {
-      await axios.post(`http://localhost:4505/api/${props.display}`, {
-        id: input1,
-        accountUsername: input2,
-        name: input3,
-        phone: input4,
-        address: input5
-      })
-      .then(() => {
-        alert("Adding customer successfully")
-      })
-      .catch((error) => {
-        alert(error);
-      })
     } else if (props.display === "discount") {
       console.log(input4)
       console.log(input5)
@@ -238,16 +224,6 @@ function AddForm(props: Display): JSX.Element {
       <div>
         <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
         <p>Name: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
-      </div>
-    )
-  } else if (props.display === "customer") {
-    input = (
-      <div>
-        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
-        <p>Account Username: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
-        <p>Name: <input type="text" onChange={(event) => setInput3(event.target.value)} /></p>
-        <p>Phone: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
-        <p>Address: <input type="text" onChange={(event) => setInput5(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "discount") {

@@ -31,9 +31,6 @@ export default function AdminMenu(props: Handle): JSX.Element {
       <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="account-role" ? "bg-white text-sky-400" : "text-white")}
         onClick={() => handleButtonClick("account-role")}><FontAwesomeIcon icon={faAddressBook} className="px-1" /> Phân quyền tài khoản {choose==="account-role" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
 
-      <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="customer" ? "bg-white text-sky-400" : "text-white")}
-        onClick={() => handleButtonClick("customer")}><FontAwesomeIcon icon={faUserGroup} className="px-1" /> Khách hàng {choose==="customer" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
-
       <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="bill-info" ? "bg-white text-sky-400" : "text-white")}
         onClick={() => handleButtonClick("bill-info")}><FontAwesomeIcon icon={faMoneyBill} className="px-1" /> Hóa đơn {choose==="bill-info" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
 
