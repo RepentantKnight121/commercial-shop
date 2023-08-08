@@ -4,10 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 type ProductDetail = {
-  id: string;
-  image: string;
   productid: string;
-  setDisplay: (display: string) => void;
 };
 
 async function getApiProduct(id: string): Promise<Object[]> {
@@ -36,12 +33,6 @@ export default function ProductDetail(props: ProductDetail) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [ArrayProps, setArrayProps]: any[] = useState([]);
   const [arraySize, setArraySize] = useState([]);
-  const [choose, setChoose] = useState<string>("");
-  const handleButtonClick = (display: string) => {
-    props.setDisplay(display);
-    setChoose(display);
-  };
-
   // UseEffect hook to fetch the API data
   useEffect(() => {
     (async () => {
