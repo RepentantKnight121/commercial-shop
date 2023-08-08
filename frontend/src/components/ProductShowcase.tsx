@@ -60,6 +60,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
     props.handleProductId(value)
   }
   const handleAddCart = async (value: any) => {
+    value.amount = 1
     localStorage.setItem(`${value.id}`, JSON.stringify(value))
   }
 
