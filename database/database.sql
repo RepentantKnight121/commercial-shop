@@ -83,11 +83,13 @@ CREATE TABLE BillStatus (
 );
 
 CREATE TABLE BillInfo (
-    bill_id         VARCHAR(20) NOT NULL,
-    customer_id     VARCHAR(20) NOT NULL,
-    bill_date       DATE        DEFAULT NOW(),
-    bill_status_id  INT         NOT NULL,
-    bill_payment    INT         CHECK (bill_payment=0 OR bill_payment=1) DEFAULT 0,
+    bill_id          VARCHAR(20) NOT NULL,
+    customer_id      VARCHAR(20) NOT NULL,
+    bill_phone       VARCHAR(20),
+    bill_address     VARCHAR(200),
+    bill_date        DATE        DEFAULT NOW(),
+    bill_status_id   INT         NOT NULL,
+    bill_payment     INT         CHECK (bill_payment=0 OR bill_payment=1) DEFAULT 0,
     PRIMARY KEY (bill_id),
     CONSTRAINT fk_customer_id_for_bill_info
         FOREIGN KEY (customer_id)

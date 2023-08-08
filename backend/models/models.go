@@ -30,6 +30,8 @@ type BillDetail struct {
 type BillInfo struct {
 	Id         string    `json:"id"         binding:"required"`
 	CustomerId string    `json:"customerId" binding:"required"`
+	Address    string    `json:"address"    binding:"required"`
+	Phone      string    `json:"phone"      binding:"required"`
 	Date       time.Time `json:"date"       binding:"required"`
 	Status     int       `json:"status"     binding:"required"`
 	Payment    int       `json:"payment"    binding:"required"`

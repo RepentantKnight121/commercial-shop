@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 import { v4 as uuidv4 } from "uuid"
 import Cookies from "js-cookie"
 
@@ -35,7 +36,8 @@ async function getApiSession(username: string, token: string): Promise<ApiRespon
   }
 }
 
-function Cart(): JSX.Element {
+function CartPayment(): JSX.Element {
+  const navigate = useNavigate()
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [products, setProducts] = useState<Object[]>([])
 
@@ -54,6 +56,17 @@ function Cart(): JSX.Element {
 
     localStorage.clear()
     setProducts([])
+  }
+
+  const handlePayment = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault()
+
+    if (!loggedIn) {
+      alert("Vui lòng, tạo tài khoản và đăng nhập trước khi tiến hành thanh toán")
+      return
+    }
+
+    navigate("/payment")
   }
 
   useEffect(() => {
@@ -77,7 +90,7 @@ function Cart(): JSX.Element {
     const items = allStorage()
     const productObjects = items.map((item) => JSON.parse(item || ""))
     setProducts(productObjects)
-  }, []);
+  }, [])
 
   return (
     <div className="font-barlow">
@@ -114,7 +127,8 @@ function Cart(): JSX.Element {
       </div>
 
       <div className="my-10 flex w-1/5 mx-auto">
-        <button className="mx-2 px-8 py-3 bg-coffee text-2xl text-white font-barlow">Thanh toán</button>
+        <button className="mx-2 px-8 py-3 bg-coffee text-2xl text-white font-barlow"
+          onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handlePayment(event)}>Thanh toán</button>
         <button className="mx-2 px-8 py-3 bg-grey-light text-2xl text-coffee font-barlow"
           onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDeleteAllCart(event)}>Xóa tất cả</button>
       </div>
@@ -124,4 +138,4 @@ function Cart(): JSX.Element {
   )
 }
 
-export default Cart;
+export default CartPayment

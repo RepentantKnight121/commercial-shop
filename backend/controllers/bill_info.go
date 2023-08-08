@@ -101,23 +101,29 @@ func UpdateBillInfo(c *gin.Context) {
 	data.Items[0].Id = c.Param("id")
 
 	// Check input options
-	customerid, date, status, payment := true, true, true, true
+	customerid_option, address_option, phone_option, date_option, status_option, payment_option := true, true, true, true, true, true
 
 	if data.Items[0].CustomerId == "" {
-		customerid = false
+		customerid_option = false
+	}
+	if data.Items[0].Address == "" {
+		address_option = false
+	}
+	if data.Items[0].Phone == "" {
+		phone_option = false
 	}
 	if data.Items[0].Date.IsZero() {
-		date = false
+		date_option = false
 	}
 	if data.Items[0].Status == -1 {
-		status = false
+		status_option = false
 	}
 	if data.Items[0].Payment == -1 {
-		payment = false
+		payment_option = false
 	}
 
 	// Execute method and send status request to user
-	err := data.Update(&customerid, &date, &status, &payment)
+	err := data.Update(&customerid_option, &address_option, &phone_option, &date_option, &status_option, &payment_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update bill info!"})
 		return
