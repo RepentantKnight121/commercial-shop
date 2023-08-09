@@ -84,6 +84,14 @@ function Cart(): JSX.Element {
     setRefresh(!refresh)
   }
 
+  const handleAmountChange = (index: number, newValue: number) => {
+    setProducts((prevProducts) => {
+      const updatedProducts: any = [...prevProducts]
+      updatedProducts[index].amount = newValue
+      return updatedProducts
+    })
+  }
+
   const handlePayment = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -147,7 +155,7 @@ function Cart(): JSX.Element {
 
           <tbody>
             {products !== null ? (
-              products.map((value: any) => (
+              products.map((value: any, index: number) => (
                 <tr key={uuidv4()}>
                   <span className="hidden"> {(totalMoney += value.price)}</span>
                   <td className="w-3/5 flex mt-5">
@@ -167,6 +175,7 @@ function Cart(): JSX.Element {
                       min="1"
                       max="10"
                       value={value.amount}
+                      onChange={(event) => handleAmountChange(index, parseInt(event.target.value))}
                     />
                   </td>
                   <td className="text-center">
