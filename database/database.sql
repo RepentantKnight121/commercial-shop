@@ -74,7 +74,7 @@ CREATE TABLE BillInfo (
     bill_id          INT AUTO_INCREMENT,
     account_username VARCHAR(20) NOT NULL,
     bill_name        VARCHAR(20),
-    bill_email       VARCHAR(20),
+    bill_email       VARCHAR(200),
     bill_phone       VARCHAR(20),
     bill_address     VARCHAR(200),
     bill_date        DATE        DEFAULT NOW(),

@@ -82,6 +82,7 @@ export default function Payment(): JSX.Element {
     setLoggedIn(value)
     const username = Cookies.get("loginUsernameCookie")
     await axios.patch(`http://localhost:4505/api/account/${username}`, {
+      active: -1,
       token: ""
     })
     Cookies.remove("loginTokenCookie")
