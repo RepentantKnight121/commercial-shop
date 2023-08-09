@@ -90,7 +90,6 @@ func (sv *AccountService) Get(login, userinfo, token *bool) error {
 	}
 
 	rows := conn.QueryRow(database.CTX, sql, args)
-
 	// Pass value from rows to value
 	if *login {
 		rows.Scan(

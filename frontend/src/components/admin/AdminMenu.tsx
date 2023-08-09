@@ -1,4 +1,4 @@
-import { faAddressBook, faArrowRight, faBox, faBoxesStacked, faImage, faMoneyBill, faMoneyBillTransfer, faMoneyBills, faTag, faUser, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faAddressBook, faArrowRight, faBox, faBoxesStacked, faImage, faMoneyBill, faMoneyBillTransfer, faMoneyBills, faTag, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 

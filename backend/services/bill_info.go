@@ -13,7 +13,7 @@ type BillInfoService struct {
 	Items []models.BillInfo
 }
 
-func (sv *BillInfoService) Create(date_option *bool) error {
+func (sv *BillInfoService) Create(date_option, default_option *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -22,18 +22,25 @@ func (sv *BillInfoService) Create(date_option *bool) error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO BillInfo VALUES (@id, @customerId, @address, @phone, @date, @status, @payment);"
+	sql := "INSERT INTO BillInfo VALUES (@id, @accountUsername, @name, @email, @address, @phone, @date, @status, @payment);"
 	args := pgx.NamedArgs{
-		"id":         sv.Items[0].Id,
-		"customerId": sv.Items[0].CustomerId,
-		"address":    sv.Items[0].Address,
-		"phone":      sv.Items[0].Phone,
-		"date":       sv.Items[0].Date,
-		"status":     sv.Items[0].Status,
-		"payment":    sv.Items[0].Payment,
+		"id":              strconv.Itoa(sv.Items[0].Id),
+		"accountUsername": sv.Items[0].AccountUsername,
+		"name":            sv.Items[0].Name,
+		"email":           sv.Items[0].Email,
+		"address":         sv.Items[0].Address,
+		"phone":           sv.Items[0].Phone,
+		"date":            sv.Items[0].Date,
+		"status":          sv.Items[0].Status,
+		"payment":         sv.Items[0].Payment,
 	}
 	if !*date_option {
 		sql = "INSERT INTO BillInfo (bill_id, customer_id, bill_address, bill_phone, bill_status_id, bill_payment) VALUES (@id, @customerId, @address, @phone, @status, @payment);"
+		delete(args, "date")
+	}
+
+	if *default_option {
+		sql = "INSERT INTO BillInfo (bill_id, account_username, bill_name, bill_email, bill_address, bill_phone, bill_status_id, bill_payment) VALUES (@id, @accountUsername, @name, @email, @address, @phone, @status, @payment);"
 		delete(args, "date")
 	}
 
@@ -55,7 +62,7 @@ func (sv *BillInfoService) Delete() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "DELETE FROM BillInfo WHERE bill_id='" + sv.Items[0].Id + "';"
+	sql := "DELETE FROM BillInfo WHERE bill_id=" + strconv.Itoa(sv.Items[0].Id) + ";"
 
 	// Execute sql command
 	_, err = conn.Exec(database.CTX, sql)
@@ -75,14 +82,16 @@ func (sv *BillInfoService) Get() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "SELECT * FROM BillInfo WHERE bill_id='" + sv.Items[0].Id + "';"
+	sql := "SELECT * FROM BillInfo WHERE bill_id=" + strconv.Itoa(sv.Items[0].Id) + ";"
 
 	// Get rows from conn with SQL command
 	err = conn.QueryRow(database.CTX, sql).Scan(
 		&sv.Items[0].Id,
-		&sv.Items[0].CustomerId,
-		&sv.Items[0].Address,
+		&sv.Items[0].AccountUsername,
+		&sv.Items[0].Name,
+		&sv.Items[0].Email,
 		&sv.Items[0].Phone,
+		&sv.Items[0].Address,
 		&sv.Items[0].Date,
 		&sv.Items[0].Status,
 		&sv.Items[0].Payment,
@@ -94,7 +103,7 @@ func (sv *BillInfoService) Get() error {
 	return nil
 }
 
-func (sv *BillInfoService) GetAll(limit, page *int) error {
+func (sv *BillInfoService) GetAll(limit, page *int, newest *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -107,6 +116,12 @@ func (sv *BillInfoService) GetAll(limit, page *int) error {
 	args := pgx.NamedArgs{
 		"limit":  strconv.Itoa(*limit),
 		"offset": strconv.Itoa(*limit * (*page - 1)),
+	}
+
+	if *newest {
+		sql = "SELECT * FROM BillInfo ORDER BY bill_id DESC LIMIT @limit"
+		args["limit"] = strconv.Itoa(1)
+		delete(args, "offset")
 	}
 
 	// Get rows from conn with SQL command
@@ -122,9 +137,11 @@ func (sv *BillInfoService) GetAll(limit, page *int) error {
 
 		err := rows.Scan(
 			&sv.Items[i].Id,
-			&sv.Items[i].CustomerId,
-			&sv.Items[i].Address,
+			&sv.Items[i].AccountUsername,
+			&sv.Items[i].Name,
+			&sv.Items[i].Email,
 			&sv.Items[i].Phone,
+			&sv.Items[i].Address,
 			&sv.Items[i].Date,
 			&sv.Items[i].Status,
 			&sv.Items[i].Payment,
@@ -142,7 +159,7 @@ func (sv *BillInfoService) GetAll(limit, page *int) error {
 	return nil
 }
 
-func (sv *BillInfoService) Update(customerid, address, phone, status, date, payment *bool) error {
+func (sv *BillInfoService) Update(username, name, email, phone, address, status, date, payment *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -155,12 +172,22 @@ func (sv *BillInfoService) Update(customerid, address, phone, status, date, paym
 	args := pgx.NamedArgs{"id": sv.Items[0].Id}
 	nextoption := true
 
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 8; i++ {
 		switch {
-		case *customerid:
-			sql += "customer_id=@customer_id"
-			args["customer_id"] = sv.Items[0].CustomerId
-			*customerid = false
+		case *username:
+			sql += "account_username=@account_username"
+			args["account_username"] = sv.Items[0].AccountUsername
+			*username = false
+
+		case *name:
+			sql += "bill_name=@name"
+			args["name"] = sv.Items[0].Name
+			*name = false
+
+		case *email:
+			sql += "bill_email=@email"
+			args["email"] = sv.Items[0].Email
+			*email = false
 
 		case *address:
 			sql += "bill_address=@address"

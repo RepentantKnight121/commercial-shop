@@ -23,13 +23,12 @@ func (sv *BillDetailService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO BillDetail VALUES (@id, @bill_id, @productId, @discount_id, @amount);"
+	sql := "INSERT INTO BillDetail (bill_id, product_id, discount_id, bill_amount) VALUES (@bill_id, @product_id, @discount_id, @amount);"
 	args := pgx.NamedArgs{
-		"id":          sv.Items[0].Id,
-		"bill_id":     sv.Items[0].BillId,
-		"productId":   sv.Items[0].ProductId,
+		"bill_id":     strconv.Itoa(sv.Items[0].BillId),
+		"product_id":  sv.Items[0].ProductId,
 		"discount_id": sv.Items[0].DiscountId,
-		"amount":      sv.Items[0].Amount,
+		"amount":      strconv.Itoa(sv.Items[0].Amount),
 	}
 
 	// Execute sql command
@@ -51,7 +50,7 @@ func (sv *BillDetailService) Delete() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "DELETE FROM BillDetail WHERE bill_detail_id='" + sv.Items[0].Id + "';"
+	sql := "DELETE FROM BillDetail WHERE bill_detail_id='" + strconv.Itoa(sv.Items[0].Id) + "';"
 
 	// Execute sql command
 	_, err = conn.Exec(database.CTX, sql)
@@ -71,7 +70,7 @@ func (sv *BillDetailService) Get() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "SELECT * FROM BillDetail WHERE bill_detail_id='" + sv.Items[0].Id + "';"
+	sql := "SELECT * FROM BillDetail WHERE bill_detail_id='" + strconv.Itoa(sv.Items[0].Id) + "';"
 
 	// Get rows from conn with SQL command
 	err = conn.QueryRow(database.CTX, sql).Scan(
@@ -166,7 +165,7 @@ func (sv *BillDetailService) Update(billid, productdetailid, discountid, amount 
 
 		case *amount:
 			sql += "bill_ammount=@amount"
-			args["amount"] = sv.Items[0].Amount
+			args["amount"] = strconv.Itoa(sv.Items[0].Amount)
 			*amount = false
 
 		default:

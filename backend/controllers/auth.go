@@ -23,8 +23,8 @@ func Login(c *gin.Context) {
 	c.ShouldBindJSON(&input)
 
 	// Create service and assign to data
-	data := services.AccountService{Items: []models.Account{}}
-	data.Items = append(data.Items, input)
+	data := services.AccountService{Items: []models.Account{{}}}
+	data.Items[0].Username = input.Username
 
 	// Execute method and send status request to user
 	login_flag := false
@@ -36,14 +36,14 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if data.Items[0].Active == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Please verify your account before login!"})
-		return
-	}
-
 	// Check password input and encrypted password
 	if !utils.CheckPasswordHash(input.Password, data.Items[0].Password) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Please enter username or password again!"})
+		return
+	}
+
+	if data.Items[0].Active == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Please verify your account before login!"})
 		return
 	}
 

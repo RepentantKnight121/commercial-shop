@@ -100,30 +100,43 @@ function CartPayment(): JSX.Element {
         <div className="mt-4 py-4 w-full bg-grey-light text-coffee text-center text-2xl font-semibold">
           GIỎ HÀNG
         </div>
-        <div className="mt-10 mb-1 flex w-4/5 px-14 mx-auto">
-          <p className="w-3/5">Sản phẩm</p>
-          <div className="flex justify-between w-2/5 text-center">
-            <p>Số lượng</p>
-            <p>Tạm tính</p>
-            <p>Xóa</p>
-          </div>
-        </div>
-        <div className="w-4/5 h-px mx-auto bg-neutral-300">
-        {products !== null &&
+        <table className="mt-10 mb-1w-3/5 px-14 mx-auto">
+          <thead>
+            <th className="flex">
+              <td>Sản phẩm</td>
+              <td>Số lượng</td>
+              <td>Tạm tính</td>
+              <td>Xóa</td>
+            </th>
+          </thead>
+          <tbody>
+          {products !== null ?
           products.map((value: any) => (
-            <div key={uuidv4()} className="flex">
-              <div className="w-3/5 flex">
-                <img src={`data:image/png;base64,${value.image}`} height={25} width={25} />
+            <tr key={uuidv4()} className="flex">
+              <td className="w-3/5 flex">
+                <img src={`data:image/png;base64,${value.image}`} height={40} width={40} />
                 <p>{value.name}</p>
-              </div>
-              <div className="flex justify-between w-2/5 text-center">
-                <p>{value.amount}</p>
-                <p>{value.price * value.amount}</p>
-                <p>Xóa</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              </td>
+              <td>{value.amount}</td>
+              <td>{value.price * value.amount}</td>
+              <td>Xóa</td>
+            </tr>
+          ))
+            :
+          <tr>
+            <td ></td>
+          </tr>
+          }
+          </tbody>
+          <tfoot>
+            <th>
+              <td>Sản phẩm</td>
+              <td>Số lượng</td>
+              <td>Tạm tính</td>
+              <td>Xóa</td>
+            </th>
+          </tfoot>
+        </table>
       </div>
 
       <div className="my-10 flex w-1/5 mx-auto">
