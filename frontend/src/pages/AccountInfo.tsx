@@ -10,9 +10,6 @@ interface ApiResponse {
   message: string;
 }
 
-// For change page
-const navigate = useNavigate()
-
 function isNullOrUndefined(value: any): boolean {
   return value === null || value === undefined
 }
@@ -32,6 +29,7 @@ async function getApiSession(
 }
 
 function AccountInfo(): JSX.Element {
+  const navigate = useNavigate()
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
   const handleLoggedIn = async (value: boolean) => {
