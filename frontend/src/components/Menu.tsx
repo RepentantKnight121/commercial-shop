@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 import SearchBar from "./SearchBar";
-import UserInfo from "./UserInfo";
+import UserInfoMenu from "./UserInfoMenu";
 
 type MenuProps = {
   loggedIn: boolean
@@ -47,7 +47,7 @@ export default function Menu(props: MenuProps): JSX.Element {
             className="p-2 text-xl text-blue-light hover:cursor-pointer"
           />
         </a>
-        <UserInfo loggedIn={props.loggedIn} handleLoggedIn={handleLoggedIn} />
+        <UserInfoMenu loggedIn={props.loggedIn} handleLoggedIn={handleLoggedIn} />
       </div>
     </div>
   );

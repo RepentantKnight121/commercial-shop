@@ -166,7 +166,7 @@ function LoginRegister(): JSX.Element {
 
       <Footer />
     </div>
-  );
+  )
 }
 
 export default LoginRegister

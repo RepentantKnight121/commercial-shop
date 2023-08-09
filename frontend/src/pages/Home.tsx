@@ -1,10 +1,10 @@
-import Cookies from "js-cookie";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import axios from "axios"
+import { useState, useEffect } from "react"
+import Cookies from "js-cookie"
 
 import Menu from "../components/Menu"
 import Footer from "../components/Footer"
-import ListProductHomePage from "../components/ListProductHomePage";
+import ListProductHomePage from "../components/ListProductHomePage"
 
 interface ApiResponse {
   message: string;
@@ -79,7 +79,7 @@ function Home(): JSX.Element {
       <ListProductHomePage handleProductId={handleProductId} />
       <Footer />
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home
