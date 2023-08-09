@@ -58,10 +58,14 @@ func GetAccount(c *gin.Context) {
 	}}}
 
 	// Execute method and send status request to user
-	login_flag := false
-	userinfo_flag := false
-	token_flag := false
-	err := data.Get(&login_flag, &userinfo_flag, &token_flag)
+	login_option := false
+	userinfo_option := false
+	if c.Query("userinfo") == "true" {
+		userinfo_option = true
+	}
+	token_option := false
+
+	err := data.Get(&login_option, &userinfo_option, &token_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get account value"})
 		return

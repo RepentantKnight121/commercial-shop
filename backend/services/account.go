@@ -83,6 +83,9 @@ func (sv *AccountService) Get(login, userinfo, token *bool) error {
 	if *login {
 		sql = "SELECT account_username, account_password FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
 	}
+	if *userinfo {
+		sql = "SELECT account_username, account_displayname, account_email, account_active FROM Account WHERE account_username='" + sv.Items[0].Username + "';"
+	}
 	if *token {
 		sql = "SELECT account_token_session WHERE account_username=@username AND account_token_session=@token;"
 		args["username"] = sv.Items[0].Username
@@ -99,9 +102,9 @@ func (sv *AccountService) Get(login, userinfo, token *bool) error {
 	} else if *userinfo {
 		rows.Scan(
 			&sv.Items[0].Username,
-			&sv.Items[0].Password,
 			&sv.Items[0].DisplayName,
 			&sv.Items[0].Email,
+			&sv.Items[0].Active,
 		)
 	} else if *token {
 		rows.Scan(&sv.Items[0].Session)
