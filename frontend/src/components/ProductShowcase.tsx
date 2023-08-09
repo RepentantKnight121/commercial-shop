@@ -62,6 +62,10 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
   const [price, setPrice] = useState<string>("asc");
   const [search, setSearch] = useState<string>("");
 
+  const convertMoneyToVND = (money: number) => {
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+  };
+
   const handleCategoryChange = async (newCategory: string) => {
     setCategory(newCategory);
     const data = await getApiProduct(limit, page, newCategory, price, search);
@@ -82,6 +86,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
       setCategories(data);
       data = await getApiProduct(limit, page, category, price, search);
       setProductWithImages(data);
+      console.log(productwithimages);
     })();
   }, [category, page, price]);
 
@@ -172,27 +177,34 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
             ) : (
               productwithimages.map((value: any) => {
                 return (
-                  <div key={uuidv4()} className="mx-5 bg-white flex flex-col">
+                  <div
+                    key={uuidv4()}
+                    className="mx-5 bg-white flex flex-col relative">
                     <img
                       src={`data:image/png;base64,${value.image}`}
                       alt="Not found"
                     />
-
                     <h2 className="mt-8 font-medium text-center">
                       {value.name}
                     </h2>
-                    <p className="text-center">{value.categoryId}</p>
-                    <p className="font-semibold text-center">{value.price}</p>
+                    <p className="my-2 text-center">
+                      {convertMoneyToVND(value.price)}
+                    </p>
                     <button
                       className="py-2 px-4 bg-sky-400 text-white"
                       onClick={() => handleAddCart(value)}>
                       Thêm vào giỏ hàng
                     </button>
                     <p
-                      className="text-center"
+                      className="my-2 text-center"
                       onClick={() => handleProductId(value.id)}>
                       Xem chi tiết
                     </p>
+                    {value.amount === 0 ? (
+                      <div className="absolute text-xl flex justify-center text-white items-center top-1/4 left-1/4 right-1/4">
+                        <p>HẾT HÀNG</p>
+                      </div>
+                    ) : null}
                   </div>
                 );
               })
