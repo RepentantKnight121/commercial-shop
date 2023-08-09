@@ -51,7 +51,7 @@ function Cart(): JSX.Element {
   const [refresh, setRefresh] = useState<boolean>(false)
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
-  const [products, setProducts] = useState<Object[]>([])
+  const [products, setProducts] = useState<any[]>([])
   var totalMoney = 0
 
   const handleLoggedIn = async (value: boolean) => {
@@ -209,6 +209,9 @@ function Cart(): JSX.Element {
           Thanh toán
         </button>
         <div className="flex">
+          <p className="my-auto mx-4 font-semibold">
+            Tổng số lượng sản phẩm: {products.reduce((total, product) => total + product.amount, 0)}
+          </p>
           <p className="my-auto mx-4 font-semibold">
             Tổng tiền tạm tính : {convertMoneyToVND(totalMoney)} VND
           </p>
