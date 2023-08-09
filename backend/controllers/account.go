@@ -11,6 +11,35 @@ import (
 	"commercial-shop.com/utils"
 )
 
+func CheckLoginAccount(c *gin.Context) {
+	// Get input data from user
+	input := models.Account{}
+	input.Username = c.Param("username")
+	input.Password = c.Query("password")
+
+	// Create service and assign to data
+	data := services.AccountService{Items: []models.Account{{}}}
+	data.Items[0].Username = input.Username
+
+	// Execute method and send status request to user
+	login_flag := true
+	userinfo_flag := false
+	token_flag := false
+	err := data.Get(&login_flag, &userinfo_flag, &token_flag)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "can't get data!"})
+		return
+	}
+
+	// Check password input and encrypted password
+	if !utils.CheckPasswordHash(input.Password, data.Items[0].Password) {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "password doesn't match. Try to enter password again!"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": "password match!"})
+}
+
 func CreateAccount(c *gin.Context) {
 	// Create service and assign to data
 	data := services.AccountService{Items: []models.Account{{}}}

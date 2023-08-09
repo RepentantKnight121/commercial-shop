@@ -27,7 +27,7 @@ export default function UserInfo(props: UserInfoProps): JSX.Element {
         />
         <div className={isUserDetail ? "" : "hidden"}>
           <div className="absolute bg-grey-light right-0 top-16 p-4 rounded-md">
-            <a href="/userinfo">Thông tin tài khoản</a>
+            <a href="/account-info">Thông tin tài khoản</a>
             <p
               className="px-3 py-2 my-3 text-center text-white bg-blue-light rounded-3xl ml-4 hover:text-black"
               onClick={() => handleLoggedIn(!props.loggedIn)}>

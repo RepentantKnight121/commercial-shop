@@ -10,6 +10,7 @@ func addAccountRoutes(rg *gin.RouterGroup) {
 	route := rg.Group("/account")
 
 	route.GET("/:username", controllers.GetAccount)
+	route.GET("/checklogin/:username", controllers.CheckLoginAccount)
 	route.GET("", controllers.GetAllAccount)
 	route.POST("", controllers.CreateAccount)
 	route.PATCH("/:username", controllers.UpdateAccount)

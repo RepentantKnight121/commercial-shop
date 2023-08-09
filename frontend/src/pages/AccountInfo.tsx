@@ -69,6 +69,45 @@ function AccountInfo(): JSX.Element {
     navigate("/")
   }
 
+  const handleSaveProfile = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (displayName !== "" || email !== "") {
+      const username = Cookies.get("loginUsernameCookie")
+      await axios.patch(`http://localhost:4505/api/account/${username}`, {
+        active: -1,
+        displayName: displayName,
+        email: email
+      })
+      alert("Thay đổi thông tin thành công!")
+      return
+    }
+    
+    alert("Vui lòng nhập đầy đủ thông tin cần thay đổi!")
+  }
+
+  const handleChangePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (password !== "" || newPassword !== "" || newPasswordAgain !== "") {
+      const username = Cookies.get("loginUsernameCookie")
+      await axios.get(`http://localhost:4505/api/account/checklogin/${username}?password=${password}`)
+      if (newPassword === newPasswordAgain) {
+        await axios.patch(`http://localhost:4505/api/account/${username}`, {
+          active: -1,
+          password: newPassword
+        })
+        alert("Thay đổi mật khẩu thành công")
+        return
+      }
+
+      alert("Vui lòng nhập lại mật khẩu mới!")
+      return
+    }
+    
+    alert("Vui lòng nhập đầy đủ thông tin cần thay đổi!")
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       // Get Login session for menu
@@ -100,8 +139,6 @@ function AccountInfo(): JSX.Element {
     fetchData()
   }, [])
 
-  console.log(accountInfo)
-
   return (
     <div className="font-barlow">
       <Menu loggedIn={loggedIn} handleLoggedIn={handleLoggedIn} />
@@ -110,19 +147,47 @@ function AccountInfo(): JSX.Element {
       {accountInfo !== null
         ?
         (
-          <form className="mx-auto w-3/5 flex-row">
-            <p>Tên tài khoản: {accountInfo?.username}</p>
+          <div className="mx-auto w-4/5 flex">
             <div>
-              <span>Tên hiển thị: </span>
-              <input type="text" value={accountInfo?.displayName} />
+            <form className="flex-row" onSubmit={handleSaveProfile}>
+              <p>Tên tài khoản: {accountInfo?.username}</p>
+              <div>
+                <span>Tên hiển thị: </span>
+                <input type="text" value={displayName}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)} />
+              </div>
+              <div>
+                <span>Email: </span>
+                <input type="text" value={email}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)} />
+              </div>
+              <p>Xác thực tài khoản: {accountInfo?.active === 1 && "Đã kích hoạt"}</p>
+              <input type="submit" value="Lưu thay đổi"
+                className="mx-2 px-8 py-3 bg-coffee text-2xl text-white font-barlow" />
+            </form>
             </div>
             <div>
-              <span>Email: </span>
-              <input type="text" value={accountInfo?.email} />
-            </div>1
-            <p>Xác thực tài khoản: {accountInfo?.active === 1 && "Đã kích hoạt"}</p>
-            <input type="submit" value="Lưu thay đổi" />
-          </form>
+            <form onSubmit={handleChangePassword}>
+              <div>
+                <span>Nhập mật khẩu hiện tại: </span>
+                <input type="text" value={password}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)} />
+              </div>
+              <div>
+                <span>Nhập mật khẩu mới: </span>
+                <input type="text" value={newPassword}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPassword(event.target.value)} />
+              </div>
+              <div>
+                <span>Nhập lại mật khẩu mới: </span>
+                <input type="text" value={newPasswordAgain}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPasswordAgain(event.target.value)} />
+              </div>
+              <input type="submit" value="Thay đổi mật khẩu"
+                className="mx-2 px-8 py-3 bg-coffee text-2xl text-white font-barlow" />
+            </form>
+            </div>
+          </div>
         )
         :
         <div>Không tìm thấy dữ liệu</div>
