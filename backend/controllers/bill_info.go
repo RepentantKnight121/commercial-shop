@@ -21,9 +21,13 @@ func CreateBillInfo(c *gin.Context) {
 	if data.Items[0].Date.IsZero() {
 		dateOption = false
 	}
+	default_option := false
+	if c.Query("default") == "true" {
+		default_option = true
+	}
 
 	// Execute the Create method and send the status response to the user
-	err := data.Create(&dateOption)
+	err := data.Create(&dateOption, &default_option)
 	if err != nil {
 		// Handle the error
 		fmt.Println(err)
@@ -36,12 +40,16 @@ func CreateBillInfo(c *gin.Context) {
 
 func DeleteBillInfo(c *gin.Context) {
 	// Create service and assign to data
-	data := services.BillInfoService{Items: []models.BillInfo{{
-		Id: c.Param("id"),
-	}}}
+	data := services.BillInfoService{Items: []models.BillInfo{{}}}
+	idValue, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "bad user input"})
+		return
+	}
+	data.Items[0].Id = idValue
 
 	// Execute method and send status request to user
-	err := data.Delete()
+	err = data.Delete()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't delete bill info!"})
 		return
@@ -51,12 +59,16 @@ func DeleteBillInfo(c *gin.Context) {
 
 func GetBillInfo(c *gin.Context) {
 	// Create service and assign to data
-	data := services.BillInfoService{Items: []models.BillInfo{{
-		Id: c.Param("id"),
-	}}}
+	data := services.BillInfoService{Items: []models.BillInfo{{}}}
+	idValue, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "bad user input"})
+		return
+	}
+	data.Items[0].Id = idValue
 
 	// Execute method and send status request to user
-	err := data.Get()
+	err = data.Get()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get bill info value"})
 		return
@@ -83,10 +95,15 @@ func GetAllBillInfo(c *gin.Context) {
 		page = 1
 	}
 
+	newest := false
+	if c.Query("newest") == "true" {
+		newest = true
+	}
+
 	// Create service and assign to data
 	// Then execute method and send status request to user
 	data := services.BillInfoService{}
-	err = data.GetAll(&limit, &page)
+	err = data.GetAll(&limit, &page, &newest)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all bill info value"})
 		return
@@ -98,13 +115,24 @@ func UpdateBillInfo(c *gin.Context) {
 	// Create service and assign to data
 	data := services.BillInfoService{Items: []models.BillInfo{{}}}
 	c.ShouldBindJSON(&data.Items[0])
-	data.Items[0].Id = c.Param("id")
+	idValue, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "bad user input"})
+		return
+	}
+	data.Items[0].Id = idValue
 
 	// Check input options
-	customerid_option, address_option, phone_option, date_option, status_option, payment_option := true, true, true, true, true, true
+	account_username_option, name_option, email_option, address_option, phone_option, date_option, status_option, payment_option := true, true, true, true, true, true, true, true
 
-	if data.Items[0].CustomerId == "" {
-		customerid_option = false
+	if data.Items[0].AccountUsername == "" {
+		account_username_option = false
+	}
+	if data.Items[0].Name == "" {
+		name_option = false
+	}
+	if data.Items[0].Email == "" {
+		email_option = false
 	}
 	if data.Items[0].Address == "" {
 		address_option = false
@@ -123,7 +151,7 @@ func UpdateBillInfo(c *gin.Context) {
 	}
 
 	// Execute method and send status request to user
-	err := data.Update(&customerid_option, &address_option, &phone_option, &date_option, &status_option, &payment_option)
+	err = data.Update(&account_username_option, &name_option, &email_option, &address_option, &phone_option, &date_option, &status_option, &payment_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update bill info!"})
 		return

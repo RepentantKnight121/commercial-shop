@@ -20,21 +20,23 @@ type AccountRole struct {
 }
 
 type BillDetail struct {
-	Id         string `json:"id"         binding:"required"`
-	BillId     string `json:"billId"     binding:"required"`
+	Id         int    `json:"id"         binding:"required"`
+	BillId     int    `json:"billId"     binding:"required"`
 	ProductId  string `json:"productId"  binding:"required"`
 	DiscountId string `json:"discountId" binding:"required"`
 	Amount     int    `json:"amount"     binding:"required"`
 }
 
 type BillInfo struct {
-	Id         string    `json:"id"         binding:"required"`
-	CustomerId string    `json:"customerId" binding:"required"`
-	Address    string    `json:"address"    binding:"required"`
-	Phone      string    `json:"phone"      binding:"required"`
-	Date       time.Time `json:"date"       binding:"required"`
-	Status     int       `json:"status"     binding:"required"`
-	Payment    int       `json:"payment"    binding:"required"`
+	Id              int       `json:"id"         binding:"required"`
+	AccountUsername string    `json:"accountUsername" binding:"required"`
+	Name            string    `json:"name"       binding:"required"`
+	Email           string    `json:"email"      binding:"required"`
+	Phone           string    `json:"phone"      binding:"required"`
+	Address         string    `json:"address"    binding:"required"`
+	Date            time.Time `json:"date"       binding:"required"`
+	Status          int       `json:"status"     binding:"required"`
+	Payment         int       `json:"payment"    binding:"required"`
 }
 
 type BillStatus struct {

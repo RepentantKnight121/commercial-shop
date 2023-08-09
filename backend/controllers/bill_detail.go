@@ -26,12 +26,16 @@ func CreateBillDetail(c *gin.Context) {
 
 func DeleteBillDetail(c *gin.Context) {
 	// Create service and assign to data
-	data := services.BillDetailService{Items: []models.BillDetail{{
-		Id: c.Param("id"),
-	}}}
+	data := services.BillDetailService{Items: []models.BillDetail{{}}}
+	idValue, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "bad user input"})
+		return
+	}
+	data.Items[0].Id = idValue
 
 	// Execute method and send status request to user
-	err := data.Delete()
+	err = data.Delete()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't delete bill detail!"})
 		return
@@ -41,12 +45,16 @@ func DeleteBillDetail(c *gin.Context) {
 
 func GetBillDetail(c *gin.Context) {
 	// Create service and assign to data
-	data := services.BillDetailService{Items: []models.BillDetail{{
-		Id: c.Param("id"),
-	}}}
+	data := services.BillDetailService{Items: []models.BillDetail{{}}}
+	idValue, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "bad user input"})
+		return
+	}
+	data.Items[0].Id = idValue
 
 	// Execute method and send status request to user
-	err := data.Get()
+	err = data.Get()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get bill detail value"})
 		return
@@ -88,12 +96,17 @@ func UpdateBillDetail(c *gin.Context) {
 	// Create service and assign to data
 	data := services.BillDetailService{Items: []models.BillDetail{{}}}
 	c.ShouldBindJSON(&data.Items[0])
-	data.Items[0].Id = c.Param("id")
+	idValue, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "bad user input"})
+		return
+	}
+	data.Items[0].Id = idValue
 
 	// Check input options
 	billid, productdetailid, discountid, amount := true, true, true, true
 
-	if data.Items[0].BillId == "" {
+	if data.Items[0].BillId == -1 {
 		billid = false
 	}
 	if data.Items[0].ProductId == "" {
@@ -107,7 +120,7 @@ func UpdateBillDetail(c *gin.Context) {
 	}
 
 	// Execute method and send status request to user
-	err := data.Update(&billid, &productdetailid, &discountid, &amount)
+	err = data.Update(&billid, &productdetailid, &discountid, &amount)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update bill detail!"})
 		return
