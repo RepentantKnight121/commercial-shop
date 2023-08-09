@@ -62,17 +62,12 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
   const [price, setPrice] = useState<string>("asc");
   const [search, setSearch] = useState<string>("");
 
-  const handleCategoryChange = async (newCategory: string) => {
-    setCategory(newCategory);
-    const data = await getApiProduct(limit, page, newCategory, price, search);
-    setProductWithImages(data);
+  const convertMoneyToVND = (money: number) => {
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
   };
+
   const handleProductId = (value: string) => {
     props.handleProductId(value);
-  };
-  const handleAddCart = async (value: any) => {
-    value.amount = 1;
-    localStorage.setItem(`${value.id}`, JSON.stringify(value));
   };
 
   // UseEffect hook to fetch the API data
@@ -87,7 +82,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
 
   productshowcase = (
     <div className="w-10/12 mx-auto my-20">
-      <div className="grid grid-cols-4 gap-y-8">
+      <div className="grid grid-cols-4 gap-8">
         {productwithimages === null ? (
           <div className="w-full text-center">Không có thông tin</div>
         ) : (
@@ -100,9 +95,15 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                   alt="Not found"
                 />
 
-                <h2 className="mt-8 font-medium text-center">{value.name}</h2>
-                <p className="text-center">{value.categoryId}</p>
-                <p className="font-semibold text-center">{value.price}</p>
+                <h2 className="mt-8 font-semibold text-center">{value.name}</h2>
+                <p className="my-2 text-center">
+                  {convertMoneyToVND(value.price)}
+                </p>
+                <p
+                  className="my-2 text-center"
+                  onClick={() => handleProductId(value.id)}>
+                  Xem chi tiết
+                </p>
               </div>
             );
           })

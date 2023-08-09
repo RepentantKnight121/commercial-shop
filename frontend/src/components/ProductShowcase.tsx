@@ -92,7 +92,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
 
   productshowcase = (
     <div className="flex my-20">
-      <div className="w-2/12">
+      <div className="w-2/12 ml-[5%]">
         <h1 className="text-center text-2xl">Phân loại sản phẩm</h1>
         <div className="py-4">
           <p
@@ -146,11 +146,11 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
         </div>
       </div>
       <div className="w-10/12">
-        <h1 className="text-center text-6xl">Sản phẩm</h1>
+        <h1 className="text-center pl-14 text-6xl">Sản phẩm</h1>
         <div className="w-1/12 mx-auto my-5 flex">
           <button
             type="button"
-            className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"
+            className="py-1 px-4 rounded-lg bg-sky-500 text-2xl text-white"
             onClick={() => {
               if (page <= 1) {
                 setPage(1);
