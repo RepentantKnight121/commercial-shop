@@ -1,11 +1,8 @@
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios, { AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type ProductDetail = {
   handleProductId: (value: string) => void;
@@ -99,11 +96,12 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                 <p className="my-2 text-center">
                   {convertMoneyToVND(value.price)}
                 </p>
-                <p
+                <a
+                  href=""
                   className="my-2 text-center"
                   onClick={() => handleProductId(value.id)}>
                   Xem chi tiết
-                </p>
+                </a>
               </div>
             );
           })
