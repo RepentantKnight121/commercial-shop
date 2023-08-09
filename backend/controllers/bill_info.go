@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -29,8 +28,6 @@ func CreateBillInfo(c *gin.Context) {
 	// Execute the Create method and send the status response to the user
 	err := data.Create(&dateOption, &default_option)
 	if err != nil {
-		// Handle the error
-		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed to create bill info"})
 		return
 	}
