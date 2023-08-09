@@ -12,9 +12,9 @@ CREATE TABLE Product (
     product_id           VARCHAR(20)  NOT NULL,
     category_id          VARCHAR(20)  NOT NULL,
     product_name         VARCHAR(100) DEFAULT 'Chưa có thông tin',
-    product_color        VARCHAR(20)  DEFAULT 'Chưa có thông tin',
+    product_color        VARCHAR(100)  DEFAULT 'Chưa có thông tin',
     product_fabric       VARCHAR(20)  DEFAULT 'Chưa có thông tin',
-    product_size         VARCHAR(4)   DEFAULT '',
+    product_size         VARCHAR(20)   DEFAULT '',
     product_form         VARCHAR(20)  DEFAULT '',
     product_price        INT          DEFAULT 0,
     product_amount       INT          CHECK (product_amount >= 0) DEFAULT 0,
@@ -71,7 +71,7 @@ CREATE TABLE BillStatus (
 );
 
 CREATE TABLE BillInfo (
-    bill_id          VARCHAR(20) NOT NULL,
+    bill_id          INT AUTO_INCREMENT,
     account_username VARCHAR(20) NOT NULL,
     bill_name        VARCHAR(20),
     bill_email       VARCHAR(20),
@@ -90,9 +90,9 @@ CREATE TABLE BillInfo (
 );
 
 CREATE TABLE BillDetail (
-    bill_detail_id     VARCHAR(20) NOT NULL,
+    bill_detail_id     INT AUTO_INCREMENT,
     bill_id            VARCHAR(20) NOT NULL,
-    product_id         VARCHAR(20) NOT NULL UNIQUE,
+    product_id         VARCHAR(20) NOT NULL,
     discount_id        VARCHAR(20) NOT NULL,
     bill_amount        INT         CHECK (bill_amount > 0),
     PRIMARY KEY (bill_detail_id),
