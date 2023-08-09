@@ -22,9 +22,8 @@ func (sv *BillInfoService) Create(date_option, default_option *bool) error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO BillInfo VALUES (@id, @accountUsername, @name, @email, @address, @phone, @date, @status, @payment);"
+	sql := "INSERT INTO BillInfo VALUES (@accountUsername, @name, @email, @address, @phone, @date, @status, @payment);"
 	args := pgx.NamedArgs{
-		"id":              strconv.Itoa(sv.Items[0].Id),
 		"accountUsername": sv.Items[0].AccountUsername,
 		"name":            sv.Items[0].Name,
 		"email":           sv.Items[0].Email,
@@ -35,12 +34,12 @@ func (sv *BillInfoService) Create(date_option, default_option *bool) error {
 		"payment":         sv.Items[0].Payment,
 	}
 	if !*date_option {
-		sql = "INSERT INTO BillInfo (bill_id, customer_id, bill_address, bill_phone, bill_status_id, bill_payment) VALUES (@id, @customerId, @address, @phone, @status, @payment);"
+		sql = "INSERT INTO BillInfo (customer_id, bill_address, bill_phone, bill_status_id, bill_payment) VALUES (@customerId, @address, @phone, @status, @payment);"
 		delete(args, "date")
 	}
 
 	if *default_option {
-		sql = "INSERT INTO BillInfo (bill_id, account_username, bill_name, bill_email, bill_address, bill_phone, bill_status_id, bill_payment) VALUES (@id, @accountUsername, @name, @email, @address, @phone, @status, @payment);"
+		sql = "INSERT INTO BillInfo (account_username, bill_name, bill_email, bill_address, bill_phone, bill_status_id, bill_payment) VALUES (@accountUsername, @name, @email, @address, @phone, @status, @payment);"
 		delete(args, "date")
 	}
 

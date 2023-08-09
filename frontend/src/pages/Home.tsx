@@ -1,10 +1,9 @@
 import Cookies from "js-cookie";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 
-import Menu from "../components/Menu";
-import Footer from "../components/Footer";
+import Menu from "../components/Menu"
+import Footer from "../components/Footer"
 import ListProductHomePage from "../components/ListProductHomePage";
 
 interface ApiResponse {
@@ -16,7 +15,7 @@ type ProductDetail = {
 };
 
 function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
+  return value === null || value === undefined
 }
 
 async function getApiSession(
@@ -27,33 +26,33 @@ async function getApiSession(
     const response = await axios.get(
       `http://localhost:4505/api/account/${username}?token=${token}`
     );
-    return response.data;
+    return response.data
   } catch (error) {
-    throw new Error("Can't get data");
+    throw new Error("Can't get data")
   }
 }
 
 function Home(): JSX.Element {
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [productid, setProductId] = useState<string>("");
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [productid, setProductId] = useState<string>("")
 
   const handleProductId = (value: string) => {
-    setProductId(value);
-  };
+    setProductId(value)
+  }
 
   const handleLoggedIn = async (value: boolean) => {
-    setLoggedIn(value);
-    const username = Cookies.get("loginUsernameCookie");
+    setLoggedIn(value)
+    const username = Cookies.get("loginUsernameCookie")
     await axios.patch(`http://localhost:4505/api/account/${username}`, {
       token: "",
-    });
-    Cookies.remove("loginTokenCookie");
-    Cookies.remove("loginUsernameCookie");
-  };
+    })
+    Cookies.remove("loginTokenCookie")
+    Cookies.remove("loginUsernameCookie")
+  }
 
   useEffect(() => {
-    const token = Cookies.get("loginTokenCookie");
-    const username = Cookies.get("loginUsernameCookie");
+    const token = Cookies.get("loginTokenCookie")
+    const username = Cookies.get("loginUsernameCookie")
 
     if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
       getApiSession(username!, token!)
@@ -63,11 +62,11 @@ function Home(): JSX.Element {
           }
         })
         .catch((error: any) => {
-          console.log("Can't get data from api");
-          console.log(error);
-        });
+          console.log("Can't get data from api")
+          console.log(error)
+        })
     }
-  }, []);
+  }, [])
 
   return (
     <div className="font-barlow">
