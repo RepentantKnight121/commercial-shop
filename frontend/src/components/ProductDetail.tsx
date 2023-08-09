@@ -2,17 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { v4 as uuidv4 } from "uuid";
-type ProductDetail = {
-  productid: string;
-};
+
+type ProductProps = {
+  productid: string
+}
 
 async function getApiProduct(id: string): Promise<Object[]> {
   try {
-    const response = await axios.get(`http://localhost:4505/api/product/${id}`);
-    return response.data;
+    const response = await axios.get(`http://localhost:4505/api/product/${id}`)
+    return response.data
   } catch (error) {
-    return [{ message: "Can't get data" }];
+    return [{ message: "Can't get data" }]
   }
 }
 
@@ -20,20 +20,20 @@ async function getApiProductImage(id: string): Promise<Object[]> {
   try {
     const response = await axios.get(
       `http://localhost:4505/api/product-image?productid=${id}&nopagelimit=true`
-    );
-    return response.data;
+    )
+    return response.data
   } catch (error) {
-    return [{ message: "Can't get data" }];
+    return [{ message: "Can't get data" }]
   }
 }
 
-export default function ProductDetail(props: ProductDetail) {
-  const [product, setProduct] = useState<Object[]>();
-  const [productimage, setProductImage] = useState<ProductDetail[]>([]);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [ArrayProps, setArrayProps]: any[] = useState([]);
-  const [arraySize, setArraySize] = useState([]);
-  const [arrayColor, setArrayColor] = useState([]);
+export default function ProductDetail(props: ProductProps) {
+  const [product, setProduct] = useState<Object[]>()
+  const [productimage, setProductImage] = useState<ProductProps[]>([])
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [ArrayProps, setArrayProps]: any[] = useState([])
+  const [arraySize, setArraySize] = useState([])
+  const [arrayColor, setArrayColor] = useState([])
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
@@ -88,11 +88,7 @@ export default function ProductDetail(props: ProductDetail) {
 
           <img
             className="w-80 h-auto mx-auto mb-10"
-            src={`data:image/png;base64,${
-              productimage.at(activeImageIndex)?.image
-              // ? operator optional chaining để truy cập bất kỳ thuộc tính nào của một đối tượng,
-              // bất kể đối tượng đó tồn tại hay không
-            }`}
+            src={`data:image/png;base64,${productimage.at(activeImageIndex)?.image}`}
             alt="Img Main"
           />
         </div>
@@ -124,9 +120,9 @@ export default function ProductDetail(props: ProductDetail) {
             ))}
           </div>
 
-          <h1 className="p-4 text-center text-3xl text-white">
-            Quản lý thông tin
-          </h1>
+          <div>
+            
+          </div>
 
           <button className="w-full  my-2  border border-solid border-black  py-3 mx-auto ">
             Thêm vào giỏ hàng

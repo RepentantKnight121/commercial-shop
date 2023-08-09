@@ -50,45 +50,45 @@ async function getApiProduct(
 }
 
 function ProductShowcase(props: ProductDetail): JSX.Element {
-  let productshowcase: JSX.Element = <></>;
+  let productshowcase: JSX.Element = <></>
 
   // State to store the API data
-  const [categories, setCategories] = useState<Object[]>([]);
-  const [productwithimages, setProductWithImages] = useState<Object[]>([]);
+  const [categories, setCategories] = useState<Object[]>([])
+  const [productwithimages, setProductWithImages] = useState<Object[]>([])
 
-  const [limit, setLimit] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
-  const [category, setCategory] = useState<string>("");
-  const [price, setPrice] = useState<string>("asc");
-  const [search, setSearch] = useState<string>("");
+  const [limit, setLimit] = useState<number>(12)
+  const [page, setPage] = useState<number>(1)
+  const [category, setCategory] = useState<string>("")
+  const [price, setPrice] = useState<string>("asc")
+  const [search, setSearch] = useState<string>("")
 
   const convertMoneyToVND = (money: number) => {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
-  };
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND"
+  }
 
   const handleCategoryChange = async (newCategory: string) => {
-    setCategory(newCategory);
-    const data = await getApiProduct(limit, page, newCategory, price, search);
-    setProductWithImages(data);
-  };
+    setCategory(newCategory)
+    const data = await getApiProduct(limit, page, newCategory, price, search)
+    setProductWithImages(data)
+  }
   const handleProductId = (value: string) => {
-    props.handleProductId(value);
-  };
+    props.handleProductId(value)
+  }
   const handleAddCart = async (value: any) => {
-    value.amount = 1;
-    localStorage.setItem(`${value.id}`, JSON.stringify(value));
-  };
+    value.amount = 1
+    localStorage.setItem(`${value.id}`, JSON.stringify(value))
+  }
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
     (async () => {
-      let data = await getApiCategory(limit, 1);
-      setCategories(data);
-      data = await getApiProduct(limit, page, category, price, search);
-      setProductWithImages(data);
-      console.log(productwithimages);
-    })();
-  }, [category, page, price]);
+      let data = await getApiCategory(limit, 1)
+      setCategories(data)
+      data = await getApiProduct(limit, page, category, price, search)
+      setProductWithImages(data)
+      console.log(productwithimages)
+    })()
+  }, [category, page, price])
 
   productshowcase = (
     <div className="flex my-20">
@@ -196,7 +196,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                       Thêm vào giỏ hàng
                     </button>
                     <p
-                      className="my-2 text-center"
+                      className="my-2 text-center hover:cursor-pointer"
                       onClick={() => handleProductId(value.id)}>
                       Xem chi tiết
                     </p>
