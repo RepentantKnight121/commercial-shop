@@ -85,7 +85,7 @@ type ProductDetail struct {
 type ProductWithImage struct {
 	Id         string `json:"id"          binding:"required"`
 	CategoryId string `json:"categoryId"  binding:"required"`
-	Name       string `json:"name"        binding:"requizred"`
+	Name       string `json:"name"        binding:"required"`
 	Price      int    `json:"price"       binding:"required"`
 	Amount     int    `json:"amount"      binding:"required"`
 	Image      []byte `json:"image"       binding:"required"`
