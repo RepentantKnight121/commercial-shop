@@ -4,15 +4,17 @@ import Cookies from "js-cookie";
 
 import Menu from "../components/Menu";
 import Footer from "../components/Footer";
-import ProductShowcase from "../components/ProductShowcase";
+import ProductShow from "../components/ProductShow";
 import ProductDetail from "../components/ProductDetail";
 
+import { API_URL } from "../utils/URL"
+
 interface ApiResponse {
-  message: string;
+  message: string
 }
 
 function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
+  return value === null || value === undefined
 }
 
 async function getApiSession(
@@ -22,56 +24,57 @@ async function getApiSession(
   try {
     const response = await axios.get(
       `http://localhost:4505/api/account/${username}?token=${token}`
-    );
-    return response.data;
+    )
+    return response.data
   } catch (error) {
-    throw new Error("Can't get data");
+    throw new Error("Can't get data")
   }
 }
 
 export default function Product(): JSX.Element {
-  let page: JSX.Element = <div></div>;
+  let page: JSX.Element = <></>
 
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  // Declare login
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
-  const [productid, setProductId] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
+  const [productid, setProductId] = useState<string>("")
+  const [search, setSearch] = useState<string>("")
 
   const handleProductId = (value: string) => {
-    setProductId(value);
-  };
+    setProductId(value)
+  }
   const handleSearch = (searchValue: string) => {
-    setSearch(searchValue);
-  };
+    setSearch(searchValue)
+  }
 
   const handleLoggedIn = async (value: boolean) => {
-    setLoggedIn(value);
-    const username = Cookies.get("loginUsernameCookie");
-    await axios.patch(`http://localhost:4505/api/account/${username}`, {
+    setLoggedIn(value)
+    const username = Cookies.get("loginUsernameCookie")
+    await axios.patch(`${API_URL}/account/${username}`, {
       active: -1,
       token: "",
-    });
-    Cookies.remove("loginTokenCookie");
-    Cookies.remove("loginUsernameCookie");
-  };
+    })
+    Cookies.remove("loginTokenCookie")
+    Cookies.remove("loginUsernameCookie")
+  }
 
   useEffect(() => {
-    const token = Cookies.get("loginTokenCookie");
-    const username = Cookies.get("loginUsernameCookie");
+    const token = Cookies.get("loginTokenCookie")
+    const username = Cookies.get("loginUsernameCookie")
 
     if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
       getApiSession(username!, token!)
         .then((user_data: any) => {
           if (user_data.session === token) {
-            setLoggedIn(true);
+            setLoggedIn(true)
           }
         })
         .catch((error: any) => {
-          console.log("Can't get data from api");
-          console.log(error);
-        });
+          console.log("Can't get data from api")
+          console.log(error)
+        })
     }
-  }, []);
+  }, [])
 
   page = (
     <div>
@@ -83,15 +86,11 @@ export default function Product(): JSX.Element {
         alt="Banner"
       />
 
-      {productid === "" ? (
-        <ProductShowcase handleProductId={handleProductId} />
-      ) : (
-        <ProductDetail productid={productid} />
-      )}
+      <ProductShow handleProductId={handleProductId} />
 
       <Footer />
     </div>
-  );
+  )
 
-  return page;
+  return page
 }

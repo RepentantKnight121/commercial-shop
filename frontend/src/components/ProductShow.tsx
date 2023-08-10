@@ -7,28 +7,44 @@ import axios, { AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { API_URL } from "../utils/URL";
+
 type ProductDetail = {
   handleProductId: (value: string) => void;
 };
 
-async function getApiCategory(limit: number, page: number): Promise<Object[]> {
+interface CategoryObject {
+  id:   string
+  name: string
+}
+
+interface ProductWithImageObject {
+  id: string
+  categoryId: string
+  name: string
+  fabric: string
+  price: number
+  description: string
+}
+
+async function getApiCategory(limit: number, page: number): Promise<CategoryObject[] | undefined> {
   try {
     const response: AxiosResponse<any, any> = await axios.get(
-      `http://localhost:4505/api/category?limit=${limit}&page=${page}`
-    );
-    return response.data;
+      `${API_URL}/category?limit=${limit}&page=${page}`
+    )
+    return response.data
   } catch (error) {
-    return [{ message: "Can't get data" }];
+    return undefined
   }
 }
 
-async function getApiProduct(
+async function getApiProductWithImage(
   limit: number,
   page: number,
   category: string,
   price: string,
   search: string
-): Promise<Object[]> {
+): Promise<ProductWithImageObject[] | undefined> {
   try {
     let apistring: string;
     if (category === "") {
@@ -45,16 +61,16 @@ async function getApiProduct(
     const response: AxiosResponse<any, any> = await axios.get(apistring);
     return response.data;
   } catch (error) {
-    return [{ message: "Can't get data" }];
+    return undefined
   }
 }
 
-function ProductShowcase(props: ProductDetail): JSX.Element {
-  let productshowcase: JSX.Element = <></>
+function ProductShow(props: ProductDetail): JSX.Element {
+  let component: JSX.Element = <></>
 
   // State to store the API data
-  const [categories, setCategories] = useState<Object[]>([])
-  const [productwithimages, setProductWithImages] = useState<Object[]>([])
+  const [categories, setCategories] = useState<CategoryObject[]>([])
+  const [productwithimages, setProductWithImages] = useState<ProductWithImageObject[]>([])
 
   const [limit, setLimit] = useState<number>(12)
   const [page, setPage] = useState<number>(1)
@@ -63,13 +79,15 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
   const [search, setSearch] = useState<string>("")
 
   const convertMoneyToVND = (money: number) => {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND"
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ"
   }
 
   const handleCategoryChange = async (newCategory: string) => {
     setCategory(newCategory)
-    const data = await getApiProduct(limit, page, newCategory, price, search)
-    setProductWithImages(data)
+    const data: ProductWithImageObject[] | undefined = await getApiProductWithImage(limit, page, newCategory, price, search)
+    if (data) {
+      setProductWithImages(data)
+    }
   }
   const handleProductId = (value: string) => {
     props.handleProductId(value)
@@ -82,15 +100,18 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
   // UseEffect hook to fetch the API data
   useEffect(() => {
     (async () => {
-      let data = await getApiCategory(limit, 1)
-      setCategories(data)
-      data = await getApiProduct(limit, page, category, price, search)
-      setProductWithImages(data)
-      console.log(productwithimages)
+      const dataCategory: CategoryObject[] | undefined = await getApiCategory(limit, 1)
+      if (dataCategory) {
+        setCategories(dataCategory)
+      }
+      const dataProductWithImage: ProductWithImageObject[] | undefined = await getApiProductWithImage(limit, page, category, price, search)
+      if (dataProductWithImage) {
+        setProductWithImages(dataProductWithImage)
+      }
     })()
   }, [category, page, price])
 
-  productshowcase = (
+  component = (
     <div className="flex my-20">
       <div className="w-2/12 ml-[5%]">
         <h1 className="text-center text-2xl">Phân loại sản phẩm</h1>
@@ -200,11 +221,11 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                       onClick={() => handleProductId(value.id)}>
                       Xem chi tiết
                     </p>
-                    {value.amount === 0 ? (
+                    {/* {value.amount === 0 ? (
                       <div className="absolute text-xl flex justify-center text-white items-center top-1/4 left-1/4 right-1/4">
                         <p>HẾT HÀNG</p>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                 );
               })
@@ -215,7 +236,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
     </div>
   );
 
-  return productshowcase;
+  return component
 }
 
-export default ProductShowcase;
+export default ProductShow

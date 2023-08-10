@@ -1,81 +1,56 @@
-import axios, { AxiosResponse } from "axios";
-import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import axios, { AxiosResponse } from "axios"
+import { useState, useEffect } from "react"
+import { v4 as uuidv4 } from "uuid"
 
 type ProductDetail = {
-  handleProductId: (value: string) => void;
-};
-
-async function getApiCategory(limit: number, page: number): Promise<Object[]> {
-  try {
-    const response: AxiosResponse<any, any> = await axios.get(
-      `http://localhost:4505/api/category?limit=${limit}&page=${page}`
-    );
-    return response.data;
-  } catch (error) {
-    return [{ message: "Can't get data" }];
-  }
+  handleProductId: (value: string) => void
 }
 
 async function getApiProduct(
   limit: number,
   page: number,
-  category: string,
   price: string,
   search: string
 ): Promise<Object[]> {
   try {
-    let apistring: string;
-    if (category === "") {
-      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}`;
-      if (search !== "") {
-        apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&search=${search}`;
-      }
-    } else {
-      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&category=${category}`;
-      if (search !== "") {
-        apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&category=${category}&search=${search}`;
-      }
+    let apistring: string
+    apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}`
+    if (search !== "") {
+      apistring = `http://localhost:4505/api/productwithimage?limit=${limit}&page=${page}&price=${price}&search=${search}`
     }
-    const response: AxiosResponse<any, any> = await axios.get(apistring);
-    return response.data;
+    const response: AxiosResponse<any, any> = await axios.get(apistring)
+    return response.data
   } catch (error) {
-    return [{ message: "Can't get data" }];
+    return [{ message: "Can't get data" }]
   }
 }
 
 function ProductShowcase(props: ProductDetail): JSX.Element {
-  let productshowcase: JSX.Element = <></>;
+  let productshowcase: JSX.Element = <></>
 
   // State to store the API data
-  const [categories, setCategories] = useState<Object[]>([]);
-  const [productwithimages, setProductWithImages] = useState<Object[]>([]);
+  const [productwithimages, setProductWithImages] = useState<Object[]>([])
 
-  const [limit, setLimit] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
-  const [category, setCategory] = useState<string>("");
-  const [price, setPrice] = useState<string>("asc");
-  const [search, setSearch] = useState<string>("");
+  const [limit, setLimit] = useState<number>(10)
+  const [page, setPage] = useState<number>(1)
+  const [price, setPrice] = useState<string>("asc")
+  const [search, setSearch] = useState<string>("")
 
   const convertMoneyToVND = (money: number) => {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
-  };
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ"
+  }
 
   const handleProductId = (value: string) => {
-    props.handleProductId(value);
-  };
+    props.handleProductId(value)
+  }
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
     (async () => {
-      let data = await getApiCategory(limit, 1);
-      setCategories(data);
-      data = await getApiProduct(limit, page, category, price, search);
-      setProductWithImages(data);
-    })();
-  }, [category, page, price]);
+      const data = await getApiProduct(limit, page, price, search)
+      setProductWithImages(data)
+    })()
+  }, [page, price])
 
   productshowcase = (
     <div className="w-10/12 mx-auto my-20">
@@ -103,7 +78,7 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
                   Xem chi tiết
                 </a>
               </div>
-            );
+            )
           })
         )}
       </div>
@@ -115,9 +90,9 @@ function ProductShowcase(props: ProductDetail): JSX.Element {
         </a>
       </div>
     </div>
-  );
+  )
 
-  return productshowcase;
+  return productshowcase
 }
 
-export default ProductShowcase;
+export default ProductShowcase

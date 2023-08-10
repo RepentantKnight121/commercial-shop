@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
+type ProductDetail = {
+  
+}
+
 type ProductProps = {
   productid: string
 }
@@ -29,19 +33,19 @@ async function getApiProductImage(id: string): Promise<Object[]> {
 
 export default function ProductDetail(props: ProductProps) {
   const [product, setProduct] = useState<Object[]>()
-  const [productimage, setProductImage] = useState<ProductProps[]>([])
-  const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [productimage, setProductImage] = useState<any[]>([])
+  const [activeImageIndex, setActiveImageIndex] = useState<number>(0)
   const [ArrayProps, setArrayProps]: any[] = useState([])
   const [arraySize, setArraySize] = useState([])
   const [arrayColor, setArrayColor] = useState([])
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
-    (async () => {
-      const productData = await getApiProduct(props.productid);
-      setProduct(productData);
-      const productImageData: any = await getApiProductImage(props.productid);
-      setProductImage(productImageData);
+    const fecthData = async () => {
+      const productData = await getApiProduct(props.productid)
+      setProduct(productData)
+      const productImageData: any = await getApiProductImage(props.productid)
+      setProductImage(productImageData)
 
       let x: any;
       let product: any = productData[0];
@@ -56,12 +60,10 @@ export default function ProductDetail(props: ProductProps) {
       setArraySize(arrSize);
       let arrColor = ArrayProps[3].split(" , ");
       setArrayColor(arrColor);
-    })();
-  }, []);
+    }
 
-  if (!product) {
-    return <div className="text-center text-7xl">Loading...</div>;
-  }
+    fecthData()
+  }, []);
 
   return (
     <div>
@@ -132,24 +134,6 @@ export default function ProductDetail(props: ProductProps) {
           </button>
         </div>
       </div>
-
-      {/* <div className="w-10/12 mx-auto">
-        <div className="grid grid-cols-4 gap-y-8">
-          {productimage === null ? (
-            <div className="w-full text-center">Không có thông tin</div>
-          ) : (
-            productimage.slice(0, 4).map((value: any) => {
-              return (
-                <div key={uuidv4()} className="mx-5 bg-white flex">
-                  <img src={`data:image/png;base64,${value.image}`} />
-                  <h2 className="mt-8 font-medium text-center">{value.name}</h2>
-                  <p className="font-semibold text-center">{value.price}</p>
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div> */}
     </div>
-  );
+  )
 }

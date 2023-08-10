@@ -9,7 +9,7 @@ import About from "./pages/About";
 import LoginRegister from "./pages/LoginRegister";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
-
+import ProductDetail from "./pages/ProductDetail";
 
 function App(): JSX.Element {
   return (
@@ -22,6 +22,7 @@ function App(): JSX.Element {
         <Route path="/about" element={<About />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/product-detail" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
