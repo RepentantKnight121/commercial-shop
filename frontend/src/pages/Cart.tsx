@@ -1,18 +1,17 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-import { v4 as uuidv4 } from "uuid"
-import Cookies from "js-cookie"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { v4 as uuidv4 } from "uuid";
+import Cookies from "js-cookie";
 
-import { faTrash } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Menu from "../components/Menu"
-import Footer from "../components/Footer"
-
+import Menu from "../components/Menu";
+import Footer from "../components/Footer";
 
 interface ApiResponse {
-  message: string
+  message: string;
 }
 
 function allStorage(): (string | null)[] {
@@ -21,14 +20,14 @@ function allStorage(): (string | null)[] {
     i = keys.length;
 
   while (i--) {
-    values.push(localStorage.getItem(keys[i]))
+    values.push(localStorage.getItem(keys[i]));
   }
 
-  return values
+  return values;
 }
 
 function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined
+  return value === null || value === undefined;
 }
 
 async function getApiSession(
@@ -38,102 +37,113 @@ async function getApiSession(
   try {
     const response = await axios.get(
       `http://localhost:4505/api/account/${username}?token=${token}`
-    )
-    return response.data
+    );
+    return response.data;
   } catch (error) {
-    throw new Error("Can't get data")
+    throw new Error("Can't get data");
   }
 }
 
 function Cart(): JSX.Element {
   // Link to other page and refresh page
-  const navigate = useNavigate()
-  const [refresh, setRefresh] = useState<boolean>(false)
+  const navigate = useNavigate();
+  const [refresh, setRefresh] = useState<boolean>(false);
 
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
-  const [products, setProducts] = useState<any[]>([])
-  var totalMoney = 0
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [products, setProducts] = useState<any[]>([]);
+  var totalMoney = 0;
 
   const handleLoggedIn = async (value: boolean) => {
-    setLoggedIn(value)
-    const username = Cookies.get("loginUsernameCookie")
+    setLoggedIn(value);
+    const username = Cookies.get("loginUsernameCookie");
     await axios.patch(`http://localhost:4505/api/account/${username}`, {
       active: -1,
       token: "",
-    })
-    Cookies.remove("loginTokenCookie")
-    Cookies.remove("loginUsernameCookie")
-  }
+    });
+    Cookies.remove("loginTokenCookie");
+    Cookies.remove("loginUsernameCookie");
+  };
 
   const handleDeleteAllCart = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    localStorage.clear()
-    setProducts([])
-  }
+    localStorage.clear();
+    setProducts([]);
+  };
 
-  const handleDeleteItemCart = async(
+  const handleDeleteItemCart = async (
     event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
     value: string
   ) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    localStorage.removeItem(value)
-    setRefresh(!refresh)
-  }
+    localStorage.removeItem(value);
+    setRefresh(!refresh);
+  };
 
   const handleAmountChange = (index: number, newValue: number) => {
     setProducts((prevProducts) => {
-      const updatedProducts: any = [...prevProducts]
-      updatedProducts[index].amount = newValue
-      return updatedProducts
-    })
-  }
+      const updatedProducts = [...prevProducts];
+
+      // Cập nhật amount cho sản phẩm cụ thể trong mảng
+      updatedProducts[index] = {
+        ...updatedProducts[index],
+        amount: newValue,
+      };
+
+      // Lưu sản phẩm đã cập nhật vào localStorage với khóa tương ứng
+      localStorage.setItem(
+        updatedProducts[index].id,
+        JSON.stringify(updatedProducts[index])
+      );
+
+      return updatedProducts;
+    });
+  };
 
   const handlePayment = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!loggedIn) {
       alert(
         "Vui lòng, tạo tài khoản và đăng nhập trước khi tiến hành thanh toán"
-      )
-      return
+      );
+      return;
     }
 
-    navigate("/payment")
-  }
+    navigate("/payment");
+  };
 
   const convertMoneyToVND = (money: number) => {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-  }
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   useEffect(() => {
     // Get user login
-    const token = Cookies.get("loginTokenCookie")
-    const username = Cookies.get("loginUsernameCookie")
+    const token = Cookies.get("loginTokenCookie");
+    const username = Cookies.get("loginUsernameCookie");
 
     if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
       getApiSession(username!, token!)
         .then((user_data: any) => {
           if (user_data.session === token) {
-            setLoggedIn(true)
+            setLoggedIn(true);
           }
         })
         .catch((error: any) => {
-          console.log("Can't get data from api")
-          console.log(error)
-        })
+          console.log("Can't get data from api");
+          console.log(error);
+        });
     }
 
-    const items = allStorage()
-    const productObjects = items.map((item) => JSON.parse(item || ""))
-    setProducts(productObjects)
-  }, [refresh])
-
+    const items = allStorage();
+    const productObjects = items.map((item) => JSON.parse(item || ""));
+    setProducts(productObjects);
+  }, [refresh]);
 
   return (
     <div className="font-barlow">
@@ -175,19 +185,26 @@ function Cart(): JSX.Element {
                       min="1"
                       max="10"
                       value={value.amount}
-                      onChange={(event) => handleAmountChange(index, parseInt(event.target.value))}
+                      onChange={(event) =>
+                        handleAmountChange(index, parseInt(event.target.value))
+                      }
                     />
                   </td>
                   <td className="text-center">
                     {convertMoneyToVND(value.price * value.amount)}đ
                   </td>
                   <td className="text-center">
-                    <button className="text-xl text-rose-500 hover:cursor-pointer"
+                    <button
+                      className="text-xl text-rose-500 hover:cursor-pointer"
                       // @ts-ignore
-                      onClick={(event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => handleDeleteItemCart(event, value.id)}>
-                      <FontAwesomeIcon
-                        icon={faTrash} />
-                      </button>
+                      onClick={(
+                        event: React.MouseEvent<
+                          HTMLTableDataCellElement,
+                          MouseEvent
+                        >
+                      ) => handleDeleteItemCart(event, value.id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
                   </td>
                 </tr>
               ))
@@ -210,7 +227,8 @@ function Cart(): JSX.Element {
         </button>
         <div className="flex">
           <p className="my-auto mx-4 font-semibold">
-            Tổng số lượng sản phẩm: {products.reduce((total, product) => total + product.amount, 0)}
+            Tổng số lượng sản phẩm:{" "}
+            {products.reduce((total, product) => total + product.amount, 0)}
           </p>
           <p className="my-auto mx-4 font-semibold">
             Tổng tiền tạm tính : {convertMoneyToVND(totalMoney)} VND
@@ -227,7 +245,7 @@ function Cart(): JSX.Element {
 
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Cart
+export default Cart;
