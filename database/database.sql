@@ -93,7 +93,7 @@ CREATE TABLE BillDetail (
     bill_id            INT NOT NULL,
     product_id         VARCHAR(20) NOT NULL,
     product_detail_id  VARCHAR(20) NOT NULL,
-    discount_id        VARCHAR(20) NOT NULL,
+    discount_id        VARCHAR(20),
     bill_amount        INT CHECK (bill_amount > 0),
     CONSTRAINT fk_bill_id_for_bill_detail
         FOREIGN KEY (bill_id)
