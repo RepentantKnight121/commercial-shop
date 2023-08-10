@@ -633,12 +633,8 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Id</th>
               <th className="border-2 border-black">Category Id</th>
               <th className="border-2 border-black">Name</th>
-              <th className="border-2 border-black">Color</th>
               <th className="border-2 border-black">Fabric</th>
-              <th className="border-2 border-black">Size</th>
-              <th className="border-2 border-black">Form</th>
               <th className="border-2 border-black">Price</th>
-              <th className="border-2 border-black">Amount</th>
               <th className="border-2 border-black">Description</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
@@ -654,12 +650,8 @@ function AdminDisplay(props: Display): JSX.Element {
               <td className="border-2 border-black">{value.id}</td>
               <th className="border-2 border-black">{value.categoryId}</th>
               <td className="border-2 border-black">{value.name}</td>
-              <td className="border-2 border-black">{value.color}</td>
               <td className="border-2 border-black">{value.fabric}</td>
-              <td className="border-2 border-black">{value.size}</td>
-              <td className="border-2 border-black">{value.form}</td>
               <td className="border-2 border-black">{value.price}</td>
-              <td className="border-2 border-black">{value.amount}</td>
               <td className="border-2 border-black">{value.description}</td>
               <td className="w-1/12 border-2 border-black">
                 <button
@@ -683,12 +675,8 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Id</th>
               <th className="border-2 border-black">Category Id</th>
               <th className="border-2 border-black">Name</th>
-              <th className="border-2 border-black">Color</th>
               <th className="border-2 border-black">Fabric</th>
-              <th className="border-2 border-black">Size</th>
-              <th className="border-2 border-black">Form</th>
               <th className="border-2 border-black">Price</th>
-              <th className="border-2 border-black">Amount</th>
               <th className="border-2 border-black">Description</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>

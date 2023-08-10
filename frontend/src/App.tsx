@@ -10,8 +10,16 @@ import LoginRegister from "./pages/LoginRegister";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
+import clearCart from "./utils/ClearCart"
+
 
 function App(): JSX.Element {
+  const handleBeforeUnload = () => {
+    localStorage.clear()
+  }
+
+  clearCart(handleBeforeUnload)
+
   return (
     <BrowserRouter>
       <Routes>

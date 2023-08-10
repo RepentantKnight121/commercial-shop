@@ -8,11 +8,11 @@ import ProductShowcase from "../components/ProductShowcase";
 import ProductDetail from "../components/ProductDetail";
 
 interface ApiResponse {
-  message: string;
+  message: string
 }
 
 function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
+  return value === null || value === undefined
 }
 
 async function getApiSession(
@@ -22,15 +22,15 @@ async function getApiSession(
   try {
     const response = await axios.get(
       `http://localhost:4505/api/account/${username}?token=${token}`
-    );
-    return response.data;
+    )
+    return response.data
   } catch (error) {
-    throw new Error("Can't get data");
+    throw new Error("Can't get data")
   }
 }
 
 export default function Product(): JSX.Element {
-  let page: JSX.Element = <div></div>;
+  let page: JSX.Element = <></>
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
@@ -71,7 +71,7 @@ export default function Product(): JSX.Element {
           console.log(error);
         });
     }
-  }, []);
+  }, [])
 
   page = (
     <div>
@@ -83,15 +83,15 @@ export default function Product(): JSX.Element {
         alt="Banner"
       />
 
-      {productid === "" ? (
+      {/* {productid === "" ? (
         <ProductShowcase handleProductId={handleProductId} />
       ) : (
         <ProductDetail productid={productid} />
-      )}
+      )} */}
 
       <Footer />
     </div>
-  );
+  )
 
-  return page;
+  return page
 }
