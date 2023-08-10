@@ -22,17 +22,13 @@ func (sv *ProductService) Create() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "INSERT INTO Product VALUES (@id, @idCategory, @name, @color, @fabric, @size, @form, @price, @amount, @description);"
+	sql := "INSERT INTO Product VALUES (@id, @idCategory, @name, @fabric, @price, @description);"
 	args := pgx.NamedArgs{
 		"id":          sv.Items[0].Id,
 		"idCategory":  sv.Items[0].CategoryId,
 		"name":        sv.Items[0].Name,
-		"color":       sv.Items[0].Color,
 		"fabric":      sv.Items[0].Fabric,
-		"size":        sv.Items[0].Size,
-		"form":        sv.Items[0].Form,
 		"price":       sv.Items[0].Price,
-		"amount":      sv.Items[0].Amount,
 		"description": sv.Items[0].Description,
 	}
 
@@ -76,17 +72,13 @@ func (sv *ProductService) Get() error {
 	// SQL commamd
 	sql := "SELECT * FROM Product WHERE product_id='" + sv.Items[0].Id + "';"
 
-	// Get rows from conn with SQL command
+	// Get row from conn with SQL command
 	err = conn.QueryRow(database.CTX, sql).Scan(
 		&sv.Items[0].Id,
 		&sv.Items[0].CategoryId,
 		&sv.Items[0].Name,
-		&sv.Items[0].Color,
 		&sv.Items[0].Fabric,
-		&sv.Items[0].Size,
-		&sv.Items[0].Form,
 		&sv.Items[0].Price,
-		&sv.Items[0].Amount,
 		&sv.Items[0].Description,
 	)
 	if err != nil {
@@ -143,7 +135,7 @@ func (sv *ProductService) GetAll(limit, page *int, category, price, search *stri
 		return err
 	}
 
-	// convert each rows to struct and append to Slice to return
+	// convert each row to struct and append to Slice to return
 	i := 0
 	for rows.Next() {
 		sv.Items = append(sv.Items, models.Product{})
@@ -152,12 +144,8 @@ func (sv *ProductService) GetAll(limit, page *int, category, price, search *stri
 			&sv.Items[i].Id,
 			&sv.Items[i].CategoryId,
 			&sv.Items[i].Name,
-			&sv.Items[i].Color,
 			&sv.Items[i].Fabric,
-			&sv.Items[i].Size,
-			&sv.Items[i].Form,
 			&sv.Items[i].Price,
-			&sv.Items[i].Amount,
 			&sv.Items[i].Description,
 		)
 		if err != nil {
@@ -186,7 +174,7 @@ func (sv *ProductService) Update(category, name, color, fabric, size, form, amou
 	args := pgx.NamedArgs{"id": sv.Items[0].Id}
 	nextoption := true
 
-	for i := 0; i < 9; i++ {
+	for i := 0; i < 5; i++ {
 		switch {
 		case *category:
 			sql += "category_id=@category"
@@ -198,35 +186,15 @@ func (sv *ProductService) Update(category, name, color, fabric, size, form, amou
 			args["name"] = sv.Items[0].Name
 			*name = false
 
-		case *color:
-			sql += "product_color=@color"
-			args["percent"] = sv.Items[0].Color
-			*color = false
-
 		case *fabric:
 			sql += "product_fabric=@fabric"
 			args["fabric"] = sv.Items[0].Fabric
 			*fabric = false
 
-		case *size:
-			sql += "product_size=@size"
-			args["size"] = sv.Items[0].Size
-			*size = false
-
-		case *form:
-			sql += "product_size=@form"
-			args["form"] = sv.Items[0].Form
-			*form = false
-
 		case *price:
 			sql += "product_price=@price"
 			args["price"] = sv.Items[0].Price
 			*price = false
-
-		case *amount:
-			sql += "product_amount=@amount"
-			args["amount"] = sv.Items[0].Amount
-			*amount = false
 
 		case *description:
 			sql += "product_description=@description"

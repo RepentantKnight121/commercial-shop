@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -11,9 +10,9 @@ import (
 	"commercial-shop.com/services"
 )
 
-func CreateProduct(c *gin.Context) {
+func CreateProductDetail(c *gin.Context) {
 	// Create service and assign to data
-	data := services.ProductService{Items: []models.Product{{}}}
+	data := services.ProductDetailService{Items: []models.ProductDetail{{}}}
 	c.ShouldBindJSON(&data.Items[0])
 
 	// Execute method and send status request to user
@@ -26,9 +25,9 @@ func CreateProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": "create product successfully!"})
 }
 
-func DeleteProduct(c *gin.Context) {
+func DeleteProductDetail(c *gin.Context) {
 	// Create service and assign to data
-	data := services.ProductService{Items: []models.Product{{
+	data := services.ProductDetailService{Items: []models.ProductDetail{{
 		Id: c.Param("id"),
 	}}}
 
@@ -41,9 +40,9 @@ func DeleteProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": "delete product successfully!"})
 }
 
-func GetProduct(c *gin.Context) {
+func GetProductDetail(c *gin.Context) {
 	// Create service and assign to data
-	data := services.ProductService{Items: []models.Product{{
+	data := services.ProductDetailService{Items: []models.ProductDetail{{
 		Id: c.Param("id"),
 	}}}
 
@@ -56,34 +55,14 @@ func GetProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, data.Items)
 }
 
-func GetAllProduct(c *gin.Context) {
-	// Get limit
-	limit, err := strconv.Atoi(c.Query("limit"))
-	if err != nil {
-		limit = 10
-	}
-	if limit <= 0 {
-		limit = 10
-	}
-
-	// Get page
-	page, err := strconv.Atoi(c.Query("page"))
-	if err != nil {
-		page = 1
-	}
-	if page <= 0 {
-		page = 1
-	}
-
+func GetAllProductDetail(c *gin.Context) {
 	// Get search
-	search := c.Query("search")
-	price := c.Query("price")
-	category := c.Query("category")
+	productid := c.Query("productid")
 
 	// Create service and assign to data
 	// Then execute method and send status request to user
-	data := services.ProductService{}
-	err = data.GetAll(&limit, &page, &category, &price, &search)
+	data := services.ProductDetailService{}
+	err := data.GetAll(&productid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product value"})
 		return
@@ -91,34 +70,31 @@ func GetAllProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, data.Items)
 }
 
-func UpdateProduct(c *gin.Context) {
+func UpdateProductDetail(c *gin.Context) {
 	// Create service and assign to data
-	data := services.ProductService{Items: []models.Product{{}}}
+	data := services.ProductDetailService{Items: []models.ProductDetail{{}}}
 	c.ShouldBindJSON(&data.Items[0])
 	data.Items[0].Id = c.Param("id")
 
 	// Check input options
-	category, name, color, fabric, size, form, amount, price, description :=
-		true, true, true, true, true, true, true, true, true
+	productid_option, color_option, size_option, amount_option :=
+		true, true, true, true
 
-	if data.Items[0].CategoryId == "" {
-		category = false
+	if data.Items[0].ProductId == "" {
+		productid_option = false
 	}
-	if data.Items[0].Name == "" {
-		name = false
+	if data.Items[0].Color == "" {
+		color_option = false
 	}
-	if data.Items[0].Fabric == "" {
-		fabric = false
+	if data.Items[0].Size == "" {
+		size_option = false
 	}
-	if data.Items[0].Price == -1 {
-		price = false
-	}
-	if data.Items[0].Description == "" {
-		description = false
+	if data.Items[0].Amount == -1 {
+		amount_option = false
 	}
 
 	// Execute method and send status request to user
-	err := data.Update(&category, &name, &color, &fabric, &size, &form, &amount, &price, &description)
+	err := data.Update(&productid_option, &color_option, &size_option, &amount_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't update product!"})
 		return

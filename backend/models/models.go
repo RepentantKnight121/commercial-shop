@@ -28,15 +28,15 @@ type BillDetail struct {
 }
 
 type BillInfo struct {
-	Id              int       `json:"id"         binding:"required"`
+	Id              int       `json:"id"              binding:"required"`
 	AccountUsername string    `json:"accountUsername" binding:"required"`
-	Name            string    `json:"name"       binding:"required"`
-	Email           string    `json:"email"      binding:"required"`
-	Phone           string    `json:"phone"      binding:"required"`
-	Address         string    `json:"address"    binding:"required"`
-	Date            time.Time `json:"date"       binding:"required"`
-	Status          int       `json:"status"     binding:"required"`
-	Payment         int       `json:"payment"    binding:"required"`
+	Name            string    `json:"name"            binding:"required"`
+	Email           string    `json:"email"           binding:"required"`
+	Phone           string    `json:"phone"           binding:"required"`
+	Address         string    `json:"address"         binding:"required"`
+	Date            time.Time `json:"date"            binding:"required"`
+	Status          int       `json:"status"          binding:"required"`
+	Payment         int       `json:"payment"         binding:"required"`
 }
 
 type BillStatus struct {
@@ -69,13 +69,17 @@ type Product struct {
 	Id          string `json:"id"          binding:"required"`
 	CategoryId  string `json:"categoryId"  binding:"required"`
 	Name        string `json:"name"        binding:"required"`
-	Color       string `json:"color"       binding:"required"`
 	Fabric      string `json:"fabric"      binding:"required"`
-	Size        string `json:"size"        binding:"required"`
-	Form        string `json:"form"        binding:"required"`
 	Price       int    `json:"price"       binding:"required"`
-	Amount      int    `json:"amount"      binding:"required"`
 	Description string `json:"description" binding:"required"`
+}
+
+type ProductDetail struct {
+	Id        string `json:"id"          binding:"required"`
+	ProductId string `json:"productId"   binding:"required"`
+	Color     string `json:"color"       binding:"required"`
+	Size      string `json:"size"        binding:"required"`
+	Amount    int    `json:"amount"      binding:"required"`
 }
 
 type ProductWithImage struct {
