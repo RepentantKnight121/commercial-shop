@@ -6,13 +6,15 @@ import Menu from "../components/Menu"
 import Footer from "../components/Footer"
 import ListProductHomePage from "../components/ListProductHomePage"
 
+import { API_URL } from "../utils/URL"
+
 interface ApiResponse {
   message: string;
 }
 
 type ProductDetail = {
   handleProductId: (value: string) => void;
-};
+}
 
 function isNullOrUndefined(value: any): boolean {
   return value === null || value === undefined
@@ -24,8 +26,8 @@ async function getApiSession(
 ): Promise<ApiResponse> {
   try {
     const response = await axios.get(
-      `http://localhost:4505/api/account/${username}?token=${token}`
-    );
+      `${API_URL}/account/${username}?token=${token}`
+    )
     return response.data
   } catch (error) {
     throw new Error("Can't get data")
@@ -43,7 +45,7 @@ function Home(): JSX.Element {
   const handleLoggedIn = async (value: boolean) => {
     setLoggedIn(value)
     const username = Cookies.get("loginUsernameCookie")
-    await axios.patch(`http://localhost:4505/api/account/${username}`, {
+    await axios.patch(`${API_URL}/account/${username}`, {
       active: -1,
       token: "",
     })
