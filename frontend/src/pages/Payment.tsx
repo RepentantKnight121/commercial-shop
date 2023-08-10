@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 import Footer from "../components/Footer";
 import Menu from "../components/Menu";
@@ -178,6 +180,12 @@ export default function Payment(): JSX.Element {
 
       <div className="mt-4 py-4 w-full bg-grey-light text-coffee text-center text-2xl font-semibold ">
         Thanh toán
+      </div>
+      <div className="hover:cursor-pointer flex items-center underline underline-offset-2 ml-14 mt-10">
+        <FontAwesomeIcon icon={faChevronLeft} />
+        <a className="" href="/cart">
+          Quay về
+        </a>
       </div>
       <div className="mt-10 mb-1 flex w-4/5 px-14 mx-auto">
         {/* Thông tin nhận hàng */}
