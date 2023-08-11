@@ -8,12 +8,10 @@ import AdminMenu from "../components/admin/AdminMenu"
 import Footer from "../components/Footer"
 import Menu from "../components/Menu"
 
+import isNullOrUndefined from "../utils/check"
+
 interface ApiResponse {
   message: string
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
 }
 
 async function getApiSession(username: string, token: string): Promise<ApiResponse> {

@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Menu from "../components/Menu"
 import Footer from "../components/Footer"
 
+import isNullOrUndefined from "../utils/check"
+
 interface ApiResponse {
   message: string;
 }
@@ -24,10 +26,6 @@ function allStorage(): (string | null)[] {
   }
 
   return values
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
 }
 
 async function getApiSession(

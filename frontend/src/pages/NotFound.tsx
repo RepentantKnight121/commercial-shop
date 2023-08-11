@@ -5,12 +5,10 @@ import Cookies from "js-cookie"
 import Menu from "../components/Menu"
 import Footer from "../components/Footer"
 
+import isNullOrUndefined from "../utils/check"
+
 interface ApiResponse {
   message: string
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined
 }
 
 async function getApiSession(username: string, token: string): Promise<ApiResponse> {

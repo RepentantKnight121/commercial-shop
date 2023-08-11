@@ -8,33 +8,10 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../components/Footer";
 import Menu from "../components/Menu";
 
+import isNullOrUndefined from "../utils/check"
+
 interface ApiResponse {
   message: string;
-}
-
-function generateRandomKeywords(): string[] {
-  const keywords: string[] = [];
-  const validAsciiRange = { start: 32, end: 126 };
-
-  const getRandomLength = () => Math.floor(Math.random() * 20) + 1; // Random length between 1 and 20
-
-  for (let i = 0; i < 100; i++) {
-    // Generating 100 random keywords for demonstration
-    const keywordLength = getRandomLength();
-    let keyword = "";
-
-    for (let j = 0; j < keywordLength; j++) {
-      const randomAscii =
-        Math.floor(
-          Math.random() * (validAsciiRange.end - validAsciiRange.start + 1)
-        ) + validAsciiRange.start;
-      keyword += String.fromCharCode(randomAscii);
-    }
-
-    keywords.push(keyword);
-  }
-
-  return keywords;
 }
 
 function allStorage(): (string | null)[] {
@@ -47,10 +24,6 @@ function allStorage(): (string | null)[] {
   }
 
   return values;
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
 }
 
 async function getApiSession(

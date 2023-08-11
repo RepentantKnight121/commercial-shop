@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import Footer from "../components/Footer";
 import Menu from "../components/Menu";
 
+import isNullOrUndefined from "../utils/check";
+
 interface ApiResponse {
   message: string;
 }
@@ -15,10 +17,6 @@ interface AccountInfoObject {
   displayName: string;
   email: string;
   active: number;
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined;
 }
 
 async function getApiAccountInfo(username: string): Promise<ApiResponse> {
