@@ -1,12 +1,11 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import Cookies from "js-cookie";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { v4 as uuidv4 } from "uuid"
+import Cookies from "js-cookie"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 
-import Footer from "../components/Footer";
-import Menu from "../components/Menu";
+import Menu from "../components/Menu"
 
 import isNullOrUndefined from "../utils/check"
 
@@ -44,47 +43,47 @@ async function getNewestBill(): Promise<ApiResponse> {
   try {
     const response = await axios.get(
       `http://localhost:4505/api/bill-info?newest=true`
-    );
-    return response.data;
+    )
+    return response.data
   } catch (error) {
-    throw new Error("Can't get data");
+    throw new Error("Can't get data")
   }
 }
 
 const convertMoneyToVND = (money: number) => {
-  return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+  return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ"
 };
 
 export default function Payment(): JSX.Element {
   // Login
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
   // Store products
-  const [products, setProducts] = useState<Object[]>([]);
+  const [products, setProducts] = useState<any[]>([])
 
   // Customer Form
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
+  const [name, setName] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [phone, setPhone] = useState<string>("")
+  const [address, setAddress] = useState<string>("")
 
-  var totalMoney = 0;
+  var totalMoney = 0
 
   const handleLoggedIn = async (value: boolean) => {
-    setLoggedIn(value);
-    const username = Cookies.get("loginUsernameCookie");
+    setLoggedIn(value)
+    const username = Cookies.get("loginUsernameCookie")
     await axios.patch(`http://localhost:4505/api/account/${username}`, {
       active: -1,
       token: "",
-    });
-    Cookies.remove("loginTokenCookie");
-    Cookies.remove("loginUsernameCookie");
-  };
+    })
+    Cookies.remove("loginTokenCookie")
+    Cookies.remove("loginUsernameCookie")
+  }
 
   const handlePayment = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    event.preventDefault();
+    event.preventDefault()
 
     if (loggedIn) {
       if (products !== null) {
@@ -102,49 +101,49 @@ export default function Payment(): JSX.Element {
             products.map(async (value: any) => {
               await axios.post(`http://localhost:4505/api/bill-detail`, {
                 billId: newestBill.id,
-                productId: value.id,
+                productDetailId: value.id,
                 discountId: "1",
                 amount: value.amount,
-              });
-            });
+              })
+            })
 
             // Message to user
-            alert("Đơn hàng đã được gửi!");
+            alert("Đơn hàng đã được gửi!")
           })
           .catch((error) => {
-            console.log(error);
-            alert("Đơn hàng không gửi được!");
-          });
+            console.log(error)
+            alert("Đơn hàng không gửi được!")
+          })
 
-        return;
+        return
       }
     }
 
-    alert("Vui lòng đăng nhập trước khi tiến hành thanh toán!");
-  };
+    alert("Vui lòng đăng nhập trước khi tiến hành thanh toán!")
+  }
 
   useEffect(() => {
     // Check login or not
-    const token = Cookies.get("loginTokenCookie");
-    const username = Cookies.get("loginUsernameCookie");
+    const token = Cookies.get("loginTokenCookie")
+    const username = Cookies.get("loginUsernameCookie")
 
     if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
       getApiSession(username!, token!)
         .then((user_data: any) => {
           if (user_data.session === token) {
-            setLoggedIn(true);
+            setLoggedIn(true)
           }
         })
         .catch((error: any) => {
-          console.log("Can't get data from api");
-          console.log(error);
+          console.log("Can't get data from api")
+          console.log(error)
         });
     }
 
     // Get products from local storage
-    const items = allStorage();
-    const productObjects = items.map((item) => JSON.parse(item || ""));
-    setProducts(productObjects);
+    const items = allStorage()
+    const productObjects = items.map((item) => JSON.parse(item || ""))
+    setProducts(productObjects)
   }, []);
 
   return (
@@ -241,9 +240,12 @@ export default function Payment(): JSX.Element {
             )}
           </span>
 
-          <div className="flex justify-between">
-            <p className="font-semibold">Tổng tiền sản phẩm :</p>
-            <p>{convertMoneyToVND(totalMoney)}</p>
+          <div className="flex-row justify-between">
+            <p className="my-auto mx-4 font-semibold">
+              Tổng số lượng sản phẩm:{" "}
+              {products.reduce((total, product) => total + product.amount, 0)}
+            </p>
+            <p className="font-semibold">Tổng tiền sản phẩm: {convertMoneyToVND(totalMoney)}</p>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 
-import Footer from "../components/Footer";
 import Menu from "../components/Menu";
 
 import isNullOrUndefined from "../utils/check";

@@ -20,11 +20,11 @@ type AccountRole struct {
 }
 
 type BillDetail struct {
-	Id         int    `json:"id"         binding:"required"`
-	BillId     int    `json:"billId"     binding:"required"`
-	ProductId  string `json:"productId"  binding:"required"`
-	DiscountId string `json:"discountId" binding:"required"`
-	Amount     int    `json:"amount"     binding:"required"`
+	Id              int    `json:"id"               binding:"required"`
+	BillId          int    `json:"billId"           binding:"required"`
+	ProductDetailId string `json:"productDetailId"  binding:"required"`
+	DiscountId      string `json:"discountId"       binding:"required"`
+	Amount          int    `json:"amount"           binding:"required"`
 }
 
 type BillInfo struct {

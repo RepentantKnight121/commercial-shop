@@ -8,7 +8,6 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Menu from "../components/Menu"
-import Footer from "../components/Footer"
 
 import isNullOrUndefined from "../utils/check"
 

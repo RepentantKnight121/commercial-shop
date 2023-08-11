@@ -109,7 +109,7 @@ func UpdateBillDetail(c *gin.Context) {
 	if data.Items[0].BillId == -1 {
 		billid = false
 	}
-	if data.Items[0].ProductId == "" {
+	if data.Items[0].ProductDetailId == "" {
 		productdetailid = false
 	}
 	if data.Items[0].DiscountId == "" {

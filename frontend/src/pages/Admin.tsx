@@ -5,7 +5,6 @@ import Cookies from "js-cookie"
 
 import AdminDisplay from "../components/admin/AdminDisplay"
 import AdminMenu from "../components/admin/AdminMenu"
-import Footer from "../components/Footer"
 import Menu from "../components/Menu"
 
 import isNullOrUndefined from "../utils/check"

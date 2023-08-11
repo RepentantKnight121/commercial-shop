@@ -1,5 +1,4 @@
 import Menu from "../components/Menu";
-import Footer from "../components/Footer";
 
 function About(): JSX.Element {
   return (

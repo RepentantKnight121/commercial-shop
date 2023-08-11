@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 
 import Menu from "../components/Menu"
-import Footer from "../components/Footer"
 
 import isNullOrUndefined from "../utils/check"
 
