@@ -84,8 +84,6 @@ export default function Product(): JSX.Element {
       />
 
       <ProductShow handleProductId={handleProductId} />
-
-      <Footer />
     </div>
   )
 

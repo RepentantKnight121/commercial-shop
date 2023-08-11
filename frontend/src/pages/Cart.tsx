@@ -240,8 +240,6 @@ function Cart(): JSX.Element {
           </button>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -247,8 +247,6 @@ export default function Payment(): JSX.Element {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

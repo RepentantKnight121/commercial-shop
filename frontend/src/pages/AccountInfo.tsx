@@ -242,8 +242,6 @@ function AccountInfo(): JSX.Element {
           <div>Không tìm thấy dữ liệu</div>
         )}
       </div>
-
-      <Footer />
     </div>
   );
 }

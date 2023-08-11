@@ -164,8 +164,6 @@ function LoginRegister(): JSX.Element {
           </div>
         </form>
       </div>
-
-      <Footer />
     </div>
   )
 }

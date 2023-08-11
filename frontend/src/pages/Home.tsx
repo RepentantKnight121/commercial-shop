@@ -77,7 +77,6 @@ function Home(): JSX.Element {
       <p className="mt-10 text-center text-4xl font-semibold">SẢN PHẨM</p>
 
       <ListProductHomePage handleProductId={handleProductId} />
-      <Footer />
     </div>
   )
 }

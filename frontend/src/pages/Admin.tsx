@@ -97,8 +97,6 @@ export default function Admin() {
       <Menu loggedIn={loggedIn} handleLoggedIn={handleLoggedIn} />
 
       {pageComponent}
-
-      <Footer />
     </div>
   )
 }
