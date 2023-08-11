@@ -93,17 +93,16 @@ func (sv *ProductDetailService) GetOnlyColorOrSize(color, size *bool) error {
 
 	// SQL commamd
 	sql := ""
-	args := pgx.NamedArgs{"productId": sv.Items[0].ProductId}
 
 	// SQL options check
 	if *color {
-		sql = "SELECT DISTINCT product_detail_color FROM ProductDetail WHERE product_id=@productId;"
+		sql = "SELECT DISTINCT product_detail_color FROM ProductDetail WHERE product_id='" + sv.Items[0].ProductId + "';"
 	} else if *size {
-		sql = "SELECT DISTINCT product_detail_size FROM ProductDetail WHERE product_id=@productId;"
+		sql = "SELECT DISTINCT product_detail_size FROM ProductDetail WHERE product_id='" + sv.Items[0].ProductId + "';"
 	}
 
 	// Get rows from conn with SQL command
-	rows, err := conn.Query(database.CTX, sql, args)
+	rows, err := conn.Query(database.CTX, sql)
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +18,6 @@ func CreateProductDetail(c *gin.Context) {
 	err := data.Create()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can't create product-detail!"})
-		fmt.Println(err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": "create product successfully!"})
@@ -57,18 +55,12 @@ func GetProductDetail(c *gin.Context) {
 
 func GetOnlyColorOrSizeProductDetail(c *gin.Context) {
 	// Get color and size
-	color_option := false
-	if c.Query("color") == "true" {
-		color_option = true
-	}
-	size_option := false
-	if c.Query("size") == "true" {
-		size_option = true
-	}
+	color_option := c.Query("color") == "true"
+	size_option := c.Query("size") == "true"
 
 	// Create service and assign to data
 	// Then execute method and send status request to user
-	data := services.ProductDetailService{}
+	data := services.ProductDetailService{Items: []models.ProductDetail{{}}}
 	data.Items[0].ProductId = c.Query("productid")
 
 	err := data.GetOnlyColorOrSize(&color_option, &size_option)
@@ -76,13 +68,19 @@ func GetOnlyColorOrSizeProductDetail(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product-detail value"})
 		return
 	}
+
+	// Remove the last item from the slice if there are valid items
+	if len(data.Items) > 0 {
+		data.Items = data.Items[:len(data.Items)-1]
+	}
+
 	c.JSON(http.StatusOK, data.Items)
 }
 
 func GetAllProductDetail(c *gin.Context) {
 	// Create service and assign to data
 	// Then execute method and send status request to user
-	data := services.ProductDetailService{}
+	data := services.ProductDetailService{Items: []models.ProductDetail{{}}}
 	data.Items[0].ProductId = c.Query("productid")
 
 	err := data.GetAll()

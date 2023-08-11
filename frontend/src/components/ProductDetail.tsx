@@ -2,28 +2,60 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-
-type ProductDetail = {
-  
-}
+import { API_URL } from "../utils/URL";
 
 type ProductProps = {
   productid: string
 }
 
-async function getApiProduct(id: string): Promise<Object[]> {
+type ProductObject = {
+  id: string
+  categoryId: string
+  name: string
+  fabric: string
+  price: number
+  description: string
+}
+
+type ProductColorObject = {
+  color: string
+}
+
+type ProductSizeObject = {
+  size: string
+}
+
+async function getApiProduct(id: string): Promise<ProductObject | undefined> {
   try {
-    const response = await axios.get(`http://localhost:4505/api/product/${id}`)
+    const response = await axios.get(`${API_URL}/product/${id}`)
+    return response.data[0]
+  } catch (error) {
+    return undefined
+  }
+}
+
+async function getApiProductColor(id: string): Promise<ProductColorObject[] | undefined> {
+  try {
+    const response = await axios.get(`${API_URL}/product-detail/onlycolororsize?productid=${id}&color=true`)
     return response.data
   } catch (error) {
-    return [{ message: "Can't get data" }]
+    return undefined
+  }
+}
+
+async function getApiProductSize(id: string): Promise<ProductSizeObject[] | undefined> {
+  try {
+    const response = await axios.get(`${API_URL}/product-detail/onlycolororsize?productid=${id}&size=true`)
+    return response.data
+  } catch (error) {
+    return undefined
   }
 }
 
 async function getApiProductImage(id: string): Promise<Object[]> {
   try {
     const response = await axios.get(
-      `http://localhost:4505/api/product-image?productid=${id}&nopagelimit=true`
+      `${API_URL}/product-image?productid=${id}&nopagelimit=true`
     )
     return response.data
   } catch (error) {
@@ -32,38 +64,35 @@ async function getApiProductImage(id: string): Promise<Object[]> {
 }
 
 export default function ProductDetail(props: ProductProps) {
-  const [product, setProduct] = useState<Object[]>()
+  const [product, setProduct] = useState<ProductObject | undefined>()
+  const [productcolor, setProductcolor] = useState<ProductColorObject[] | undefined>()
+  const [productsize, setProductsize] = useState<ProductSizeObject[] | undefined>()
   const [productimage, setProductImage] = useState<any[]>([])
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0)
-  const [ArrayProps, setArrayProps]: any[] = useState([])
-  const [arraySize, setArraySize] = useState([])
-  const [arrayColor, setArrayColor] = useState([])
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
     const fecthData = async () => {
-      const productData = await getApiProduct(props.productid)
-      setProduct(productData)
+      const productData: ProductObject | undefined = await getApiProduct(props.productid)
+      if (productData) {
+        setProduct(productData)
+      }
+      const productColorData: ProductColorObject[] | undefined = await getApiProductColor(props.productid)
+      if (productColorData) {
+        setProductcolor(productColorData)
+      }
+      const productSizeData: ProductSizeObject[] | undefined = await getApiProductSize(props.productid)
+      if (productSizeData) {
+        setProductsize(productSizeData)
+      }
       const productImageData: any = await getApiProductImage(props.productid)
       setProductImage(productImageData)
-
-      let x: any;
-      let product: any = productData[0];
-      if (product === null) {
-        for (x in product) {
-          ArrayProps.push(product[x]);
-          setArrayProps[ArrayProps];
-        }
-      }
-      console.log(ArrayProps);
-      let arrSize = ArrayProps[5].split(" ");
-      setArraySize(arrSize);
-      let arrColor = ArrayProps[3].split(" , ");
-      setArrayColor(arrColor);
     }
 
     fecthData()
-  }, []);
+  }, [])
+
+  console.log(productcolor)
 
   return (
     <div>
@@ -99,32 +128,34 @@ export default function ProductDetail(props: ProductProps) {
 
         {/* Space Descript Product*/}
         <div className="w-2/5 mx-auto flex flex-col">
-          <p className="text-center text-2xl">{`${ArrayProps[2]}`}</p>
+          {product ?
+            (
+            <>
+            <p>{product.name}</p>
+            <p>Giá: {product.price}</p>
+            <p>Chất liệu {product.fabric}</p>
+            <p>Mô tả: {product.description}</p>
+            </>
+            )
+            :
+            <p>Không có dữ liệu</p>
+          }
 
-          <p className="mt-7 font-medium ml-2 text-xl">Kích thước</p>
-          <div className="mt-2 w-full flex">
-            {arraySize.map((value: string) => (
-              <button
-                //onClick={() => setSizeSelected(value)}
-                className="px-8 mx-2 py-2 rounded-md  border border-solid border-gray-400 hover:text-red-400">
-                {`${value}`}
-              </button>
-            ))}
-          </div>
-          <p className="font-medium ml-2 text-xl mt-2">Màu sắc</p>
-          <div className="w-full mt-4 flex">
-            {arrayColor.map((value: string) => (
-              <button
-                //onClick={() => setSizeSelected(value)}
-                className="px-8 mx-2 py-2 rounded-md  bg-black text-white  hover:text-red-400">
-                {`${value}`}
-              </button>
-            ))}
-          </div>
+          {productcolor ?
+            productcolor.map((value: any) => {
+              return <p>{value.color}</p>
+            })
+            :
+            <p>Không có dữ liệu về màu sắc</p>
+          }
 
-          <div>
-            
-          </div>
+          {productsize ?
+            productsize.map((value: any) => {
+              return <p>{value.size}</p>
+            })
+            :
+            <p>Không có dữ liệu về size</p>
+          }
 
           <button className="w-full  my-2  border border-solid border-black  py-3 mx-auto ">
             Thêm vào giỏ hàng

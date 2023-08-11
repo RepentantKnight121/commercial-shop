@@ -82,7 +82,12 @@ export default function Product(): JSX.Element {
         alt="Banner"
       />
 
-      <ProductShow handleProductId={handleProductId} />
+      { productid === ""
+        ?
+        <ProductShow handleProductId={handleProductId} />
+        :
+        <ProductDetail productid={productid} />
+      }
     </div>
   )
 

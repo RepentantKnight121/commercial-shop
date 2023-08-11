@@ -12,10 +12,6 @@ interface ApiResponse {
   message: string;
 }
 
-type ProductDetail = {
-  handleProductId: (value: string) => void;
-}
-
 async function getApiSession(
   username: string,
   token: string
