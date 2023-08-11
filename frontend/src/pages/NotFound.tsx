@@ -3,14 +3,11 @@ import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 
 import Menu from "../components/Menu"
-import Footer from "../components/Footer"
+
+import isNullOrUndefined from "../utils/check"
 
 interface ApiResponse {
   message: string
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined
 }
 
 async function getApiSession(username: string, token: string): Promise<ApiResponse> {
@@ -60,8 +57,6 @@ function NotFound(): JSX.Element {
 
       <h1 className="text-center text-3xl">Không tìm thấy trang</h1>
       <p className="text-center">Vui lòng thử lại trang khác</p>
-
-      <Footer />
     </div>
   );
 }

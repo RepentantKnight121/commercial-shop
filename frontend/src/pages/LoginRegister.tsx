@@ -4,7 +4,6 @@ import { useState } from "react"
 import Cookies from "js-cookie"
 
 import Menu from "../components/Menu"
-import Footer from "../components/Footer"
 
 async function getApiUser(username: string) {
   try {
@@ -164,8 +163,6 @@ function LoginRegister(): JSX.Element {
           </div>
         </form>
       </div>
-
-      <Footer />
     </div>
   )
 }

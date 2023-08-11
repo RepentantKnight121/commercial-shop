@@ -3,9 +3,9 @@ import { useState, useEffect } from "react"
 import Cookies from "js-cookie"
 
 import Menu from "../components/Menu"
-import Footer from "../components/Footer"
 import ListProductHomePage from "../components/ListProductHomePage"
 
+import isNullOrUndefined from "../utils/check"
 import { API_URL } from "../utils/URL"
 
 interface ApiResponse {
@@ -14,10 +14,6 @@ interface ApiResponse {
 
 type ProductDetail = {
   handleProductId: (value: string) => void;
-}
-
-function isNullOrUndefined(value: any): boolean {
-  return value === null || value === undefined
 }
 
 async function getApiSession(
@@ -80,7 +76,6 @@ function Home(): JSX.Element {
       <p className="mt-10 text-center text-4xl font-semibold">SẢN PHẨM</p>
 
       <ListProductHomePage handleProductId={handleProductId} />
-      <Footer />
     </div>
   )
 }
