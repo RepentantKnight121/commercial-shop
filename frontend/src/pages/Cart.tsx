@@ -1,15 +1,15 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-import { v4 as uuidv4 } from "uuid"
-import Cookies from "js-cookie"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { v4 as uuidv4 } from "uuid";
+import Cookies from "js-cookie";
 
-import { faTrash } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Menu from "../components/Menu"
+import Menu from "../components/Menu";
 
-import isNullOrUndefined from "../utils/check"
+import isNullOrUndefined from "../utils/check";
 
 interface ApiResponse {
   message: string;
@@ -21,10 +21,10 @@ function allStorage(): (string | null)[] {
     i = keys.length;
 
   while (i--) {
-    values.push(localStorage.getItem(keys[i]))
+    values.push(localStorage.getItem(keys[i]));
   }
 
-  return values
+  return values;
 }
 
 async function getApiSession(
@@ -34,55 +34,55 @@ async function getApiSession(
   try {
     const response = await axios.get(
       `http://localhost:4505/api/account/${username}?token=${token}`
-    )
-    return response.data
+    );
+    return response.data;
   } catch (error) {
-    throw new Error("Can't get data")
+    throw new Error("Can't get data");
   }
 }
 
 function Cart(): JSX.Element {
   // Link to other page and refresh page
   const navigate = useNavigate();
-  const [refresh, setRefresh] = useState<boolean>(false)
+  const [refresh, setRefresh] = useState<boolean>(false);
 
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
-  const [products, setProducts] = useState<any[]>([])
-  var totalMoney = 0
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [products, setProducts] = useState<any[]>([]);
+  var totalMoney = 0;
 
   const handleLoggedIn = async (value: boolean) => {
-    setLoggedIn(value)
+    setLoggedIn(value);
     const username = Cookies.get("loginUsernameCookie");
     await axios.patch(`http://localhost:4505/api/account/${username}`, {
       active: -1,
       token: "",
-    })
-    Cookies.remove("loginTokenCookie")
-    Cookies.remove("loginUsernameCookie")
-  }
+    });
+    Cookies.remove("loginTokenCookie");
+    Cookies.remove("loginUsernameCookie");
+  };
 
   const handleDeleteAllCart = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    localStorage.clear()
-    setProducts([])
-  }
+    localStorage.clear();
+    setProducts([]);
+  };
 
   const handleDeleteItemCart = async (
     event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
     value: string
   ) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    localStorage.removeItem(value)
-    setRefresh(!refresh)
-  }
+    localStorage.removeItem(value);
+    setRefresh(!refresh);
+  };
 
   const handleAmountChange = (index: number, newValue: number) => {
     setProducts((prevProducts) => {
-      const updatedProducts = [...prevProducts]
+      const updatedProducts = [...prevProducts];
 
       // Cập nhật amount cho sản phẩm cụ thể trong mảng
       updatedProducts[index] = {
@@ -94,47 +94,47 @@ function Cart(): JSX.Element {
       localStorage.setItem(
         updatedProducts[index].id,
         JSON.stringify(updatedProducts[index])
-      )
+      );
 
-      return updatedProducts
-    })
-  }
+      return updatedProducts;
+    });
+  };
 
   const handlePayment = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!loggedIn) {
       alert(
         "Vui lòng, tạo tài khoản và đăng nhập trước khi tiến hành thanh toán"
-      )
-      return
+      );
+      return;
     }
 
-    navigate("/payment")
-  }
+    navigate("/payment");
+  };
 
   const convertMoneyToVND = (money: number) => {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-  }
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   useEffect(() => {
     // Get user login
-    const token = Cookies.get("loginTokenCookie")
-    const username = Cookies.get("loginUsernameCookie")
+    const token = Cookies.get("loginTokenCookie");
+    const username = Cookies.get("loginUsernameCookie");
 
     if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
       getApiSession(username!, token!)
         .then((user_data: any) => {
           if (user_data.session === token) {
-            setLoggedIn(true)
+            setLoggedIn(true);
           }
         })
         .catch((error: any) => {
-          console.log("Can't get data from api")
-          console.log(error)
-        })
+          console.log("Can't get data from api");
+          console.log(error);
+        });
     }
 
     const items = allStorage();
@@ -228,7 +228,13 @@ function Cart(): JSX.Element {
             {products.reduce((total, product) => total + product.amount, 0)}
           </p>
           <p className="my-auto mx-4 font-semibold">
-            Tổng tiền tạm tính : {convertMoneyToVND(totalMoney)} VND
+            {convertMoneyToVND(
+              products.reduce(
+                (total, product) => total + product.price * product.amount,
+                0
+              )
+            )}
+            {" VND"}
           </p>
           <button
             className="px-8 py-2 bg-grey-light text-lg text-coffee font-barlow"

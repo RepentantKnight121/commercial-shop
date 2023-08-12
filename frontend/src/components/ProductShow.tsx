@@ -7,34 +7,37 @@ import axios, { AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { API_URL } from "../utils/URL"
+import { API_URL } from "../utils/URL";
 
 type ProductDetail = {
-  handleProductId: (value: string) => void
-}
+  handleProductId: (value: string) => void;
+};
 
 interface CategoryObject {
-  id:   string
-  name: string
+  id: string;
+  name: string;
 }
 
 interface ProductWithImageObject {
-  id: string
-  categoryId: string
-  name: string
-  fabric: string
-  price: number
-  description: string
+  id: string;
+  categoryId: string;
+  name: string;
+  fabric: string;
+  price: number;
+  description: string;
 }
 
-async function getApiCategory(limit: number, page: number): Promise<CategoryObject[] | undefined> {
+async function getApiCategory(
+  limit: number,
+  page: number
+): Promise<CategoryObject[] | undefined> {
   try {
     const response: AxiosResponse<any, any> = await axios.get(
       `${API_URL}/category?limit=${limit}&page=${page}`
-    )
-    return response.data
+    );
+    return response.data;
   } catch (error) {
-    return undefined
+    return undefined;
   }
 }
 
@@ -61,51 +64,58 @@ async function getApiProductWithImage(
     const response: AxiosResponse<any, any> = await axios.get(apistring);
     return response.data;
   } catch (error) {
-    return undefined
+    return undefined;
   }
 }
 
 function ProductShow(props: ProductDetail): JSX.Element {
-  let component: JSX.Element = <></>
+  let component: JSX.Element = <></>;
 
   // State to store the API data
-  const [categories, setCategories] = useState<CategoryObject[]>([])
-  const [productwithimages, setProductWithImages] = useState<ProductWithImageObject[]>([])
+  const [categories, setCategories] = useState<CategoryObject[]>([]);
+  const [productwithimages, setProductWithImages] = useState<
+    ProductWithImageObject[]
+  >([]);
 
-  const [limit, setLimit] = useState<number>(12)
-  const [page, setPage] = useState<number>(1)
-  const [category, setCategory] = useState<string>("")
-  const [price, setPrice] = useState<string>("asc")
-  const [search, setSearch] = useState<string>("")
+  const [limit, setLimit] = useState<number>(12);
+  const [page, setPage] = useState<number>(1);
+  const [category, setCategory] = useState<string>("");
+  const [price, setPrice] = useState<string>("asc");
+  const [search, setSearch] = useState<string>("");
 
   const convertMoneyToVND = (money: number) => {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ"
-  }
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
+  };
 
   const handleCategoryChange = async (newCategory: string) => {
-    setCategory(newCategory)
-    const data: ProductWithImageObject[] | undefined = await getApiProductWithImage(limit, page, newCategory, price, search)
+    setCategory(newCategory);
+    const data: ProductWithImageObject[] | undefined =
+      await getApiProductWithImage(limit, page, newCategory, price, search);
     if (data) {
-      setProductWithImages(data)
+      setProductWithImages(data);
     }
-  }
+  };
   const handleProductId = (value: string) => {
-    props.handleProductId(value)
-  }
+    props.handleProductId(value);
+  };
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
     (async () => {
-      const dataCategory: CategoryObject[] | undefined = await getApiCategory(limit, 1)
+      const dataCategory: CategoryObject[] | undefined = await getApiCategory(
+        limit,
+        1
+      );
       if (dataCategory) {
-        setCategories(dataCategory)
+        setCategories(dataCategory);
       }
-      const dataProductWithImage: ProductWithImageObject[] | undefined = await getApiProductWithImage(limit, page, category, price, search)
+      const dataProductWithImage: ProductWithImageObject[] | undefined =
+        await getApiProductWithImage(limit, page, category, price, search);
       if (dataProductWithImage) {
-        setProductWithImages(dataProductWithImage)
+        setProductWithImages(dataProductWithImage);
       }
-    })()
-  }, [category, page, price])
+    })();
+  }, [category, page, price]);
 
   component = (
     <div className="flex my-20">
@@ -138,7 +148,7 @@ function ProductShow(props: ProductDetail): JSX.Element {
                   }}>
                   {value.name}
                 </p>
-              )
+              );
             })
           )}
         </div>
@@ -212,11 +222,11 @@ function ProductShow(props: ProductDetail): JSX.Element {
                       onClick={() => handleProductId(value.id)}>
                       Xem Chi tiết
                     </button>
-                    {/* {value.amount === 0 ? (
+                    {value.amount === 0 ? (
                       <div className="absolute text-xl flex justify-center text-white items-center top-1/4 left-1/4 right-1/4">
                         <p>HẾT HÀNG</p>
                       </div>
-                    ) : null} */}
+                    ) : null}
                   </div>
                 );
               })
@@ -227,7 +237,7 @@ function ProductShow(props: ProductDetail): JSX.Element {
     </div>
   );
 
-  return component
+  return component;
 }
 
-export default ProductShow
+export default ProductShow;
