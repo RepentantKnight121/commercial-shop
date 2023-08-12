@@ -22,9 +22,17 @@ type ProductObject = {
 
 type ProductDetailObject = {
   id: string
-  productDetailId: string
+  productId: string
   color: string
   size: string
+  amount: number
+}
+
+type ProductCartObject = {
+  name: string
+  image: any
+  id: string
+  price: number
   amount: number
 }
 
@@ -68,15 +76,30 @@ export default function ProductDetail(props: ProductProps) {
   const [activeSize, setActiveSize] = useState<string>("")
   const [amount, setAmount] = useState<number>(1)
 
-  const handleAddCart = async (value: ProductDetailObject) => {
-    value.amount = amount
-    localStorage.setItem(`${value.id}`, JSON.stringify(value))
+  const handleAddCart = async (productname: string, productimage: any, productdetailid: string, productdetailprice: number, productdetailamount: number) => {
+    productdetailamount = amount
+    const data: ProductCartObject = {
+      name: productname,
+      image: productimage,
+      id: productdetailid,
+      price: productdetailprice,
+      amount: productdetailamount,
+    }
+    localStorage.setItem(`${productdetailid}`, JSON.stringify(data))
+    alert("Thêm giỏ hàng thành công!")
   }
 
-  const handleBuyNow = async (value: ProductDetailObject) => {
+  const handleBuyNow = async (productname: string, productimage: any, productdetailid: string, productdetailprice: number, productdetailamount: number) => {
     localStorage.clear()
-    value.amount = 1
-    localStorage.setItem(`${value.id}`, JSON.stringify(value))
+    productdetailamount = amount
+    const data: ProductCartObject = {
+      name: productname,
+      image: productimage,
+      id: productdetailid,
+      price: productdetailprice,
+      amount: productdetailamount,
+    }
+    localStorage.setItem(`${productdetailid}`, JSON.stringify(data))
     navigate("/cart")
   }
 
@@ -247,7 +270,9 @@ export default function ProductDetail(props: ProductProps) {
             if (selectedProductDetail) {
               // Use the selectedProductDetail to proceed with your purchase logic
               // For example, you can call the handleAddCart function with the selectedProductDetail
-              handleAddCart(selectedProductDetail)
+              if (product) {
+                handleAddCart(product.name, productimage.at(activeImageIndex)?.image, selectedProductDetail.id, product.price, selectedProductDetail.amount)
+              }
             }
           }}>
             Thêm vào giỏ hàng
@@ -266,7 +291,9 @@ export default function ProductDetail(props: ProductProps) {
               if (selectedProductDetail) {
                 // Use the selectedProductDetail to proceed with your purchase logic
                 // For example, you can call the handleBuyNow function with the selectedProductDetail
-                handleBuyNow(selectedProductDetail)
+                if (product) {
+                  handleBuyNow(product.name, productimage.at(activeImageIndex)?.image, selectedProductDetail.id, product.price, selectedProductDetail.amount)
+                }
               }
             }}>
             Mua ngay
