@@ -87,6 +87,10 @@ function AdminDisplay(props: Display): JSX.Element {
       getApi(props.display).then((responseData) => {
         setData(responseData)
       })
+    } else if (props.display === "product-detail") {
+      getApi(props.display).then((responseData) => {
+        setData(responseData)
+      })
     } else if (props.display === "product-image") {
       getApi(props.display).then((responseData) => {
         setData(responseData)
@@ -269,7 +273,11 @@ function AdminDisplay(props: Display): JSX.Element {
           <thead className="bg-sky-300">
             <tr className="text-center">
               <th className="border-2 border-black">Id</th>
-              <th className="border-2 border-black">Customer Id</th>
+              <th className="border-2 border-black">Account Username</th>
+              <th className="border-2 border-black">Name</th>
+              <th className="border-2 border-black">Email</th>
+              <th className="border-2 border-black">Phone</th>
+              <th className="border-2 border-black">Address</th>
               <th className="border-2 border-black">Date</th>
               <th className="border-2 border-black">Status</th>
               <th className="border-2 border-black">Payment</th>
@@ -285,7 +293,11 @@ function AdminDisplay(props: Display): JSX.Element {
           ) : (data.map((value: any) => (
             <tr className="text-center" key={uuidv4()}>
               <td className="border-2 border-black">{value.id}</td>
-              <td className="border-2 border-black">{value.customerId}</td>
+              <td className="border-2 border-black">{value.accountUsername}</td>
+              <td className="border-2 border-black">{value.name}</td>
+              <td className="border-2 border-black">{value.email}</td>
+              <td className="border-2 border-black">{value.phone}</td>
+              <td className="border-2 border-black">{value.address}</td>
               <td className="border-2 border-black">{value.date}</td>
               <td className="border-2 border-black">{value.status}</td>
               <td className="border-2 border-black">{value.payment}</td>
@@ -309,7 +321,11 @@ function AdminDisplay(props: Display): JSX.Element {
           <tfoot className="bg-sky-300">
             <tr className="text-center">
               <th className="border-2 border-black">Id</th>
-              <th className="border-2 border-black">Customer Id</th>
+              <th className="border-2 border-black">Account Username</th>
+              <th className="border-2 border-black">Name</th>
+              <th className="border-2 border-black">Email</th>
+              <th className="border-2 border-black">Phone</th>
+              <th className="border-2 border-black">Address</th>
               <th className="border-2 border-black">Date</th>
               <th className="border-2 border-black">Status</th>
               <th className="border-2 border-black">Payment</th>
@@ -346,8 +362,7 @@ function AdminDisplay(props: Display): JSX.Element {
             <tr className="text-center">
               <th className="border-2 border-black">Id</th>
               <th className="border-2 border-black">Bill Id</th>
-              <th className="border-2 border-black">Product Id</th>
-              <th className="border-2 border-black">Discount Id</th>
+              <th className="border-2 border-black">Product Detail Id</th>              <th className="border-2 border-black">Discount Id</th>
               <th className="border-2 border-black">Amount</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
@@ -362,7 +377,7 @@ function AdminDisplay(props: Display): JSX.Element {
             <tr className="text-center" key={uuidv4()}>
               <td className="border-2 border-black">{value.id}</td>
               <td className="border-2 border-black">{value.billId}</td>
-              <td className="border-2 border-black">{value.productId}</td>
+              <td className="border-2 border-black">{value.productDetailId}</td>
               <td className="border-2 border-black">{value.discountId}</td>
               <td className="border-2 border-black">{value.amount}</td>
               <td className="w-1/12 border-2 border-black">
@@ -678,6 +693,82 @@ function AdminDisplay(props: Display): JSX.Element {
               <th className="border-2 border-black">Fabric</th>
               <th className="border-2 border-black">Price</th>
               <th className="border-2 border-black">Description</th>
+              <th className="border-2 border-black">Edit</th>
+              <th className="border-2 border-black">Delete</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    )
+  } else if (props.display === "product-detail") {
+    pageData = (
+      <div className="w-10/12">
+        <h1 className="py-5 text-center text-4xl">Quản lý sản phẩm</h1>
+        <div className="mx-auto w-1/12 flex justify-center">
+          <button type="button" onClick={() => {setAddForm(true)}} className="py-2 px-4 justify-end bg-green-500 text-2xl text-white">+</button>
+          { addForm && <AddForm display={props.display} handleAddForm={handleAddForm} /> }
+        </div>
+        <div className="w-1/12 mx-auto my-5 flex">
+          <button type="button" className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"
+            onClick={() => {
+              if (props.page <= 1) {
+                handlePage(1)
+              } else {
+                handlePage(props.page - 1)
+              }
+            }}><FontAwesomeIcon icon={faChevronLeft} /></button>
+          <p className="mx-2 py-2 text-2xl text-center">{props.page}</p>
+          <button type="button" className="py-2 px-4 rounded-lg bg-sky-500 text-2xl text-white"
+            onClick={() => {handlePage(props.page + 1)}}><FontAwesomeIcon icon={faChevronRight} /></button>
+        </div>
+        <table className="mx-auto w-11/12">
+          <thead className="bg-sky-300">
+            <tr className="text-center">
+              <th className="border-2 border-black">Id</th>
+              <th className="border-2 border-black">Product Id</th>
+              <th className="border-2 border-black">Color</th>
+              <th className="border-2 border-black">Size</th>
+              <th className="border-2 border-black">Amount</th>
+              <th className="border-2 border-black">Edit</th>
+              <th className="border-2 border-black">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+          { data === null ? (
+            <tr>
+              <td align="center" colSpan={12} className="border-2 border-black text-center">Không có thông tin</td>
+            </tr>
+          ) : (data.map((value: any) => (
+            <tr className="text-center" key={uuidv4()}>
+              <td className="border-2 border-black">{value.id}</td>
+              <th className="border-2 border-black">{value.productId}</th>
+              <td className="border-2 border-black">{value.color}</td>
+              <td className="border-2 border-black">{value.size}</td>
+              <td className="border-2 border-black">{value.amount}</td>
+              <td className="w-1/12 border-2 border-black">
+                <button
+                  type="button"
+                  onClick={() => setEditForm(value)}
+                  className="py-2 px-4 my-2 justify-end bg-blue-500 text-xl text-white">#</button>
+                {editForm && (<EditForm display={props.display} value={editForm} handleEditForm={handleEditForm} />)}
+              </td>
+              <td className="w-1/12 border-2 border-black">
+                <button
+                  type="button"
+                  onClick={() => setRemoveForm(value.id)}
+                  className="py-2 px-4 my-2 justify-end bg-red-500 text-xl text-white">-</button>
+                {removeForm && (<RemoveForm display={props.display} value={removeForm} handleRemoveForm={handleRemoveForm} />)}
+              </td>
+            </tr>
+          )))}
+          </tbody>
+          <tfoot className="bg-sky-300">
+            <tr className="text-center">
+              <th className="border-2 border-black">Id</th>
+              <th className="border-2 border-black">Product Id</th>
+              <th className="border-2 border-black">Color</th>
+              <th className="border-2 border-black">Size</th>
+              <th className="border-2 border-black">Amount</th>
               <th className="border-2 border-black">Edit</th>
               <th className="border-2 border-black">Delete</th>
             </tr>

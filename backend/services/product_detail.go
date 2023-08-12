@@ -1,6 +1,8 @@
 package services
 
 import (
+	"strconv"
+
 	"commercial-shop.com/database"
 	"commercial-shop.com/models"
 	"github.com/jackc/pgx/v5"
@@ -83,7 +85,7 @@ func (sv *ProductDetailService) Get(productid_option *bool) error {
 	return nil
 }
 
-func (sv *ProductDetailService) GetAll() error {
+func (sv *ProductDetailService) GetAll(limit, page *int, productid *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -92,11 +94,13 @@ func (sv *ProductDetailService) GetAll() error {
 	defer conn.Close()
 
 	// SQL commamd
-	sql := "SELECT * FROM ProductDetail WHERE product_id=@productId ORDER BY product_detail_id;"
-	args := pgx.NamedArgs{"productId": sv.Items[0].ProductId}
+	sql := "SELECT * FROM ProductDetail ORDER BY product_detail_id LIMIT " + strconv.Itoa(*limit) + " OFFSET " + strconv.Itoa(*page) + ";"
+	if *productid {
+		sql = "SELECT * FROM ProductDetail WHERE product_id='" + sv.Items[0].ProductId + "' ORDER BY product_detail_id;"
+	}
 
 	// Get rows from conn with SQL command
-	rows, err := conn.Query(database.CTX, sql, args)
+	rows, err := conn.Query(database.CTX, sql)
 	if err != nil {
 		return err
 	}
