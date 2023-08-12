@@ -51,16 +51,16 @@ async function getApiProductDetailAmount(id: string, color: string, size: string
 
 async function getApiProductDetailColor(id: string): Promise<ProductColorObject[] | undefined> {
   try {
-    const response = await axios.get(`${API_URL}/product-detail/onlycolororsize?productid=${id}&color=true`)
+    const response = await axios.get(`${API_URL}/product-detail/color?productid=${id}`)
     return response.data
   } catch (error) {
     return undefined
   }
 }
 
-async function getApiProductDetailSize(id: string): Promise<ProductSizeObject[] | undefined> {
+async function getApiProductDetailSize(id: string, color: string): Promise<ProductSizeObject[] | undefined> {
   try {
-    const response = await axios.get(`${API_URL}/product-detail/onlycolororsize?productid=${id}&size=true`)
+    const response = await axios.get(`${API_URL}/product-detail/size?productid=${id}&color=${color}`)
     return response.data
   } catch (error) {
     return undefined
@@ -79,6 +79,8 @@ async function getApiProductImage(id: string): Promise<Object[]> {
 }
 
 export default function ProductDetail(props: ProductProps) {
+  const [fetchFirst, setFetchFirst] = useState<boolean>(true)
+
   const [product, setProduct] = useState<ProductObject | undefined>()
   const [productcolor, setProductcolor] = useState<ProductColorObject[] | undefined>()
   const [productsize, setProductsize] = useState<ProductSizeObject[] | undefined>()
@@ -96,31 +98,60 @@ export default function ProductDetail(props: ProductProps) {
   // UseEffect hook to fetch the API datas
   useEffect(() => {
     const fecthData = async () => {
+      if (fetchFirst === true) {
+        const productData: ProductObject | undefined = await getApiProduct(props.productid)
+        if (productData) {
+          setProduct(productData)
+        }
+        const productColorData: ProductColorObject[] | undefined = await getApiProductDetailColor(props.productid)
+        if (productColorData) {
+          setProductcolor(productColorData)
+          setActiveColor(productColorData[0].color)
+        }
+
+        let productSizeData: ProductSizeObject[] | undefined = await getApiProductDetailSize(props.productid, productColorData === undefined ? "" : productColorData[0].color)
+        if (productSizeData) {
+          setProductsize(productSizeData)
+          setActiveSize(productSizeData[0].size)
+        }
+        
+        if (productColorData && productSizeData) {
+          const productAmount: ProductAmountObject | undefined = await getApiProductDetailAmount(props.productid, productColorData[0].color, productSizeData[0].size)
+          setProductamount(productAmount)
+        }
+        
+        const productImageData: any = await getApiProductImage(props.productid)
+        setProductImage(productImageData)
+
+        return 
+      }
+
+      // No fetch first
       const productData: ProductObject | undefined = await getApiProduct(props.productid)
-      if (productData) {
-        setProduct(productData)
-      }
-      const productColorData: ProductColorObject[] | undefined = await getApiProductDetailColor(props.productid)
-      if (productColorData) {
-        setProductcolor(productColorData)
-        setActiveColor(productColorData[0].color)
-      }
-      const productSizeData: ProductSizeObject[] | undefined = await getApiProductDetailSize(props.productid)
-      if (productSizeData) {
-        setProductsize(productSizeData)
-        setActiveSize(productSizeData[0].size)
-      }
-      if (productColorData && productSizeData) {
-        const productAmount: ProductAmountObject | undefined = await getApiProductDetailAmount(props.productid, productColorData[0].color, productSizeData[0].size)
-        setProductamount(productAmount)
-      }
-      
-      const productImageData: any = await getApiProductImage(props.productid)
-      setProductImage(productImageData)
+        if (productData) {
+          setProduct(productData)
+        }
+        const productColorData: ProductColorObject[] | undefined = await getApiProductDetailColor(props.productid)
+        if (productColorData) {
+          setProductcolor(productColorData)
+        }
+
+        let productSizeData: ProductSizeObject[] | undefined = await getApiProductDetailSize(props.productid, productColorData === undefined ? "" : productColorData[0].color)
+        if (productSizeData) {
+          setProductsize(productSizeData)
+        }
+        
+        if (productColorData && productSizeData) {
+          const productAmount: ProductAmountObject | undefined = await getApiProductDetailAmount(props.productid, productColorData[0].color, productSizeData[0].size)
+          setProductamount(productAmount)
+        }
+        
+        const productImageData: any = await getApiProductImage(props.productid)
+        setProductImage(productImageData)
     }
 
     fecthData()
-  }, [activeColor, activeSize])
+  }, [])
 
   return (
     <div>

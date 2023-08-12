@@ -11,7 +11,8 @@ func addProductDetailRoutes(rg *gin.RouterGroup) {
 
 	route.GET("/:id", controllers.GetProductDetail)
 	route.GET("/amount", controllers.GetAmountProductDetail)
-	route.GET("/onlycolororsize", controllers.GetOnlyColorOrSizeProductDetail)
+	route.GET("/color", controllers.GetColorProductDetail)
+	route.GET("/size", controllers.GetSizeProductDetail)
 	route.GET("", controllers.GetAllProductDetail)
 	route.POST("", controllers.CreateProductDetail)
 	route.PATCH("/:id", controllers.UpdateProductDetail)
