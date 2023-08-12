@@ -7,11 +7,11 @@ import axios, { AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { API_URL } from "../utils/URL";
+import { API_URL } from "../utils/URL"
 
 type ProductDetail = {
-  handleProductId: (value: string) => void;
-};
+  handleProductId: (value: string) => void
+}
 
 interface CategoryObject {
   id:   string
@@ -92,10 +92,6 @@ function ProductShow(props: ProductDetail): JSX.Element {
   const handleProductId = (value: string) => {
     props.handleProductId(value)
   }
-  const handleAddCart = async (value: any) => {
-    value.amount = 1
-    localStorage.setItem(`${value.id}`, JSON.stringify(value))
-  }
 
   // UseEffect hook to fetch the API data
   useEffect(() => {
@@ -142,7 +138,7 @@ function ProductShow(props: ProductDetail): JSX.Element {
                   }}>
                   {value.name}
                 </p>
-              );
+              )
             })
           )}
         </div>
@@ -213,14 +209,9 @@ function ProductShow(props: ProductDetail): JSX.Element {
                     </p>
                     <button
                       className="py-2 px-4 bg-sky-400 text-white"
-                      onClick={() => handleAddCart(value)}>
-                      Thêm vào giỏ hàng
-                    </button>
-                    <p
-                      className="my-2 text-center hover:cursor-pointer"
                       onClick={() => handleProductId(value.id)}>
-                      Xem chi tiết
-                    </p>
+                      Xem Chi tiết
+                    </button>
                     {/* {value.amount === 0 ? (
                       <div className="absolute text-xl flex justify-center text-white items-center top-1/4 left-1/4 right-1/4">
                         <p>HẾT HÀNG</p>

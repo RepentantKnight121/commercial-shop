@@ -44,10 +44,30 @@ func GetProductDetail(c *gin.Context) {
 		Id: c.Param("id"),
 	}}}
 
+	amount_option := false
+
 	// Execute method and send status request to user
-	err := data.Get()
+	err := data.Get(&amount_option)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get product-detail value"})
+		return
+	}
+	c.JSON(http.StatusOK, data.Items)
+}
+
+func GetAmountProductDetail(c *gin.Context) {
+	// Create service and assign to data
+	data := services.ProductDetailService{Items: []models.ProductDetail{{}}}
+
+	amount_option := true
+	data.Items[0].ProductId = c.Query("productid")
+	data.Items[0].Size = c.Query("size")
+	data.Items[0].Color = c.Query("color")
+
+	// Execute method and send status request to user
+	err := data.Get(&amount_option)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get amount product-detail value"})
 		return
 	}
 	c.JSON(http.StatusOK, data.Items)
@@ -65,7 +85,7 @@ func GetOnlyColorOrSizeProductDetail(c *gin.Context) {
 
 	err := data.GetOnlyColorOrSize(&color_option, &size_option)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product-detail value"})
+		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get color or size product-detail value"})
 		return
 	}
 
