@@ -101,6 +101,33 @@ function EditForm(props: Display): JSX.Element {
       })
     } else if (props.display === "discount") {
 
+    } else if (props.display === "produc") {
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        categoryId: input2,
+        name: input3,
+        fabric: input4,
+        price: input5,
+        description: input6
+      })
+      .then(() => {
+        alert("Edit product-image successfully")
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    } else if (props.display === "product-detail") {
+      await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
+        productId: input2,
+        color: input3,
+        size: input4,
+        amount: input5
+      })
+      .then(() => {
+        alert("Edit product-image successfully")
+      })
+      .catch((error) => {
+        alert(error)
+      })
     } else if (props.display === "product-image") {
       await axios.patch(`http://localhost:4505/api/${props.display}/${props.value.id}`, {
         productId: input2,
@@ -148,13 +175,15 @@ function EditForm(props: Display): JSX.Element {
       setInput1(props.value.id)
       setInput2(props.value.categoryId)
       setInput3(props.value.name)
-      setInput4(props.value.color)
-      setInput5(props.value.fabric)
-      setInput6(props.value.size)
-      setInput7(props.value.form)
-      setInput8(props.value.price)
-      setInput9(props.value.amount)
-      setInput10(props.value.description)
+      setInput4(props.value.fabric)
+      setInput5(props.value.price)
+      setInput6(props.value.description)
+    } else if (props.display === "product-detail") {
+      setInput1(props.value.id)
+      setInput2(props.value.productId)
+      setInput3(props.value.color)
+      setInput4(props.value.size)
+      setInput5(props.value.amount)
     } else if (props.display === "product-image") {
       setInput1(props.value.id)
       setInput2(props.value.productId)
@@ -219,13 +248,19 @@ function EditForm(props: Display): JSX.Element {
         <p>Id: <input type="text" value={input1} onChange={(event) => setInput1(event.target.value)} /></p>
         <p>Category Id: <input type="text" value={input2} onChange={(event) => setInput2(event.target.value)} /></p>
         <p>Name: <input type="text" value={input3} onChange={(event) => setInput3(event.target.value)} /></p>
-        <p>Color: <input type="text" value={input4} onChange={(event) => setInput4(event.target.value)} /></p>
-        <p>Fabric: <input type="text" value={input5} onChange={(event) => setInput5(event.target.value)} /></p>
-        <p>Size: <input type="text" value={input6} onChange={(event) => setInput6(event.target.value)} /></p>
-        <p>Form: <input type="text" value={input7} onChange={(event) => setInput7(event.target.value)} /></p>
-        <p>Price: <input type="number" value={input8} onChange={(event) => setInput8(event.target.value)} /></p>
-        <p>Amount: <input type="number" value={input9} onChange={(event) => setInput9(event.target.value)} /></p>
-        <p>Description: <input type="text" value={input10} onChange={(event) => setInput10(event.target.value)} /></p>
+        <p>Fabric: <input type="text" value={input4} onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Price: <input type="number" value={input5} onChange={(event) => setInput5(event.target.value)} /></p>
+        <p>Description: <input type="text" value={input6} onChange={(event) => setInput6(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "product-detail") {
+    inputForm = (
+      <div>
+        <p>Id: <input type="text" value={input1} onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Product Id: <input type="text" value={input2} onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Color : <input type="text" value={input3} onChange={(event) => setInput3(event.target.value)} /></p>
+        <p>Size: <input type="text" value={input4} onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Amount: <input type="text" value={input5} onChange={(event) => setInput5(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "product-image") {

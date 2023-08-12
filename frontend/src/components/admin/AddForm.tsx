@@ -145,13 +145,23 @@ function AddForm(props: Display): JSX.Element {
         id: input1,
         categoryId: input2,
         name: input3,
-		    color: input4,
-		    fabric: input5,
-		    size: input6,
-		    form: input7,
-		    price: input8,
-		    amount: input9,
-		    description: input10
+		    fabric: input4,
+		    price: input5,
+		    description: input6
+      })
+      .then(() => {
+        alert("Adding product successfully")
+      })
+      .catch((error) => {
+        alert(error);
+      })
+    } else if (props.display === "product-detail") {
+      await axios.post(`http://localhost:4505/api/${props.display}`, {
+        id: input1,
+        productId: input2,
+        color: input3,
+		    size: input4,
+		    amount: input5
       })
       .then(() => {
         alert("Adding product successfully")
@@ -242,13 +252,19 @@ function AddForm(props: Display): JSX.Element {
         <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
         <p>Category Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
         <p>Name: <input type="text" onChange={(event) => setInput3(event.target.value)} /></p>
-        <p>Color: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
-        <p>Fabric: <input type="text" onChange={(event) => setInput5(event.target.value)} /></p>
-        <p>Size: <input type="text" onChange={(event) => setInput6(event.target.value)} /></p>
-        <p>Form: <input type="text" onChange={(event) => setInput7(event.target.value)} /></p>
-        <p>Price: <input type="number" onChange={(event) => setInput8(event.target.value)} /></p>
-        <p>Amount: <input type="number" onChange={(event) => setInput9(event.target.value)} /></p>
-        <p>Description: <input type="text" onChange={(event) => setInput10(event.target.value)} /></p>
+        <p>Fabric: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Price: <input type="number" onChange={(event) => setInput5(event.target.value)} /></p>
+        <p>Description: <input type="text" onChange={(event) => setInput6(event.target.value)} /></p>
+      </div>
+    )
+  } else if (props.display === "product") {
+    input = (
+      <div>
+        <p>Id: <input type="text" onChange={(event) => setInput1(event.target.value)} /></p>
+        <p>Product Id: <input type="text" onChange={(event) => setInput2(event.target.value)} /></p>
+        <p>Color: <input type="text" onChange={(event) => setInput3(event.target.value)} /></p>
+        <p>Size: <input type="text" onChange={(event) => setInput4(event.target.value)} /></p>
+        <p>Amount: <input type="number" onChange={(event) => setInput5(event.target.value)} /></p>
       </div>
     )
   } else if (props.display === "product-image") {

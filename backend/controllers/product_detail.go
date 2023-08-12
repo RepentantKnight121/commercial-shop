@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -61,7 +62,27 @@ func GetAllProductDetail(c *gin.Context) {
 	data := services.ProductDetailService{Items: []models.ProductDetail{{}}}
 	data.Items[0].ProductId = c.Query("productid")
 
-	err := data.GetAll()
+	// Get limit
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	if limit <= 0 {
+		limit = 10
+	}
+
+	// Get page
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
+	}
+	if page <= 0 {
+		page = 1
+	}
+
+	productid := data.Items[0].ProductId != ""
+
+	err = data.GetAll(&limit, &page, &productid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "can't get all product-detail value"})
 		return

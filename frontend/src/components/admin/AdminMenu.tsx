@@ -49,6 +49,9 @@ export default function AdminMenu(props: Handle): JSX.Element {
       <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="product" ? "bg-white text-sky-400" : "text-white")}
         onClick={() => handleButtonClick("product")}><FontAwesomeIcon icon={faBox} className="px-1" />Sản phẩm {choose==="product" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
 
+      <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="product-detail" ? "bg-white text-sky-400" : "text-white")}
+        onClick={() => handleButtonClick("product-detail")}><FontAwesomeIcon icon={faBox} className="px-1" />Sản phẩm chi tiết{choose==="product-detail" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
+
       <button className={"pl-6 pr-6 pt-4 pb-4 " + (choose==="product-image" ? "bg-white text-sky-400" : "text-white")}
         onClick={() => handleButtonClick("product-image")}><FontAwesomeIcon icon={faImage} className="px-1" /> Ảnh sản phẩm {choose==="product-image" ? <FontAwesomeIcon icon={faArrowRight} /> : <></>}</button>
     
