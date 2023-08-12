@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 import { v4 as uuidv4 } from "uuid"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
@@ -19,16 +20,12 @@ type ProductObject = {
   description: string
 }
 
-type ProductAmountObject = {
-  amount: number
-}
-
-type ProductColorObject = {
+type ProductDetailObject = {
+  id: string
+  productDetailId: string
   color: string
-}
-
-type ProductSizeObject = {
   size: string
+  amount: number
 }
 
 async function getApiProduct(id: string): Promise<ProductObject | undefined> {
@@ -40,27 +37,9 @@ async function getApiProduct(id: string): Promise<ProductObject | undefined> {
   }
 }
 
-async function getApiProductDetailAmount(id: string, color: string, size: string): Promise<ProductAmountObject | undefined> {
+async function getApiProductDetail(id: string): Promise<ProductDetailObject[] | undefined> {
   try {
-    const response = await axios.get(`${API_URL}/product-detail/amount?productid=${id}&color=${color}&size=${size}`)
-    return response.data[0]
-  } catch (error) {
-    return undefined
-  }
-}
-
-async function getApiProductDetailColor(id: string): Promise<ProductColorObject[] | undefined> {
-  try {
-    const response = await axios.get(`${API_URL}/product-detail/color?productid=${id}`)
-    return response.data
-  } catch (error) {
-    return undefined
-  }
-}
-
-async function getApiProductDetailSize(id: string, color: string): Promise<ProductSizeObject[] | undefined> {
-  try {
-    const response = await axios.get(`${API_URL}/product-detail/size?productid=${id}&color=${color}`)
+    const response = await axios.get(`${API_URL}/product-detail?productid=${id}`)
     return response.data
   } catch (error) {
     return undefined
@@ -79,75 +58,59 @@ async function getApiProductImage(id: string): Promise<Object[]> {
 }
 
 export default function ProductDetail(props: ProductProps) {
-  const [fetchFirst, setFetchFirst] = useState<boolean>(true)
-
+  const navigate = useNavigate()
   const [product, setProduct] = useState<ProductObject | undefined>()
-  const [productcolor, setProductcolor] = useState<ProductColorObject[] | undefined>()
-  const [productsize, setProductsize] = useState<ProductSizeObject[] | undefined>()
-  const [productamount, setProductamount] = useState<ProductAmountObject | undefined>()
+  const [productdetail, setProductdetail] = useState<ProductDetailObject[] | undefined>([])
+  const [productcolor, setProductColor] = useState<string[]>([])
   const [productimage, setProductImage] = useState<any[]>([])
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0)
   const [activeColor, setActiveColor] = useState<string>("")
   const [activeSize, setActiveSize] = useState<string>("")
+  const [amount, setAmount] = useState<number>(1)
 
-  const handleAddCart = async (value: any) => {
+  const handleAddCart = async (value: ProductDetailObject) => {
+    value.amount = amount
+    localStorage.setItem(`${value.id}`, JSON.stringify(value))
+  }
+
+  const handleBuyNow = async (value: ProductDetailObject) => {
+    localStorage.clear()
     value.amount = 1
     localStorage.setItem(`${value.id}`, JSON.stringify(value))
+    navigate("/cart")
   }
 
   // UseEffect hook to fetch the API datas
   useEffect(() => {
     const fecthData = async () => {
-      if (fetchFirst === true) {
-        const productData: ProductObject | undefined = await getApiProduct(props.productid)
-        if (productData) {
-          setProduct(productData)
-        }
-        const productColorData: ProductColorObject[] | undefined = await getApiProductDetailColor(props.productid)
-        if (productColorData) {
-          setProductcolor(productColorData)
-          setActiveColor(productColorData[0].color)
+      setProductColor([])
+
+      const productData: ProductObject | undefined = await getApiProduct(props.productid)
+      if (productData) {
+        setProduct(productData)
+      }
+      const productdetailData: ProductDetailObject[] | undefined = await getApiProductDetail(props.productid)
+      if (productdetailData) {
+        setProductdetail(productdetailData)
+
+        // Get unique color and set it to state
+        const uniqueColors = Array.from(new Set(productdetailData.map((item: ProductDetailObject) => item.color)))
+        setProductColor(uniqueColors)
+
+        // Set activeColor to the first values in uniqueColors
+        if (uniqueColors.length > 0) {
+          setActiveColor(uniqueColors[0])
         }
 
-        let productSizeData: ProductSizeObject[] | undefined = await getApiProductDetailSize(props.productid, productColorData === undefined ? "" : productColorData[0].color)
-        if (productSizeData) {
-          setProductsize(productSizeData)
-          setActiveSize(productSizeData[0].size)
+        // Find the first matching size for the active color
+        const firstMatchingSize = productdetailData.find(item => item.color === uniqueColors[0])?.size
+        if (firstMatchingSize) {
+          setActiveSize(firstMatchingSize)
         }
-        
-        if (productColorData && productSizeData) {
-          const productAmount: ProductAmountObject | undefined = await getApiProductDetailAmount(props.productid, productColorData[0].color, productSizeData[0].size)
-          setProductamount(productAmount)
-        }
-        
-        const productImageData: any = await getApiProductImage(props.productid)
-        setProductImage(productImageData)
-
-        return 
       }
 
-      // No fetch first
-      const productData: ProductObject | undefined = await getApiProduct(props.productid)
-        if (productData) {
-          setProduct(productData)
-        }
-        const productColorData: ProductColorObject[] | undefined = await getApiProductDetailColor(props.productid)
-        if (productColorData) {
-          setProductcolor(productColorData)
-        }
-
-        let productSizeData: ProductSizeObject[] | undefined = await getApiProductDetailSize(props.productid, productColorData === undefined ? "" : productColorData[0].color)
-        if (productSizeData) {
-          setProductsize(productSizeData)
-        }
-        
-        if (productColorData && productSizeData) {
-          const productAmount: ProductAmountObject | undefined = await getApiProductDetailAmount(props.productid, productColorData[0].color, productSizeData[0].size)
-          setProductamount(productAmount)
-        }
-        
-        const productImageData: any = await getApiProductImage(props.productid)
-        setProductImage(productImageData)
+      const productImageData: any = await getApiProductImage(props.productid)
+      setProductImage(productImageData)
     }
 
     fecthData()
@@ -200,39 +163,112 @@ export default function ProductDetail(props: ProductProps) {
             <p>Không có dữ liệu</p>
           }
 
-          <div>
-            {productcolor ?
-              productcolor.map((value: any) => {
-                return <p key={uuidv4()} onClick={() => setActiveColor(value.color)}
-                          className="hover:cursor-pointer">
-                  {value.color}
-                </p>
-              })
-              :
-              <p>Không có dữ liệu về màu sắc</p>
-            }
-          </div>
-
-          <div>
-          {productsize ?
-            productsize.map((value: any) => {
-              return <p key={uuidv4()} onClick={() => setActiveSize(value.size)}
-                        className="hover:cursor-pointer">
-                {value.size}
+          {productcolor ?
+            productcolor.map((value: string) => (
+              <p
+                key={uuidv4()}
+                className={activeColor === value ? "text-sky-400" : ""}
+                onClick={() => {
+                  setActiveColor(value)
+                  const firstMatchingSize = productdetail?.find((item: ProductDetailObject) => item.color === value)?.size
+                  if (firstMatchingSize) {
+                    setActiveSize(firstMatchingSize)
+                  }
+                }}
+              >
+                {value}
               </p>
+            ))
+            :
+            <p>Không có dữ liệu</p>
+          }
+
+          {productdetail ?
+            productdetail.map((value: ProductDetailObject) => {
+              if (value.color === activeColor) {
+                return (
+                  <p
+                    key={uuidv4()}
+                    className={activeSize === value.size ? "text-sky-400" : ""}
+                    onClick={() => setActiveSize(value.size)}
+                  >
+                    {value.size}
+                  </p>
+                )
+              }
+              return null
             })
             :
-            <p>Không có dữ liệu về size</p>
+            <p>Không có dữ liệu</p>
           }
-          </div>
 
-          {productamount && <p>Số lượng: {productamount.amount}</p>}
+          {(productcolor && productdetail) ?
+            productdetail.map((value: ProductDetailObject) => {
+              if (activeColor === value.color && activeSize === value.size) {
+                return <p key={uuidv4()}>{value.amount}</p>
+              } 
 
-          <button className="w-full  my-2  border border-solid border-black  py-3 mx-auto"
-            onClick={() => {}}>
+              return null
+            })
+            :
+            <p>Không có dữ liệu</p>
+          }
+
+          <p>Số lượng mua: 
+            <input
+              type="number"
+              value={amount}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (parseInt(event.target.value) < 1) {
+                  setAmount(1)
+                  event.target.value = "1"
+                }
+                else if (parseInt(event.target.value) > 10) {
+                  setAmount(10)
+                  event.target.value = "10"
+                }
+                else
+                  setAmount(parseInt(event.target.value))
+              }}></input>
+          </p>
+          
+
+          <button
+            className="w-full  my-2  border border-solid border-black  py-3 mx-auto"
+           onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            event.preventDefault()
+
+            // Find the productdetailid based on the selected color and size
+            const selectedProductDetail = productdetail?.find(
+              (item: ProductDetailObject) =>
+                item.color === activeColor && item.size === activeSize
+            )
+
+            if (selectedProductDetail) {
+              // Use the selectedProductDetail to proceed with your purchase logic
+              // For example, you can call the handleAddCart function with the selectedProductDetail
+              handleAddCart(selectedProductDetail)
+            }
+          }}>
             Thêm vào giỏ hàng
           </button>
-          <button className="w-full bg-black text-white py-3 mx-auto ">
+          <button
+            className="w-full bg-black text-white py-3 mx-auto"
+            onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+              event.preventDefault()
+
+              // Find the productdetailid based on the selected color and size
+              const selectedProductDetail = productdetail?.find(
+                (item: ProductDetailObject) =>
+                  item.color === activeColor && item.size === activeSize
+              )
+
+              if (selectedProductDetail) {
+                // Use the selectedProductDetail to proceed with your purchase logic
+                // For example, you can call the handleBuyNow function with the selectedProductDetail
+                handleBuyNow(selectedProductDetail)
+              }
+            }}>
             Mua ngay
           </button>
         </div>

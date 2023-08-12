@@ -57,7 +57,7 @@ func (sv *ProductDetailService) Delete() error {
 	return nil
 }
 
-func (sv *ProductDetailService) Get(amount_option *bool) error {
+func (sv *ProductDetailService) Get(productid_option *bool) error {
 	// Connect to database and close after executing command
 	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
 	if err != nil {
@@ -68,101 +68,15 @@ func (sv *ProductDetailService) Get(amount_option *bool) error {
 	// SQL commamd
 	sql := "SELECT * FROM ProductDetail WHERE product_detail_id='" + sv.Items[0].Id + "';"
 
-	if *amount_option {
-		sql = "SELECT * FROM ProductDetail WHERE product_id='" + sv.Items[0].ProductId + "' AND product_detail_color='" + sv.Items[0].Color + "' AND product_detail_size='" + sv.Items[0].Size + "';"
-	}
-
 	// Get row from conn with SQL command
-	if *amount_option {
-		err = conn.QueryRow(database.CTX, sql).Scan(
-			&sv.Items[0].Id,
-			&sv.Items[0].ProductId,
-			&sv.Items[0].Color,
-			&sv.Items[0].Size,
-			&sv.Items[0].Amount,
-		)
-	} else {
-		err = conn.QueryRow(database.CTX, sql).Scan(
-			&sv.Items[0].Id,
-			&sv.Items[0].ProductId,
-			&sv.Items[0].Color,
-			&sv.Items[0].Size,
-			&sv.Items[0].Amount,
-		)
-	}
+	err = conn.QueryRow(database.CTX, sql).Scan(
+		&sv.Items[0].Id,
+		&sv.Items[0].ProductId,
+		&sv.Items[0].Color,
+		&sv.Items[0].Size,
+		&sv.Items[0].Amount,
+	)
 	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (sv *ProductDetailService) GetColor() error {
-	// Connect to database and close after executing command
-	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-
-	// SQL commamd
-	sql := "SELECT DISTINCT product_detail_color FROM ProductDetail WHERE product_id='" + sv.Items[0].ProductId + "';"
-
-	// Get rows from conn with SQL command
-	rows, err := conn.Query(database.CTX, sql)
-	if err != nil {
-		return err
-	}
-
-	// convert each rows to struct and append to Slice to return
-	i := 0
-	for rows.Next() {
-		sv.Items = append(sv.Items, models.ProductDetail{})
-
-		err := rows.Scan(&sv.Items[i].Color)
-		if err != nil {
-			return err
-		}
-
-		i++
-	}
-	if err := rows.Err(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (sv *ProductDetailService) GetSize() error {
-	// Connect to database and close after executing command
-	conn, err := pgxpool.New(database.CTX, database.CONNECT_STR)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-
-	// SQL commamd
-	sql := "SELECT DISTINCT product_detail_size FROM ProductDetail WHERE product_id='" + sv.Items[0].ProductId + "' AND product_detail_color='" + sv.Items[0].Color + "';"
-
-	// Get rows from conn with SQL command
-	rows, err := conn.Query(database.CTX, sql)
-	if err != nil {
-		return err
-	}
-
-	// convert each rows to struct and append to Slice to return
-	i := 0
-	for rows.Next() {
-		sv.Items = append(sv.Items, models.ProductDetail{})
-
-		err := rows.Scan(&sv.Items[i].Size)
-		if err != nil {
-			return err
-		}
-
-		i++
-	}
-	if err := rows.Err(); err != nil {
 		return err
 	}
 
