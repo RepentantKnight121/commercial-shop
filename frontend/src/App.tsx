@@ -27,7 +27,7 @@ function App(): JSX.Element {
           <Route path="/news" element={<News />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/product-detail" element={<ProductDetail />} />
+          {/* <Route path="/product-detail" element={<ProductDetail />} /> */}
           <Route path="/cart" element={<Cart />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
