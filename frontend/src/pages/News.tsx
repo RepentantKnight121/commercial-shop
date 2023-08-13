@@ -2,6 +2,7 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import isNullOrUndefined from "../utils/check";
 
 interface ApiResponse {
   message: string;
@@ -34,6 +35,24 @@ function News(): JSX.Element {
     Cookies.remove("loginTokenCookie");
     Cookies.remove("loginUsernameCookie");
   };
+
+  useEffect(() => {
+    const token = Cookies.get("loginTokenCookie");
+    const username = Cookies.get("loginUsernameCookie");
+
+    if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
+      getApiSession(username!, token!)
+        .then((user_data: any) => {
+          if (user_data.session === token) {
+            setLoggedIn(true);
+          }
+        })
+        .catch((error: any) => {
+          console.log("Can't get data from api");
+          console.log(error);
+        });
+    }
+  }, []);
 
   return (
     <div className="font-barlow">

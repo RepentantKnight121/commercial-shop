@@ -1,8 +1,8 @@
 import Menu from "../components/Menu";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
+import isNullOrUndefined from "../utils/check";
 
 interface ApiResponse {
   message: string;
@@ -23,12 +23,10 @@ async function getApiSession(
 }
 
 function About(): JSX.Element {
-  const navigate = useNavigate();
   const [refresh, setRefresh] = useState<boolean>(false);
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [products, setProducts] = useState<any[]>([]);
-  var totalMoney = 0;
 
   const handleLoggedIn = async (value: boolean) => {
     setLoggedIn(value);
@@ -40,6 +38,24 @@ function About(): JSX.Element {
     Cookies.remove("loginTokenCookie");
     Cookies.remove("loginUsernameCookie");
   };
+
+  useEffect(() => {
+    const token = Cookies.get("loginTokenCookie");
+    const username = Cookies.get("loginUsernameCookie");
+
+    if (!isNullOrUndefined(token) || !isNullOrUndefined(username)) {
+      getApiSession(username!, token!)
+        .then((user_data: any) => {
+          if (user_data.session === token) {
+            setLoggedIn(true);
+          }
+        })
+        .catch((error: any) => {
+          console.log("Can't get data from api");
+          console.log(error);
+        });
+    }
+  }, []);
 
   return (
     <div className="font-barlow">
