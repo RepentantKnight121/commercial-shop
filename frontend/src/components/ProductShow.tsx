@@ -18,6 +18,14 @@ interface CategoryObject {
   name: string;
 }
 
+type ProductDetailObject = {
+  id: string;
+  productId: string;
+  color: string;
+  size: string;
+  amount: number;
+};
+
 interface ProductWithImageObject {
   id: string;
   categoryId: string;
@@ -34,6 +42,17 @@ async function getApiCategory(
   try {
     const response: AxiosResponse<any, any> = await axios.get(
       `${API_URL}/category?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    return undefined;
+  }
+}
+
+async function getApiProductDetail(): Promise<ProductDetailObject[] | undefined> {
+  try {
+    const response = await axios.get(
+      `${API_URL}/product-detail`
     );
     return response.data;
   } catch (error) {
@@ -76,6 +95,7 @@ function ProductShow(props: ProductDetail): JSX.Element {
   const [productwithimages, setProductWithImages] = useState<
     ProductWithImageObject[]
   >([]);
+  const [productdetail, setProductDetail] = useState<ProductDetailObject[] | undefined>([])
 
   const [limit, setLimit] = useState<number>(12);
   const [page, setPage] = useState<number>(1);
@@ -114,6 +134,11 @@ function ProductShow(props: ProductDetail): JSX.Element {
       if (dataProductWithImage) {
         setProductWithImages(dataProductWithImage);
       }
+      const dataProductDetail: ProductDetailObject[] | undefined =
+        await getApiProductDetail()
+        if (dataProductDetail) {
+          setProductDetail(dataProductDetail)
+        }
     })();
   }, [category, page, price]);
 
@@ -203,6 +228,15 @@ function ProductShow(props: ProductDetail): JSX.Element {
               <div className="w-full text-center">Không có thông tin</div>
             ) : (
               productwithimages.map((value: any) => {
+                const matchingProductDetails = productdetail?.filter(
+                  (valuedata: any) => valuedata.productId === value.id
+                );
+
+                const allOutOfStock = matchingProductDetails?.every(
+                  (valuedata: any) => valuedata.amount === 0
+                );
+
+
                 return (
                   <div
                     key={uuidv4()}
@@ -222,7 +256,7 @@ function ProductShow(props: ProductDetail): JSX.Element {
                       onClick={() => handleProductId(value.id)}>
                       Xem Chi tiết
                     </button>
-                    {value.amount === 0 ? (
+                    {allOutOfStock ? (
                       <div className="absolute text-xl flex justify-center text-white items-center top-1/4 left-1/4 right-1/4">
                         <p>HẾT HÀNG</p>
                       </div>
